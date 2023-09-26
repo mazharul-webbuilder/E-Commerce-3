@@ -1,4 +1,4 @@
-@extends('merchant.layout.app')
+@extends('affiliate.layout.app')
 @section('content')
 
 @endsection

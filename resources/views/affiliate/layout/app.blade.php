@@ -203,10 +203,10 @@
                                 <a class="w-32 dropdown-item font-semibold py-2 px-4 block whitespace-nowrap bg-transparent text-white hover:bg-blue-500" href="">Profile</a>
                             </li>
                             <li>
-                                <a href="{{ route('merchant.logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();"  class="dropdown-item w-32 py-2 px-4 font-semibold block whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-200">
+                                <a href="{{ route('affiliate.logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();"  class="dropdown-item w-32 py-2 px-4 font-semibold block whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-200">
                                     Logout
                                 </a>
-                                <form id="frm-logout" action="{{ route('merchant.logout') }}" method="POST" style="display: none;">
+                                <form id="frm-logout" action="{{ route('affiliate.logout') }}" method="POST" style="display: none;">
                                     {{ csrf_field() }}
                                 </form>
                             </li>

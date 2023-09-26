@@ -33,9 +33,12 @@ use App\Http\Controllers\Ludo\CampaignController;
 use Illuminate\Support\Facades\Route;
 
 
+Route::prefix('merchant')->group(base_path('routes/merchant.php'));
+Route::prefix('affiliate')->group(base_path('routes/affiliate.php'));
 Route::prefix('seller')->group(base_path('routes/seller.php'));
 Route::prefix('club_owner')->group(base_path('routes/club_owner.php'));
 Route::prefix('share_owner')->group(base_path('routes/share_owner.php'));
+
 
 
 

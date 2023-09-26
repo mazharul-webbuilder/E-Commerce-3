@@ -3,7 +3,9 @@
 namespace App\Http;
 
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\AffiliateMiddleware;
 use App\Http\Middleware\Clubadmin;
+use App\Http\Middleware\MerchantMiddleware;
 use App\Http\Middleware\OwnnerMiddleware;
 use App\Http\Middleware\SellerMiddleware;
 use App\Http\Middleware\ShareOwnerMiddleware;
@@ -99,5 +101,7 @@ class Kernel extends HttpKernel
         'owner' => OwnnerMiddleware::class,
         'share' => ShareOwnerMiddleware::class,
         'seller' => SellerMiddleware::class,
+        'merchant' => MerchantMiddleware::class,
+        'affiliate' => AffiliateMiddleware::class,
     ];
 }
