@@ -57,6 +57,16 @@ return [
             'driver' => 'session',
             'provider' => 'sellers',
         ],
+
+        'merchant' => [
+            'driver' => 'session',
+            'provider' => 'merchants',
+        ],
+
+        'affiliate' => [
+            'driver' => 'session',
+            'provider' => 'affiliators',
+        ],
 //        'share' => [
 //            'driver' => 'session',
 //            'provider' => 'share_owners',
@@ -106,6 +116,14 @@ return [
         'sellers' => [
             'driver' => 'eloquent',
             'model' => App\Models\Seller\Seller::class,
+        ],
+        'merchants' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Merchant\Merchant::class,
+        ],
+        'affiliators' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Affiliate\Affiliator::class,
         ],
     ],
 
