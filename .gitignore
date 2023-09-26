@@ -9,7 +9,6 @@
 .idea
 .idea/*
 .idea/workspace
-composer.json
 .env.backup
 .phpunit.result.cache
 Homestead.json
