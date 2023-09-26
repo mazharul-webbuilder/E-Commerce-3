@@ -1,0 +1,28 @@
+[20-May-2023 09:27:56 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'ludoseoi_ludogamedata_user'@'localhost' (using password: YES) in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[20-May-2023 09:27:56 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[20-May-2023 09:28:02 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'ludoseoi_ludogamedata_user'@'localhost' (using password: YES) in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[20-May-2023 09:28:02 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[20-May-2023 09:28:08 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'ludoseoi_ludogamedata_user'@'localhost' (using password: YES) in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[20-May-2023 09:28:08 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[20-May-2023 09:28:50 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'ludoseoi_ludogamedata_user'@'localhost' (using password: YES) in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[20-May-2023 09:28:50 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
