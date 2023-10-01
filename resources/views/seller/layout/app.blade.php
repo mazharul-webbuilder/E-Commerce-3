@@ -234,9 +234,16 @@
                         </li>
 
                         <li>
-                            <a href="" class="text-lg text-white font-normal rounded-lg  flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">
+                            <a href="{{route('seller.product.index')}}" class="text-lg text-white font-normal rounded-lg  flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">
                                 <i class="fas fa-trophy text-white group-hover:text-white transition duration-75"></i>
                                 <span class="ml-3 group-hover:text-white transition duration-150">Products</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="" class="text-lg text-white font-normal rounded-lg  flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">
+                                <i class="fas fa-trophy text-white group-hover:text-white transition duration-75"></i>
+                                <span class="ml-3 group-hover:text-white transition duration-150">My Store</span>
                             </a>
                         </li>
                     </ul>

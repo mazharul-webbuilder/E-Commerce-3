@@ -2,6 +2,7 @@
 
 namespace App\Models\Ecommerce;
 
+use App\Models\Merchant\Merchant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Ecommerce\Unit;
@@ -35,6 +36,10 @@ class Product extends Model
     public function galleries()
     {
         return $this->hasMany(Gallery::class);
+    }
+
+    public function merchant(){
+        return $this->belongsTo(Merchant::class);
     }
 
     public function price()

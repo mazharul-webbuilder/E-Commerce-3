@@ -13,6 +13,6 @@ class DashboardController extends Controller
         $this->middleware('seller');
     }
     public function index(){
-        return view('webend.seller.index');
+        return view('seller.index');
     }
 }

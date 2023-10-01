@@ -21,7 +21,7 @@ class LoginController extends Controller
             return redirect()->route('seller.dashboard');
         }
         else{
-             return view('webend.seller.Auth.login_form');
+             return view('seller.Auth.login_form');
         }
 
     }

@@ -17,6 +17,7 @@ class ProductController extends Controller
 
 
     public function datatable(){
+
         $auth_user=Auth::guard('merchant')->user();
         $datas=Product::where('merchant_id',$auth_user->id)->orderBy('id','DESC')->get();
 

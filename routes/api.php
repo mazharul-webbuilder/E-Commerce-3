@@ -37,6 +37,10 @@ use App\Http\Controllers\Ludo\PlayerWiningPercentageController;
 |
 */
 
+
+Route::prefix('ecommerce')->group(base_path('routes/ecommerce.php'));
+
+
 Route::post('/test', [TournamentApiController::class, 'test']);
 
 Route::post('/login-step-1', [LoginController::class, 'login_step_one']);
