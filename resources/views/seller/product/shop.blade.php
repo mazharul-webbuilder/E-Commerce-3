@@ -37,45 +37,17 @@
                                     S/N
                                 </div>
                             </th>
-                            <th scope="col" class="px-2 whitespace-nowrap py-3">
-                                <div class="text-center">
-                                    Product Owner
-                                </div>
-                            </th>
 
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
                                 <div class="text-center">
                                     Thumbnail
                                 </div>
                             </th>
-
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
                                 <div class="text-center">
                                     Name
                                 </div>
                             </th>
-
-                            <th scope="col" class="px-2 whitespace-nowrap py-3">
-                                <div class="text-center">
-                                    Previous Price
-                                </div>
-                            </th>
-                            <th scope="col" class="px-2 whitespace-nowrap py-3">
-                                <div class="text-center">
-                                    Current Price
-                                </div>
-                            </th>
-                            <th scope="col" class="px-2 whitespace-nowrap py-3">
-                                <div class="text-center">
-                                    Previous Coin
-                                </div>
-                            </th>
-                            <th scope="col" class="px-2 whitespace-nowrap py-3">
-                                <div class="text-center">
-                                    Current Coin
-                                </div>
-                            </th>
-
                             <th scope="col" class="px-4 py-3">
                                 <div class="text-center">
                                     Action
@@ -89,6 +61,7 @@
                     </table>
                 </div>
             </div>
+            <a href="fdfsdgdf" onclick="copyURI(event)">Copy cover URL</a>
 
         </div>
     </section>
@@ -96,22 +69,26 @@
 
 @section('extra_js')
     <script>
+
+        function copyURI(evt) {
+            evt.preventDefault();
+            navigator.clipboard.writeText(evt.target.getAttribute('href')).then(() => {
+                /* clipboard successfully set */
+            }, () => {
+                /* clipboard write failed */
+            });
+        }
         var table = $("#dataTable").DataTable({
             processing: true,
             responsive: false,
             serverSide: true,
             ordering: false,
             pagingType: "full_numbers",
-            ajax: '{{ route('seller.product.load') }}',
+            ajax: '{{ route('seller.shop.product.load') }}',
             columns: [
                 { data: 'DT_RowIndex',name:'DT_RowIndex' },
-                { data: 'merchant',name:'merchant'},
                 { data: 'thumbnail',name:'thumbnail'},
-                { data: 'title',name:'title'},
-                { data: 'previous_price',name:'previous_price'},
-                { data: 'current_price',name:'current_price'},
-                { data: 'previous_coin',name:'previous_coin'},
-                { data: 'current_coin',name:'current_coin'},
+                { data: 'product_name',name:'product_name'},
                 { data: 'action',name:'action' },
             ],
 
@@ -125,7 +102,7 @@
     <script>
         $(document).ready(function (){
             $('body').on('click','.add_to_store',function (){
-               $(this).text('wait...').prop('disabled',true)
+                $(this).text('wait...').prop('disabled',true)
 
                 let item_id=$(this).attr('item_id')
 
@@ -152,8 +129,35 @@
                             icon: response.type,
                             timer: 5000,
                         })
-                  }
+                    }
                 })
+            })
+
+            // copy link
+            $('body').on('click','.copy_link',function (e){
+
+                $(this).text('Copying....')
+                navigator.clipboard.writeText(e.target.attributes.share_link.nodeValue).then(() => {
+                    swal({
+                        title: 'Good job!',
+                        text: "Successfully copied",
+                        icon: 'success',
+                        timer: 5000,
+                    })
+                    let vm=this
+                   setInterval(function (){
+                       $(vm).text('Copy Link')
+
+                   },1000)
+
+                }, () => {
+                    swal({
+                        title: 'Error!',
+                        text: response.data,
+                        icon: 'error',
+                        timer: 5000,
+                    })
+                });
             })
         })
     </script>

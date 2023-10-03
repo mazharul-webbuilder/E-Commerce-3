@@ -12,3 +12,4 @@ Route::post('affiliate_register',[RegisterController::class,'affiliate_register'
 
 //category
 Route::get('/get_categories', [EcommerceController::class, 'get_category']);
+Route::get('product_detail/{id}/{seller_or_affiliate?}/{type?}', [EcommerceController::class, 'product_detail'])->name('api.product_detail');

@@ -16,6 +16,11 @@ Route::group(['prefix'=>'product', 'as'=>'merchant.'],function(){
 
     Route::get('product_load',[ProductController::class,'datatable'])->name('product.load');
     Route::get('/',[ProductController::class,'index'])->name('product.index');
+    Route::get('/create',[ProductController::class,'create'])->name('product.create');
+    Route::post('/store',[ProductController::class,'store'])->name('product.store');
+    Route::get('/edit/{id}',[ProductController::class,'edit'])->name('product.edit');
+    Route::post('/update',[ProductController::class,'update'])->name('product.update');
+    Route::post('/delete',[ProductController::class,'delete'])->name('product.delete');
 
 
 });

@@ -22,7 +22,7 @@
             </div>
 
             <div class="flex justify-end">
-                <a href="{{route('product.create')}}"  class="text-white bg-blue-700 hover:bg-blue-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center">
+                <a href="{{route('merchant.product.create')}}"  class="text-white bg-blue-700 hover:bg-blue-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center">
                     <i class="fas fa-plus mr-2"></i>
                     Add New
                 </a>

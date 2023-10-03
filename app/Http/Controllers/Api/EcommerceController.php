@@ -22,4 +22,9 @@ class EcommerceController extends Controller
             'type'=>'success'
         ],Response::HTTP_OK);
     }
+
+    public function product_detail($id,$seller_or_affiliate=null,$type=null){
+        $data=[$id,$seller_or_affiliate,$type];
+        return $data;
+    }
 }

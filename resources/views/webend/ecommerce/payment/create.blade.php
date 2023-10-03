@@ -321,7 +321,6 @@
                                 text: data.message,
                                 icon: data.type,
                                 timer: 5000,
-                                // buttons: true,
                             })
                             $(".submit_button").text("Add").prop('disabled', false)
                             $("#submit_form")[0].reset();
