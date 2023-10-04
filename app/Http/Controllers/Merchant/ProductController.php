@@ -39,6 +39,27 @@ class ProductController extends Controller
                     :default_image();
                 return '<img src='.$url.' border="0" width="120" height="50" class="img-rounded" />';
             })
+            /*Status Column*/
+            ->addColumn('status', function ($product) {
+                $statusOptions = [
+                    1 => 'Published',
+                    0 => 'Unpublished',
+                ];
+
+                $statusSelect = '<select class="status-select form-control" style="background: #FFE5E5;
+                                    padding: 7px;
+                                    border: 1px solid transparent;
+                                    border-radius: 10px;
+                                    color: black;" data-id="' . $product->id . '">';
+
+                foreach ($statusOptions as $value => $label) { // $value = array_key && $label = published or unpublished
+                    $selected = $product->status == $value ? 'selected' : '';
+                    $statusSelect .= '<option value="' . $value . '" ' . $selected . '>' . $label . '</option>';
+                }
+                $statusSelect .= '</select>';
+
+                return $statusSelect;
+            })
             ->editColumn('action',function(Product $data){
                 return '
                         <a href="'.route('merchant.product.view', $data->slug).'"   type="button" class="text-white bg-teal-500	 hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
@@ -52,7 +73,7 @@ class ProductController extends Controller
                         </a>
                              ';
             })
-            ->rawColumns(['thumbnail','action'])
+            ->rawColumns(['thumbnail','status','action'])
             ->make(true);
     }
 
@@ -281,5 +302,14 @@ class ProductController extends Controller
                 ], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
         }
+    }
+
+    /*
+     * */
+    public function updateStatus(Request $request)
+    {
+        $product = Product::find($request->id);
+        $product->status = $product->status == 1 ? 0 : 1;
+        $product->save();
     }
 }

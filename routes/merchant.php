@@ -21,6 +21,7 @@ Route::group(['prefix'=>'product', 'as'=>'merchant.'],function(){
     Route::get('/view/{slug}',[ProductController::class,'view'])->name('product.view');
     Route::get('/edit/{id}',[ProductController::class,'edit'])->name('product.edit');
     Route::post('/update',[ProductController::class,'update'])->name('product.update');
+    Route::post('/status-update',[ProductController::class,'updateStatus'])->name('product.status.change');
     Route::post('/delete',[ProductController::class,'delete'])->name('product.delete');
 
 

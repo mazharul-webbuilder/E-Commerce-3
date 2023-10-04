@@ -55,9 +55,25 @@
                                     Name
                                 </div>
                             </th>
+
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
                                 <div class="text-center">
                                     Current Price
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    Previous Price
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    Current Coin
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    Status
                                 </div>
                             </th>
 
@@ -93,6 +109,9 @@
                 { data: 'thumbnail',name:'thumbnail'},
                 { data: 'title',name:'title'},
                 { data: 'current_price',name:'current_price'},
+                { data: 'previous_price',name:'previous_price'},
+                { data: 'current_coin',name:'current_coin'},
+                { data: 'status',name:'status'},
                 { data: 'action',name:'action' },
             ],
 
@@ -101,5 +120,29 @@
             },
 
         });
+    </script>
+    <script>
+        import {Toast} from "../../../../public/frontend/js/bootstrap";
+
+        $(document).ready(function (){
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            $('body').on('change', '.status-select', function (){
+                const productId = $(this).data('id')
+                $.ajax({
+                    url: '{{route('merchant.product.status.change')}}',
+                    method: 'post',
+                    data: {id: productId, _token: csrfToken},
+                    success: function (data) {
+                        if (data.response === 200) {
+                            Toast.fire({
+                                icon: data.type,
+                                title: data.message
+                            })
+                        }
+                    }
+                })
+            })
+        })
     </script>
 @endsection
