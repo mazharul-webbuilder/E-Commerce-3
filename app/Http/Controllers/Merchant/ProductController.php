@@ -7,6 +7,8 @@ use App\Models\Ecommerce\Category;
 use App\Models\Ecommerce\Product;
 use App\Models\Ecommerce\SubCategory;
 use App\Models\Ecommerce\Unit;
+use App\Models\ProductAffiliateCommission;
+use App\Models\ProductCommission;
 use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -79,6 +81,10 @@ class ProductController extends Controller
             'delivery_charge_out_dhaka'=>'required',
             'thumbnail'=>'required',
             'description'=>'nullable',
+            'reseller_commission'=>'required_if:is_reseller,1',
+            'company_commission'=>'required_if:is_reseller,1',
+            'company_commission_af'=>'required_if:is_affiliate,1',
+            'affiliate_commission'=>'required_if:is_affiliate,1',
         ]);
         if ($request->isMethod('post'))
         {
@@ -102,6 +108,8 @@ class ProductController extends Controller
                 $product->description       = $request->description;
                 $product->product_code       =rand(10000, 99999);
                 $product->merchant_id=$auth_user->id;
+                $product->is_reseller = $request->is_reseller;
+                $product->is_affiliate = $request->is_affiliate;
 
                 if ($request->sub_category_id)
                 {
@@ -120,6 +128,25 @@ class ProductController extends Controller
 
                 }
                 $product->save();
+
+                /*Insert Data into Product_Commissions Table*/
+                if ($request->is_reseller == 1) {
+                    $product_commission = new ProductCommission();
+                    $product_commission->product_id = $product->id;
+                    $product_commission->reseller_commission = $request->reseller_commission;
+                    $product_commission->company_commission = $request->company_commission;
+                    $product_commission->save();
+                }
+                /*Insert Data into Product Affiliate_Commissions Table*/
+                if ($request->is_affiliate == 1) {
+                    $product_affiliate_com = new ProductAffiliateCommission();
+                    $product_affiliate_com->product_id = $product->id;
+                    $product_affiliate_com->affiliate_commission = $request->affiliate_commission;
+                    $product_affiliate_com->company_commission = $request->company_commission_af;
+                    $product_affiliate_com->save();
+                }
+
+
                 $data=Product::findOrFail($product->id);
                 $data->slug = Str::slug($request->title,'-').'-'.strtolower(Str::random(3).$data->id.Str::random(3));
                 $data->save();

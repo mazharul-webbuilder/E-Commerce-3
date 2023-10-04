@@ -209,36 +209,76 @@
                               {{--Reseller Configuration--}}
                                     <h4 class="mb-2 font-medium text-zinc-700">Is Reseller Allow</h4>
                                     <div class="flex items-center space-x-4">
-                                        <label for="yes" class="flex items-center">
-                                            <input id="yes" name="is_reseller" value="yes" type="radio" class="mr-2">
+                                        <label for="ResellerAgree" class="flex items-center">
+                                            <input id="ResellerAgree" name="is_reseller" value="1" type="radio" class="mr-2">
                                             Yes
                                         </label>
-                                        <label for="no" class="flex items-center">
-                                            <input id="no" name="is_reseller" value="no" type="radio" class="mr-2" checked>
+                                        <label for="ResellerDisAgree" class="flex items-center">
+                                            <input id="ResellerDisAgree" name="is_reseller" value="0" type="radio" class="mr-2" checked>
                                             No
                                         </label>
                                     </div>
-                                    <span class="delivery_charge_in_dhaka_error text-red-400"></span>
+                                    <span class="is_reseller text-red-400"></span>
                                 </div>
                             </div>
+
                             {{--Affiliator Configuration--}}
                             <div class="w-full">
                                 <div class="w-full">
                                     <h4 class="mb-2 font-medium text-zinc-700">Is Affiliator Allow</h4>
                                     <div class="flex items-center space-x-4">
-                                        <label for="yes" class="flex items-center">
-                                            <input id="yes" name="is_affiliate" value="yes" type="radio" class="mr-2">
+                                        <label for="AffiliateAgree" class="flex items-center">
+                                            <input id="AffiliateAgree" name="is_affiliate" value="1" type="radio" class="mr-2">
                                             Yes
                                         </label>
-                                        <label for="no" class="flex items-center">
-                                            <input id="no" name="is_affiliate" value="no" type="radio" class="mr-2" checked>
+                                        <label for="AffiliateDisAgree" class="flex items-center">
+                                            <input id="AffiliateDisAgree" name="is_affiliate" value="0" type="radio" class="mr-2" checked>
                                             No
                                         </label>
                                     </div>
-                                    <span class="delivery_charge_out_dhaka_error text-red-400"></span>
+                                    <span class="is_affiliate text-red-400"></span>
                                 </div>
                             </div>
                         </div>
+                        <div class="flex flex-col md:flex-row justify-between gap-3" >
+                        {{--DisplayResellerConfiguration--}}
+                            <div class="w-1/2" id="DisplayResellerConfiguration" style="display: none!important;">
+                                <div class="">
+                                    <input min="0" placeholder="Reseller Commission" step="0.01"
+                                           name="reseller_commission"
+                                           class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                           type="number">
+                                    <span class="reseller_commission_error text-red-400"></span>
+                                </div>
+                                <div class="mt-3">
+                                    <input min="0" placeholder="Company Commission" step="0.01"
+                                           name="company_commission"
+                                           class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                           type="number">
+                                    <span class="company_commission_error text-red-400"></span>
+                                </div>
+                            </div>
+                        {{--Display Affiliate Configuration--}}
+                            <div class="w-1/2" id="DisplayAffiliateConfiguration" style="display: none!important;">
+                                <div class="">
+                                    <input min="0" placeholder="Affiliate Commission" step="0.01"
+                                           name="affiliate_commission"
+                                           class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                           type="number">
+                                    <span class="affiliate_commission_error text-red-400"></span>
+                                </div>
+                                <div class="mt-3">
+                                    <input min="0" placeholder="Company Commission" step="0.01"
+                                           name="company_commission_af"
+                                           class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                           type="number"
+                                    >
+                                    <span class="company_commission_af_error text-red-400"></span>
+
+                                </div>
+                            </div>
+                        </div>
+
 
                         <div class="flex flex-col md:flex-row justify-between gap-3">
                             <div class="w-full">
@@ -413,12 +453,35 @@
                             } else {
                                 $('.delivery_charge_in_dhaka_error').html('')
                             }
+                            /*Affiliate*/
                             if (response.responseJSON.errors.hasOwnProperty(
-                                'delivery_charge_out_dhaka')) {
-                                $('.delivery_charge_out_dhaka_error').html(response.responseJSON
-                                    .errors.delivery_charge_out_dhaka)
+                                'company_commission_af')) {
+                                $('.company_commission_af_error').html(response.responseJSON
+                                    .errors.company_commission_af)
                             } else {
-                                $('.delivery_charge_out_dhaka_error').html('')
+                                $('.delivery_charge_in_dhaka_error').html('')
+                            }
+                            if (response.responseJSON.errors.hasOwnProperty(
+                                'affiliate_commission')) {
+                                $('.affiliate_commission_error').html(response.responseJSON
+                                    .errors.affiliate_commission)
+                            } else {
+                                $('.affiliate_commission_error').html('')
+                            }
+                            /*Reseller*/
+                            if (response.responseJSON.errors.hasOwnProperty(
+                                'reseller_commission')) {
+                                $('.reseller_commission_error').html(response.responseJSON
+                                    .errors.reseller_commission)
+                            } else {
+                                $('.reseller_commission_error').html('')
+                            }
+                            if (response.responseJSON.errors.hasOwnProperty(
+                                'company_commission')) {
+                                $('.company_commission_error').html(response.responseJSON
+                                    .errors.company_commission)
+                            } else {
+                                $('.company_commission_error').html('')
                             }
 
                             if (response.responseJSON.errors.hasOwnProperty('description')) {
@@ -441,6 +504,24 @@
             });
             $('.dropify').dropify();
             $('.summernote').summernote();
+
+            /*Reseller Commission Configuration*/
+            $('#ResellerAgree').on('click', function (){
+                $('#DisplayResellerConfiguration').css("display", "block")
+            })
+
+            $('#ResellerDisAgree').on('click', function (){
+                $('#DisplayResellerConfiguration').css("display", "none")
+            })
+
+            /*Affiliate Commission Configuration*/
+            $('#AffiliateAgree').on('click', function (){
+                $('#DisplayAffiliateConfiguration').css("display", "block")
+            })
+
+            $('#AffiliateDisAgree').on('click', function (){
+                $('#DisplayAffiliateConfiguration').css("display", "none")
+            })
 
         })
     </script>
