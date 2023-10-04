@@ -219,6 +219,23 @@
                                         </label>
                                     </div>
                                     <span class="is_reseller text-red-400"></span>
+                                    {{--DisplayResellerConfiguration--}}
+                                    <div class="w-1/2 mt-3" id="DisplayResellerConfiguration" style="display: none!important;">
+                                        <div class="">
+                                            <input min="0" placeholder="Reseller Commission" step="0.01"
+                                                   name="reseller_commission"
+                                                   class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                                   type="number">
+                                            <span class="reseller_commission_error text-red-400"></span>
+                                        </div>
+                                        <div class="mt-3">
+                                            <input min="0" placeholder="Company Commission" step="0.01"
+                                                   name="company_commission"
+                                                   class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                                   type="number">
+                                            <span class="company_commission_error text-red-400"></span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -237,48 +254,28 @@
                                         </label>
                                     </div>
                                     <span class="is_affiliate text-red-400"></span>
+                                    {{--Display Affiliate Configuration--}}
+                                    <div class="w-1/2 mt-3" id="DisplayAffiliateConfiguration" style="display: none!important;">
+                                        <div class="">
+                                            <input min="0" placeholder="Affiliate Commission" step="0.01"
+                                                   name="affiliate_commission"
+                                                   class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                                   type="number">
+                                            <span class="affiliate_commission_error text-red-400"></span>
+                                        </div>
+                                        <div class="mt-3">
+                                            <input min="0" placeholder="Company Commission" step="0.01"
+                                                   name="company_commission_af"
+                                                   class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                                   type="number"
+                                            >
+                                            <span class="company_commission_af_error text-red-400"></span>
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex flex-col md:flex-row justify-between gap-3" >
-                        {{--DisplayResellerConfiguration--}}
-                            <div class="w-1/2" id="DisplayResellerConfiguration" style="display: none!important;">
-                                <div class="">
-                                    <input min="0" placeholder="Reseller Commission" step="0.01"
-                                           name="reseller_commission"
-                                           class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
-                                           type="number">
-                                    <span class="reseller_commission_error text-red-400"></span>
-                                </div>
-                                <div class="mt-3">
-                                    <input min="0" placeholder="Company Commission" step="0.01"
-                                           name="company_commission"
-                                           class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
-                                           type="number">
-                                    <span class="company_commission_error text-red-400"></span>
-                                </div>
-                            </div>
-                        {{--Display Affiliate Configuration--}}
-                            <div class="w-1/2" id="DisplayAffiliateConfiguration" style="display: none!important;">
-                                <div class="">
-                                    <input min="0" placeholder="Affiliate Commission" step="0.01"
-                                           name="affiliate_commission"
-                                           class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
-                                           type="number">
-                                    <span class="affiliate_commission_error text-red-400"></span>
-                                </div>
-                                <div class="mt-3">
-                                    <input min="0" placeholder="Company Commission" step="0.01"
-                                           name="company_commission_af"
-                                           class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
-                                           type="number"
-                                    >
-                                    <span class="company_commission_af_error text-red-400"></span>
-
-                                </div>
-                            </div>
-                        </div>
-
 
                         <div class="flex flex-col md:flex-row justify-between gap-3">
                             <div class="w-full">
