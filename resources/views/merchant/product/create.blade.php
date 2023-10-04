@@ -206,6 +206,43 @@
                         <div class="flex flex-col md:flex-row justify-between gap-3">
                             <div class="w-full">
                                 <div class="w-full">
+                              {{--Reseller Configuration--}}
+                                    <h4 class="mb-2 font-medium text-zinc-700">Is Reseller Allow</h4>
+                                    <div class="flex items-center space-x-4">
+                                        <label for="yes" class="flex items-center">
+                                            <input id="yes" name="is_reseller" value="yes" type="radio" class="mr-2">
+                                            Yes
+                                        </label>
+                                        <label for="no" class="flex items-center">
+                                            <input id="no" name="is_reseller" value="no" type="radio" class="mr-2" checked>
+                                            No
+                                        </label>
+                                    </div>
+                                    <span class="delivery_charge_in_dhaka_error text-red-400"></span>
+                                </div>
+                            </div>
+                            {{--Affiliator Configuration--}}
+                            <div class="w-full">
+                                <div class="w-full">
+                                    <h4 class="mb-2 font-medium text-zinc-700">Is Affiliator Allow</h4>
+                                    <div class="flex items-center space-x-4">
+                                        <label for="yes" class="flex items-center">
+                                            <input id="yes" name="is_affiliate" value="yes" type="radio" class="mr-2">
+                                            Yes
+                                        </label>
+                                        <label for="no" class="flex items-center">
+                                            <input id="no" name="is_affiliate" value="no" type="radio" class="mr-2" checked>
+                                            No
+                                        </label>
+                                    </div>
+                                    <span class="delivery_charge_out_dhaka_error text-red-400"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row justify-between gap-3">
+                            <div class="w-full">
+                                <div class="w-full">
                                     <div class="upload__box mt-5">
                                         <div class="upload__btn-box">
                                             <label class="upload__btn">
