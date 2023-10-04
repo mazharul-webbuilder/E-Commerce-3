@@ -71,10 +71,10 @@
                                     {{ $loop->iteration }}
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
-                                    {{$data->share_owner->name }}
+                                    {{$data->share_owner->name ?? '' }}
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $data->share_owner->share_owner_number }}
+                                    {{ $data->share_owner->share_owner_number ?? '' }}
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
                                     {{$data->earning_coin}}
