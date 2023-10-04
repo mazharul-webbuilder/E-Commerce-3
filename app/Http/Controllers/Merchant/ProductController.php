@@ -40,12 +40,17 @@ class ProductController extends Controller
                 return '<img src='.$url.' border="0" width="120" height="50" class="img-rounded" />';
             })
             ->editColumn('action',function(Product $data){
-                return '<a href="'.route('merchant.product.edit',$data->id).'"   type="button" class=" text-white bg-purple-500 hover:bg-purple-700 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                return '
+                        <a href="'.route('merchant.product.view', $data->slug).'"   type="button" class="text-white bg-teal-500	 hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                                View
+                        </a>
+                        <a href="'.route('merchant.product.edit',$data->id).'"   type="button" class=" text-white bg-purple-500 hover:bg-purple-700 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                              Edit
-                          </a>
-                           <a href="'.route('merchant.product.delete').'"   type="button" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                        </a>
+                       <a href="'.route('merchant.product.delete').'"   type="button" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                                 Delete
-                            </a>';
+                        </a>
+                             ';
             })
             ->rawColumns(['thumbnail','action'])
             ->make(true);
@@ -169,6 +174,16 @@ class ProductController extends Controller
             }
         }
 
+    }
+
+    /*
+     * View Merchant Product Details
+    */
+    public function view($slug)
+    {
+        $product = Product::where('slug', $slug)->where('merchant_id', \auth()->guard('merchant')->id())->first();
+
+        return  view('merchant.product.details', compact('product'));
     }
 
     public function edit($id)
