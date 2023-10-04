@@ -123,6 +123,7 @@ class ProductController extends Controller
                 $data=Product::findOrFail($product->id);
                 $data->slug = Str::slug($request->title,'-').'-'.strtolower(Str::random(3).$data->id.Str::random(3));
                 $data->save();
+
                 DB::commit();
                 return \response()->json([
                     'message' => 'Successfully added',
