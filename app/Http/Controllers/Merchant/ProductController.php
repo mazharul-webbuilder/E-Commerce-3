@@ -7,6 +7,8 @@ use App\Models\Ecommerce\Category;
 use App\Models\Ecommerce\Product;
 use App\Models\Ecommerce\SubCategory;
 use App\Models\Ecommerce\Unit;
+use App\Models\ProductAffiliateCommission;
+use App\Models\ProductCommission;
 use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -37,15 +39,41 @@ class ProductController extends Controller
                     :default_image();
                 return '<img src='.$url.' border="0" width="120" height="50" class="img-rounded" />';
             })
-            ->editColumn('action',function(Product $data){
-                return '<a href="'.route('merchant.product.edit',$data->id).'"   type="button" class=" text-white bg-purple-500 hover:bg-purple-700 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
-                             Edit
-                          </a>
-                           <a href="'.route('merchant.product.delete').'"   type="button" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
-                                Delete
-                            </a>';
+            /*Status Column*/
+            ->addColumn('status', function ($product) {
+                $statusOptions = [
+                    1 => 'Published',
+                    0 => 'Unpublished',
+                ];
+
+                $statusSelect = '<select class="status-select form-control" style="background: #FFE5E5;
+                                    padding: 7px;
+                                    border: 1px solid transparent;
+                                    border-radius: 10px;
+                                    color: black;" data-id="' . $product->id . '">';
+
+                foreach ($statusOptions as $value => $label) { // $value = array_key && $label = published or unpublished
+                    $selected = $product->status == $value ? 'selected' : '';
+                    $statusSelect .= '<option value="' . $value . '" ' . $selected . '>' . $label . '</option>';
+                }
+                $statusSelect .= '</select>';
+
+                return $statusSelect;
             })
-            ->rawColumns(['thumbnail','action'])
+            ->editColumn('action',function(Product $data){
+                return '
+                        <a href="'.route('merchant.product.view', $data->slug).'"   type="button" class="text-white bg-teal-500	 hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                                View
+                        </a>
+                        <a href="'.route('merchant.product.edit',$data->id).'"   type="button" class=" text-white bg-purple-500 hover:bg-purple-700 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                             Edit
+                        </a>
+                       <a href="'.route('merchant.product.delete').'"   type="button" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                                Delete
+                        </a>
+                             ';
+            })
+            ->rawColumns(['thumbnail','status','action'])
             ->make(true);
     }
 
@@ -79,6 +107,10 @@ class ProductController extends Controller
             'delivery_charge_out_dhaka'=>'required',
             'thumbnail'=>'required',
             'description'=>'nullable',
+            'reseller_commission'=>'required_if:is_reseller,1',
+            'company_commission'=>'required_if:is_reseller,1',
+            'company_commission_af'=>'required_if:is_affiliate,1',
+            'affiliate_commission'=>'required_if:is_affiliate,1',
         ]);
         if ($request->isMethod('post'))
         {
@@ -102,6 +134,8 @@ class ProductController extends Controller
                 $product->description       = $request->description;
                 $product->product_code       =rand(10000, 99999);
                 $product->merchant_id=$auth_user->id;
+                $product->is_reseller = $request->is_reseller;
+                $product->is_affiliate = $request->is_affiliate;
 
                 if ($request->sub_category_id)
                 {
@@ -120,6 +154,25 @@ class ProductController extends Controller
 
                 }
                 $product->save();
+
+                /*Insert Data into Product_Commissions Table*/
+                if ($request->is_reseller == 1) {
+                    $product_commission = new ProductCommission();
+                    $product_commission->product_id = $product->id;
+                    $product_commission->reseller_commission = $request->reseller_commission;
+                    $product_commission->company_commission = $request->company_commission;
+                    $product_commission->save();
+                }
+                /*Insert Data into Product Affiliate_Commissions Table*/
+                if ($request->is_affiliate == 1) {
+                    $product_affiliate_com = new ProductAffiliateCommission();
+                    $product_affiliate_com->product_id = $product->id;
+                    $product_affiliate_com->affiliate_commission = $request->affiliate_commission;
+                    $product_affiliate_com->company_commission = $request->company_commission_af;
+                    $product_affiliate_com->save();
+                }
+
+
                 $data=Product::findOrFail($product->id);
                 $data->slug = Str::slug($request->title,'-').'-'.strtolower(Str::random(3).$data->id.Str::random(3));
                 $data->save();
@@ -142,6 +195,16 @@ class ProductController extends Controller
             }
         }
 
+    }
+
+    /*
+     * View Merchant Product Details
+    */
+    public function view($slug)
+    {
+        $product = Product::where('slug', $slug)->where('merchant_id', \auth()->guard('merchant')->id())->first();
+
+        return  view('merchant.product.details', compact('product'));
     }
 
     public function edit($id)
@@ -239,5 +302,14 @@ class ProductController extends Controller
                 ], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
         }
+    }
+
+    /*
+     * */
+    public function updateStatus(Request $request)
+    {
+        $product = Product::find($request->id);
+        $product->status = $product->status == 1 ? 0 : 1;
+        $product->save();
     }
 }
