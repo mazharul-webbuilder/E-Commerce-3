@@ -39,6 +39,9 @@ class ProductController extends Controller
                     :default_image();
                 return '<img src='.$url.' border="0" width="120" height="50" class="img-rounded" />';
             })
+            ->addColumn('current_price', function ($product){
+                return default_currency()->currency_code. ' ' . $product->current_price;
+            })
             /*Status Column*/
             ->addColumn('status', function ($product) {
                 $statusOptions = [
@@ -57,11 +60,31 @@ class ProductController extends Controller
                     $statusSelect .= '<option value="' . $value . '" ' . $selected . '>' . $label . '</option>';
                 }
                 $statusSelect .= '</select>';
-
                 return $statusSelect;
+            })
+            ->addColumn('flash_deal', function ($product) {
+                return '
+                        <a href="'.route('merchant.product.view', $product->id).'" type="button" class="text-white bg-amber-500	hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">'
+                    . ($product->flash_deal == 1 ? "Yes" : "No") .
+                    '</a>';
+            })
+            ->addColumn('control_panel', function ($product) {
+                return '
+                        <a href="'.route('merchant.product.view', $product->id).'" type="button" class="text-white bg-emerald-500 hover:bg-sky-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                        Control
+                    </a>';
+            })
+            ->addColumn('stock_manager', function ($product) {
+                return '
+                        <a href="'.route('merchant.product.view', $product->id).'" type="button" class="text-white bg-fuchsia-500 hover:bg-sky-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                        Stock
+                    </a>';
             })
             ->editColumn('action',function(Product $data){
                 return '
+                        <a href="'.route('merchant.product.view', $data->slug).'"   type="button" class="text-white bg-teal-500	 hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                                Gallery
+                        </a>
                         <a href="'.route('merchant.product.view', $data->slug).'"   type="button" class="text-white bg-teal-500	 hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                                 View
                         </a>
@@ -73,7 +96,7 @@ class ProductController extends Controller
                         </a>
                              ';
             })
-            ->rawColumns(['thumbnail','status','action'])
+            ->rawColumns(['thumbnail', 'current_price', 'status','action', 'flash_deal', 'control_panel', 'stock_manager'])
             ->make(true);
     }
 
