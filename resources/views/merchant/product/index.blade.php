@@ -122,8 +122,6 @@
         });
     </script>
     <script>
-        import {Toast} from "../../../../public/frontend/js/bootstrap";
-
         $(document).ready(function (){
             const csrfToken = $('meta[name="csrf-token"]').attr('content');
 

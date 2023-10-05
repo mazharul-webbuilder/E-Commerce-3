@@ -308,8 +308,24 @@ class ProductController extends Controller
      * */
     public function updateStatus(Request $request)
     {
-        $product = Product::find($request->id);
-        $product->status = $product->status == 1 ? 0 : 1;
-        $product->save();
+        try {
+            DB::beginTransaction();
+            $product = Product::find($request->id);
+            $product->status = $product->status == 1 ? 0 : 1;
+            $product->save();
+            DB::commit();
+            return \response()->json([
+               'message' => 'Status Updated',
+               'response' => Response::HTTP_OK,
+               'type' => 'success'
+            ]);
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return \response()->json([
+                'message' => $exception->getMessage(),
+                'response' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'type' => 'error'
+            ]);
+        }
     }
 }
