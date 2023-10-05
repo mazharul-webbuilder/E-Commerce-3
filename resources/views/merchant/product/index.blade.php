@@ -76,6 +76,26 @@
                                     Status
                                 </div>
                             </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    Flash Deal
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    Control Panel
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    Stock Manger
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    Gallery
+                                </div>
+                            </th>
 
                             <th scope="col" class="px-4 py-3">
                                 <div class="text-center">
@@ -94,12 +114,13 @@
         </div>
     </section>
 @endsection
+@include('merchant.product._flash_deal_modal')
 
 @section('extra_js')
     <script>
         var table = $("#dataTable").DataTable({
             processing: true,
-            responsive: false,
+            responsive: true,
             serverSide: true,
             ordering: false,
             pagingType: "full_numbers",
@@ -112,6 +133,10 @@
                 { data: 'previous_price',name:'previous_price'},
                 { data: 'current_coin',name:'current_coin'},
                 { data: 'status',name:'status'},
+                { data: 'flash_deal',name:'flash_deal'},
+                { data: 'control_panel',name:'control_panel'},
+                { data: 'stock_manager',name:'stock_manager'},
+                { data: 'gallery',name:'gallery'},
                 { data: 'action',name:'action' },
             ],
 
@@ -121,27 +146,5 @@
 
         });
     </script>
-    <script>
-
-        $(document).ready(function (){
-            const csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-            $('body').on('change', '.status-select', function (){
-                const productId = $(this).data('id')
-                $.ajax({
-                    url: '{{route('merchant.product.status.change')}}',
-                    method: 'post',
-                    data: {id: productId, _token: csrfToken},
-                    success: function (data) {
-                        if (data.response === 200) {
-                            Toast.fire({
-                                icon: data.type,
-                                title: data.message
-                            })
-                        }
-                    }
-                })
-            })
-        })
-    </script>
+    @include('merchant.product.product-script')
 @endsection
