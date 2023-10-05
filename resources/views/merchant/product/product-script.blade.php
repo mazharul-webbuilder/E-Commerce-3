@@ -103,38 +103,36 @@
             let bestSaleProduct = $('#bestSaleProduct')
             let mostSaleProduct = $('#mostSaleProduct')
 
-            recentProduct.attr('checked', false)
-            bestSaleProduct.attr('checked', false)
-            mostSaleProduct.attr('checked', false)
+            recentProduct.prop('checked', false)
+            bestSaleProduct.prop('checked', false)
+            mostSaleProduct.prop('checked', false)
 
             $.ajax({
-                url: '{{route('merchant.product')}}',
+                url: '{{ route('merchant.product') }}',
                 method: 'GET',
-                data: {id: productId},
-                success: function (data){
+                data: { id: productId },
+                success: function (data) {
                     if (data.recent === 1) {
-                        recentProduct.attr('checked', true)
-                        // Reload the DataTable if needed
-                        $('#dataTable').DataTable().ajax.reload();
+                        recentProduct.prop('checked', true);
+                    }
+                    if (data.best_sale === 1) {
+                        bestSaleProduct.prop('checked', true);
                     }
                     if (data.most_sale === 1) {
-                        bestSaleProduct.attr('checked', true)
-                        // Reload the DataTable if needed
-                        $('#dataTable').DataTable().ajax.reload();
+                        mostSaleProduct.prop('checked', true);
                     }
-                    if (data.most_sale === 1) {
-                        mostSaleProduct.attr('checked', true)
-                        // Reload the DataTable if needed
-                        $('#dataTable').DataTable().ajax.reload();
-                    }
+                    //
+                    // // Reload the DataTable if needed
+                    // $('#dataTable').DataTable().ajax.reload();
 
                     $('#ControlPanelModal').removeClass('hidden');
 
-                    $('#ControlPanelModalClose').click(function() {
+                    $('#ControlPanelModalClose').click(function () {
                         $('#ControlPanelModal').addClass('hidden');
                     });
                 }
-            })
+            });
+
         })
     })
 </script>
