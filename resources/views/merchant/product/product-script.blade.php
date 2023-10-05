@@ -96,5 +96,45 @@
         });
 
 
+        /*Control Panel*/
+        $('body').on('click', '.ControlPanelBtn', function (){
+            const productId = $(this).data('id')
+            let recentProduct = $('#recentProduct')
+            let bestSaleProduct = $('#bestSaleProduct')
+            let mostSaleProduct = $('#mostSaleProduct')
+
+            recentProduct.attr('checked', false)
+            bestSaleProduct.attr('checked', false)
+            mostSaleProduct.attr('checked', false)
+
+            $.ajax({
+                url: '{{route('merchant.product')}}',
+                method: 'GET',
+                data: {id: productId},
+                success: function (data){
+                    if (data.recent === 1) {
+                        recentProduct.attr('checked', true)
+                        // Reload the DataTable if needed
+                        $('#dataTable').DataTable().ajax.reload();
+                    }
+                    if (data.most_sale === 1) {
+                        bestSaleProduct.attr('checked', true)
+                        // Reload the DataTable if needed
+                        $('#dataTable').DataTable().ajax.reload();
+                    }
+                    if (data.most_sale === 1) {
+                        mostSaleProduct.attr('checked', true)
+                        // Reload the DataTable if needed
+                        $('#dataTable').DataTable().ajax.reload();
+                    }
+
+                    $('#ControlPanelModal').removeClass('hidden');
+
+                    $('#ControlPanelModalClose').click(function() {
+                        $('#ControlPanelModal').addClass('hidden');
+                    });
+                }
+            })
+        })
     })
 </script>
