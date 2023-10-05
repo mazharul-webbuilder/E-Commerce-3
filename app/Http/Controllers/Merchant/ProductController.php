@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Merchant;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MerchentProductFlashDealRequest;
 use App\Models\Ecommerce\Category;
 use App\Models\Ecommerce\Product;
 use App\Models\Ecommerce\SubCategory;
 use App\Models\Ecommerce\Unit;
 use App\Models\ProductAffiliateCommission;
 use App\Models\ProductCommission;
-use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\DataTables;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 
 class ProductController extends Controller
 {
@@ -64,9 +66,12 @@ class ProductController extends Controller
             })
             ->addColumn('flash_deal', function ($product) {
                 return '
-                        <a href="'.route('merchant.product.view', $product->id).'" type="button" class="text-white bg-amber-500	hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">'
+                        <button href="#" data-id="'.$product->id.'"
+                         type="button"
+                         data-toggle="modal" data-target="#flashDealModal"
+                         class="FlashDealBtn text-white bg-amber-500 hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">'
                     . ($product->flash_deal == 1 ? "Yes" : "No") .
-                    '</a>';
+                    '</button>';
             })
             ->addColumn('control_panel', function ($product) {
                 return '
@@ -80,23 +85,29 @@ class ProductController extends Controller
                         Stock
                     </a>';
             })
-            ->editColumn('action',function(Product $data){
+            ->addColumn('gallery', function ($product) {
                 return '
-                        <a href="'.route('merchant.product.view', $data->slug).'"   type="button" class="text-white bg-teal-500	 hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
-                                Gallery
-                        </a>
-                        <a href="'.route('merchant.product.view', $data->slug).'"   type="button" class="text-white bg-teal-500	 hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
-                                View
-                        </a>
-                        <a href="'.route('merchant.product.edit',$data->id).'"   type="button" class=" text-white bg-purple-500 hover:bg-purple-700 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
-                             Edit
-                        </a>
-                       <a href="'.route('merchant.product.delete').'"   type="button" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
-                                Delete
-                        </a>
-                             ';
+                        <a href="'.route('merchant.product.view', $product->id).'" type="button" class="text-white bg-pink-500 hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                        Gallery
+                    </a>';
             })
-            ->rawColumns(['thumbnail', 'current_price', 'status','action', 'flash_deal', 'control_panel', 'stock_manager'])
+            ->editColumn('action', function (Product $data) {
+                return '
+        <div class="flex space-x-4">
+            <a href="' . route('merchant.product.view', $data->slug) . '" type="button" class="text-white bg-teal-500 hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                View
+            </a>
+            <a href="' . route('merchant.product.edit', $data->id) . '" type="button" class="text-white bg-purple-500 hover:bg-purple-700 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                Edit
+            </a>
+            <a href="' . route('merchant.product.delete') . '" type="button" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                Delete
+            </a>
+        </div>
+    ';
+            })
+
+            ->rawColumns(['thumbnail', 'current_price', 'status','action', 'flash_deal', 'control_panel', 'stock_manager', 'gallery'])
             ->make(true);
     }
 
@@ -347,6 +358,49 @@ class ProductController extends Controller
             return \response()->json([
                 'message' => $exception->getMessage(),
                 'response' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'type' => 'error'
+            ]);
+        }
+    }
+
+    /**
+     * Get Product Meta Information
+    */
+    public function getMetaInfo(Request $request)
+    {
+        $product = Product::find($request->id);
+
+        return \response()->json($product->flash_deal);
+    }
+
+    /**
+     * Store Flash Deal
+    */
+    public function storeFlashDeal(MerchentProductFlashDealRequest $request): JsonResponse
+    {
+        try {
+            DB::beginTransaction();
+
+            $product = Product::find($request->product_id);
+            $product->flash_deal = $request->flashDealStatus;
+            $product->deal_start_date = $request->startDate;
+            $product->deal_end_date = $request->endDate;
+            $product->deal_amount = $request->amount;
+            $product->deal_type = $request->dealType;
+            $product->save();
+
+            DB::commit();
+            return \response()->json([
+                'message' => 'Successfully Done',
+                'response' =>  Response::HTTP_OK,
+                'type' => 'success'
+            ]);
+
+        } catch (QueryException $e) {
+            DB::rollBack();
+            return \response()->json([
+                'message' => $e->getMessage(),
+                'response' =>  Response::HTTP_INTERNAL_SERVER_ERROR,
                 'type' => 'error'
             ]);
         }
