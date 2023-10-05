@@ -27,4 +27,7 @@ class EcommerceController extends Controller
         $data=[$id,$seller_or_affiliate,$type];
         return $data;
     }
+    public function add_to_cart(Request $request){
+
+    }
 }
