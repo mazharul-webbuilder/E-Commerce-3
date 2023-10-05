@@ -16,17 +16,18 @@
             <!-- Checkbox Controls -->
             <div class="mb-4">
                 <label class="block text-gray-600 text-sm font-semibold mb-2">Product Controls:</label>
+                <input type="hidden" class="set_product_id" value="">
                 <div class="flex items-center space-x-4">
                     <label class="flex items-center">
-                        <input type="checkbox" id="recentProduct" name="recentProduct" class="form-checkbox text-blue-500">
+                        <input type="checkbox" id="" name="recentProduct" class="recentProduct form-checkbox text-blue-500">
                         <span class="ml-2 text-gray-600">Recent Product</span>
                     </label>
                     <label class="flex items-center">
-                        <input type="checkbox" id="bestSaleProduct" name="bestSaleProduct" class="form-checkbox text-blue-500">
+                        <input type="checkbox" id="" name="bestSaleProduct" class="bestSaleProduct form-checkbox text-blue-500">
                         <span class="ml-2 text-gray-600">Best Sale Product</span>
                     </label>
                     <label class="flex items-center">
-                        <input type="checkbox" id="mostSaleProduct" name="mostSaleProduct" class="form-checkbox text-blue-500">
+                        <input type="checkbox" id="" name="mostSaleProduct" class="mostSaleProduct form-checkbox text-blue-500">
                         <span class="ml-2 text-gray-600">Most Sale Product</span>
                     </label>
                 </div>

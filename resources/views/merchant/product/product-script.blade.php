@@ -99,9 +99,14 @@
         /*Control Panel*/
         $('body').on('click', '.ControlPanelBtn', function (){
             const productId = $(this).data('id')
-            let recentProduct = $('#recentProduct')
-            let bestSaleProduct = $('#bestSaleProduct')
-            let mostSaleProduct = $('#mostSaleProduct')
+            let recentProduct = $('.recentProduct')
+            let bestSaleProduct = $('.bestSaleProduct')
+            let mostSaleProduct = $('.mostSaleProduct')
+            $('.set_product_id').val(productId)
+
+            recentProduct.attr('data-id', productId);
+            bestSaleProduct.attr('data-id', productId);
+            mostSaleProduct.attr('data-id', productId);
 
             recentProduct.prop('checked', false)
             bestSaleProduct.prop('checked', false)
@@ -133,6 +138,21 @@
                 }
             });
 
+        })
+
+        /* Change Status Of Product */
+        $('body').on('click', '.recentProduct', function () {
+            const productId = $('.set_product_id').val();
+            alert(productId + 'recentproduct');
+        });
+
+        $('.bestSaleProduct').on('click', function (){
+            const productId = $('.set_product_id').val();
+            alert(productId + 'best sale product');
+        })
+        $('.mostSaleProduct').on('click', function (){
+            const productId = $('.set_product_id').val();
+            alert(productId + 'mostsale product');
         })
     })
 </script>
