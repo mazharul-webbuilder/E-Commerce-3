@@ -24,6 +24,7 @@ Route::group(['prefix'=>'product', 'as'=>'merchant.'],function(){
     Route::post('/status-update',[ProductController::class,'updateStatus'])->name('product.status.change');
     Route::get('/get-product-meta-info',[ProductController::class,'getMetaInfo'])->name('product.flash-deal');
     Route::post('/store-flash-deal',[ProductController::class,'storeFlashDeal'])->name('product.flash-deal.store');
+    Route::get('/get-product',[ProductController::class,'getProduct'])->name('product');
     Route::post('/delete',[ProductController::class,'delete'])->name('product.delete');
 
 

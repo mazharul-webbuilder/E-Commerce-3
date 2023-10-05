@@ -73,6 +73,8 @@ class ProductController extends Controller
                 $product->weight            = $request->weight;
                 $product->description       = $request->description;
                 $product->product_code       =rand(10000, 99999);
+                $product->admin_id       =  auth()->guard('admin')->user()->id;
+
                 if ($request->sub_category_id)
                 {
                     $product->sub_category_id   = $request->sub_category_id;

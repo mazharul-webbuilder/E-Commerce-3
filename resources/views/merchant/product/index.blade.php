@@ -147,4 +147,5 @@
         });
     </script>
     @include('merchant.product.product-script')
+    @include('merchant.product._control_panel_modal')
 @endsection

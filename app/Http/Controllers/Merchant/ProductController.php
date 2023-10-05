@@ -75,9 +75,9 @@ class ProductController extends Controller
             })
             ->addColumn('control_panel', function ($product) {
                 return '
-                        <a href="'.route('merchant.product.view', $product->id).'" type="button" class="text-white bg-emerald-500 hover:bg-sky-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                        <button type="button" data-id="'.$product->id.'" class="ControlPanelBtn text-white bg-emerald-500 hover:bg-sky-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                         Control
-                    </a>';
+                    </button>';
             })
             ->addColumn('stock_manager', function ($product) {
                 return '
@@ -404,5 +404,15 @@ class ProductController extends Controller
                 'type' => 'error'
             ]);
         }
+    }
+
+    /**
+     * Get Product
+    */
+    public function getProduct(Request $request)
+    {
+        $product = Product::find($request->id);
+
+        return \response()->json($product);
     }
 }
