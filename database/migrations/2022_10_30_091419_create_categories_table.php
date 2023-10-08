@@ -18,7 +18,7 @@ class CreateCategoriesTable extends Migration
             $table->string('name');
             $table->string('image')->nullable();
             $table->string('slug')->unique();
-            $table->integer('priority')->comment('This will define category position');
+            $table->integer('digital_asset');
             $table->tinyInteger('status')->default('1')->comment('1=publish,0=Un publish');
             $table->timestamps();
         });

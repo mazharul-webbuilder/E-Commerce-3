@@ -54,12 +54,6 @@
                         </div>
                         <div class="flex flex-col md:flex-row justify-between gap-3">
                             <div class="w-full">
-                                <div class="w-full">
-                                    <h4 class="mb-2 font-medium text-zinc-700">Priority</h4>
-                                    <input placeholder="Enter position" name="priority" min="1" oninput="validity.valid||(value='');" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="number" value="{{ $subCategory->priority }}">
-                                </div>
-                            </div>
-                            <div class="w-full">
                                 <h4 class="mb-2 font-medium text-zinc-700">Status</h4>
                                 <div class="relative inline-flex w-full">
                                     <svg class="absolute w-6 h-6 fill-gray-600 -translate-y-1/2 pointer-events-none right-4 top-1/2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"> <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
@@ -113,14 +107,7 @@
                                     </div>
 
                                 </div>
-                                <div class="flex flex-col md:flex-row justify-between gap-3">
-                                    <div class="w-full w-2/12">
-                                        <div class="w-full">
-                                            <h4 class="mb-2 font-medium text-zinc-700">Priority</h4>
-                                            <input min="1" placeholder="Enter priority" oninput="validity.valid||(value='');" name="priority" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="number" >
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <div class="w-full flex justify-end">
                                     <button type="submit" class="inline-block px-8 py-2.5 font-medium text-center transition-all ease-in-out text-white rounded-md bg-[#3f3ff3] cursor-pointer hover:bg-blue-800">
                                         Submit
@@ -156,11 +143,7 @@
                                             Category
                                         </div>
                                     </th>
-                                    <th scope="col" class="px-6 whitespace-nowrap py-3">
-                                        <div class="text-center">
-                                            Position
-                                        </div>
-                                    </th>
+
                                     <th scope="col" class="px-2 py-3">
                                         <div class="text-center">
                                             Status
@@ -184,9 +167,6 @@
                                     </td>
                                     <td class="px-2 py-4 text-black border-r text-center">
                                         {{ $item->category->name }}
-                                    </td>
-                                    <td class="px-2 py-4 text-black border-r text-center">
-                                        {{ $item->priority }}
                                     </td>
                                     <td class="px-2 py-4 text-black border-r text-center">
                                         {{ $item->status == 1 ? 'Active' : 'Inactive' }}
