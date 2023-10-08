@@ -119,6 +119,7 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         return view('webend.ecommerce.category',compact('category'));
+
     }
 
     /**
