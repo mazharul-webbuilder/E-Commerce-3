@@ -108,9 +108,9 @@ class ProductController extends Controller
             <a href="' . route('merchant.product.edit', $data->id) . '" type="button" class="text-white bg-purple-500 hover:bg-purple-700 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                 Edit
             </a>
-            <a href="' . route('merchant.product.delete') . '" type="button" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+            <button type="button" data-id="' . $data->id .'" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                 Delete
-            </a>
+            </button>
         </div>
     ';
             })
@@ -511,34 +511,56 @@ class ProductController extends Controller
     /**
      * Delete Merchant Product
     */
-    public function delete(Request $request)
+    public function delete(Request $request): JsonResponse
     {
+        if ($request->ajax()) {
+            try {
+                DB::beginTransaction();
+                $data = Product::findOrFail($request->item_id);
 
-        $data=Product::findOrFail($request->item_id);
+                if (File::exists(public_path('/uploads/product/original/' . $data->thumbnail))) {
+                    File::delete(public_path('/uploads/product/original/' . $data->thumbnail));
+                }
+                if (File::exists(public_path('/uploads/product/large/' . $data->thumbnail))) {
+                    File::delete(public_path('/uploads/product/large/' . $data->thumbnail));
+                }
+                if (File::exists(public_path('/uploads/product/medium/' . $data->thumbnail))) {
+                    File::delete(public_path('/uploads/product/medium/' . $data->thumbnail));
+                }
+                if (File::exists(public_path('/uploads/product/small/' . $data->thumbnail))) {
+                    File::delete(public_path('/uploads/product/small/' . $data->thumbnail));
+                }
+                if ($data->is_reseller == 1) {
+                    $product_commission = ProductCommission::where('product_id', $data->id)->first();
+                    $product_commission->delete();
+                }
+                if ($data->is_affiliate == 1) {
+                    $product_commission = ProductAffiliateCommission::where('product_id', $data->id)->first();
+                    $product_commission->delete();
+                }
 
-        if (File::exists(public_path('/uploads/product/original/'.$data->thumbnail)))
-        {
-            File::delete(public_path('/uploads/product/original/'.$data->thumbnail));
-        }
-        if (File::exists(public_path('/uploads/product/large/'.$data->thumbnail)))
-        {
-            File::delete(public_path('/uploads/product/large/'.$data->thumbnail));
-        }
-        if (File::exists(public_path('/uploads/product/medium/'.$data->thumbnail)))
-        {
-            File::delete(public_path('/uploads/product/medium/'.$data->thumbnail));
-        }
-        if (File::exists(public_path('/uploads/product/small/'.$data->thumbnail)))
-        {
-            File::delete(public_path('/uploads/product/small/'.$data->thumbnail));
-        }
-        $data->delete();
-        return \response()->json([
-            'message' => 'Successfully deleted',
-            'status_code' => 200,
-            'type'=>'success',
-        ], Response::HTTP_OK);
+                $data->delete();
+                DB::commit();
 
+                return response()->json([
+                    'message' => 'Successfully deleted',
+                    'status_code' => Response::HTTP_OK,
+                    'type' => 'success',
+                ], Response::HTTP_OK);
+
+            } catch (QueryException $e) {
+                DB::rollBack();
+            }
+
+        } else {
+
+            return response()->json([
+                'message' => 'Something went wrong',
+                'status_code' => 403,
+                'type' => 'error',
+            ], Response::HTTP_FORBIDDEN);
+        }
     }
+
 
 }
