@@ -46,7 +46,6 @@ class SubCategoryController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
-            'priority' => 'required',
             'category_id' => 'required',
         ],
             [
@@ -60,12 +59,11 @@ class SubCategoryController extends Controller
 
         try {
             DB::beginTransaction();
-            $priority_exist =  SubCategory::where('category_id',$request->category_id)->where('priority',$request->priority)->first();
-            if($priority_exist == null){
+
+
                 $subcategory = new SubCategory();
                 $subcategory->name = $request->name;
                 $subcategory->slug = Str::slug($request->name).'_'.rand(100,999);
-                $subcategory->priority = $request->priority;
                 $subcategory->category_id = $request->category_id;
                 $subcategory->save();
                 if ($subcategory){
@@ -77,10 +75,6 @@ class SubCategoryController extends Controller
                     return back();
                 }
 
-            }else{
-                toast('Given Priority is already exist in this category!, try another','warning');
-                return back();
-            }
         }catch (\Exception $ex)
         {
             DB::rollBack();
@@ -125,7 +119,6 @@ class SubCategoryController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
-            'priority' => 'required',
             'category_id' => 'required',
         ],
             [
@@ -151,7 +144,6 @@ class SubCategoryController extends Controller
             }
                 $subcategory->name = $request->name;
                 $subcategory->slug = Str::slug($request->name).'_'.rand(100,999);
-                $subcategory->priority = $request->priority;
 
                 $subcategory->category_id = $request->category_id;
                 $subcategory->save();
