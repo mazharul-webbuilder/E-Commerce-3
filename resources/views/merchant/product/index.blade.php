@@ -78,6 +78,11 @@
                             </th>
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
                                 <div class="text-center">
+                                    Config
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
                                     Flash Deal
                                 </div>
                             </th>
@@ -133,6 +138,7 @@
                 { data: 'previous_price',name:'previous_price'},
                 { data: 'current_coin',name:'current_coin'},
                 { data: 'status',name:'status'},
+                { data: 'config',name:'config'},
                 { data: 'flash_deal',name:'flash_deal'},
                 { data: 'control_panel',name:'control_panel'},
                 { data: 'stock_manager',name:'stock_manager'},

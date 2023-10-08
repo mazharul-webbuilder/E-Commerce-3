@@ -84,10 +84,17 @@ class ProductController extends Controller
                     $image=$request->thumbnail;
                     $image_name=strtolower(Str::random(10)).time().".".$image->getClientOriginalExtension();
                     $original_image_path = public_path().'/uploads/product/original/'.$image_name;
-                    $resize_image_path = public_path().'/uploads/product/resize/'.$image_name;
-                    //Resize Image
+                    $large_image_path = public_path().'/uploads/product/large/'.$image_name;
+                    $medium_image_path = public_path().'/uploads/product/medium/'.$image_name;
+                    $small_image_path = public_path().'/uploads/product/small/'.$image_name;
+
                     Image::make($image)->save($original_image_path);
-                    Image::make($image)->resize(250,200)->save($resize_image_path);
+                    /*large = 1080*675*/
+                    Image::make($image)->resize(1080,675)->save($large_image_path);
+                    /*medium = 512*320*/
+                    Image::make($image)->resize(512,320)->save($medium_image_path);
+                    /*small = 256*200*/
+                    Image::make($image)->resize(256,200)->save($small_image_path);
                     $product->thumbnail = $image_name;
 
                 }
@@ -179,18 +186,32 @@ class ProductController extends Controller
                     {
                         File::delete(public_path('/uploads/product/original/'.$product->thumbnail));
                     }
-                    if (File::exists(public_path('/uploads/product/resize/'.$product->thumbnail)))
+                    if (File::exists(public_path('/uploads/product/large/'.$product->thumbnail)))
                     {
-                        File::delete(public_path('/uploads/product/resize/'.$product->thumbnail));
+                        File::delete(public_path('/uploads/product/large/'.$product->thumbnail));
+                    }
+                    if (File::exists(public_path('/uploads/product/medium/'.$product->thumbnail)))
+                    {
+                        File::delete(public_path('/uploads/product/medium/'.$product->thumbnail));
+                    }
+                    if (File::exists(public_path('/uploads/product/small/'.$product->thumbnail)))
+                    {
+                        File::delete(public_path('/uploads/product/small/'.$product->thumbnail));
                     }
 
                     $image_name          =strtolower(Str::random(10)).time().".".$image->getClientOriginalExtension();
                     $original_image_path = public_path().'/uploads/product/original/'.$image_name;
-                    $resize_image_path    = public_path().'/uploads/product/resize/'.$image_name;
+                    $large_image_path = public_path().'/uploads/product/large/'.$image_name;
+                    $medium_image_path = public_path().'/uploads/product/medium/'.$image_name;
+                    $small_image_path = public_path().'/uploads/product/small/'.$image_name;
 
-                    //Resize Image
                     Image::make($image)->save($original_image_path);
-                    Image::make($image)->resize(465,465)->save($resize_image_path);
+                    /*large = 1080*675*/
+                    Image::make($image)->resize(1080,675)->save($large_image_path);
+                    /*medium = 512*320*/
+                    Image::make($image)->resize(512,320)->save($medium_image_path);
+                    /*small = 256*200*/
+                    Image::make($image)->resize(256,200)->save($small_image_path);
                     $product->thumbnail = $image_name;
                 }
                 $product->save();
@@ -235,9 +256,17 @@ class ProductController extends Controller
         {
             File::delete(public_path('/uploads/product/original/'.$data->thumbnail));
         }
-        if (File::exists(public_path('/uploads/product/resize/'.$data->thumbnail)))
+        if (File::exists(public_path('/uploads/product/large/'.$data->thumbnail)))
         {
-            File::delete(public_path('/uploads/product/resize/'.$data->thumbnail));
+            File::delete(public_path('/uploads/product/large/'.$data->thumbnail));
+        }
+        if (File::exists(public_path('/uploads/product/medium/'.$data->thumbnail)))
+        {
+            File::delete(public_path('/uploads/product/medium/'.$data->thumbnail));
+        }
+        if (File::exists(public_path('/uploads/product/small/'.$data->thumbnail)))
+        {
+            File::delete(public_path('/uploads/product/small/'.$data->thumbnail));
         }
         $data->delete();
         return \response()->json([

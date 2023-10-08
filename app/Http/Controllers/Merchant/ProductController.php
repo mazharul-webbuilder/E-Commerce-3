@@ -73,6 +73,14 @@ class ProductController extends Controller
                     . ($product->flash_deal == 1 ? "Yes" : "No") .
                     '</button>';
             })
+            ->addColumn('config', function ($product) {
+                return '
+                        <button data-id="'.$product->id.'"
+                         type="button"
+                         class="ConfigBtn text-white bg-pink-500 hover:bg-sky-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                            Config
+                        </button>';
+            })
             ->addColumn('control_panel', function ($product) {
                 return '
                         <button type="button" data-id="'.$product->id.'" class="ControlPanelBtn text-white bg-emerald-500 hover:bg-sky-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
@@ -107,7 +115,7 @@ class ProductController extends Controller
     ';
             })
 
-            ->rawColumns(['thumbnail', 'current_price', 'status','action', 'flash_deal', 'control_panel', 'stock_manager', 'gallery'])
+            ->rawColumns(['thumbnail', 'current_price', 'status','action', 'flash_deal', 'control_panel', 'stock_manager', 'gallery', 'config'])
             ->make(true);
     }
 
@@ -180,10 +188,17 @@ class ProductController extends Controller
                     $image=$request->thumbnail;
                     $image_name=strtolower(Str::random(10)).time().".".$image->getClientOriginalExtension();
                     $original_image_path = public_path().'/uploads/product/original/'.$image_name;
-                    $resize_image_path = public_path().'/uploads/product/resize/'.$image_name;
-                    //Resize Image
+                    $large_image_path = public_path().'/uploads/product/large/'.$image_name;
+                    $medium_image_path = public_path().'/uploads/product/medium/'.$image_name;
+                    $small_image_path = public_path().'/uploads/product/small/'.$image_name;
+
                     Image::make($image)->save($original_image_path);
-                    Image::make($image)->resize(250,200)->save($resize_image_path);
+                    /*large = 1080*675*/
+                    Image::make($image)->resize(1080,675)->save($large_image_path);
+                    /*medium = 512*320*/
+                    Image::make($image)->resize(512,320)->save($medium_image_path);
+                    /*small = 256*200*/
+                    Image::make($image)->resize(256,200)->save($small_image_path);
                     $product->thumbnail = $image_name;
 
                 }
@@ -304,18 +319,32 @@ class ProductController extends Controller
                     {
                         File::delete(public_path('/uploads/product/original/'.$product->thumbnail));
                     }
-                    if (File::exists(public_path('/uploads/product/resize/'.$product->thumbnail)))
+                    if (File::exists(public_path('/uploads/product/large/'.$product->thumbnail)))
                     {
-                        File::delete(public_path('/uploads/product/resize/'.$product->thumbnail));
+                        File::delete(public_path('/uploads/product/large/'.$product->thumbnail));
+                    }
+                    if (File::exists(public_path('/uploads/product/medium/'.$product->thumbnail)))
+                    {
+                        File::delete(public_path('/uploads/product/medium/'.$product->thumbnail));
+                    }
+                    if (File::exists(public_path('/uploads/product/small/'.$product->thumbnail)))
+                    {
+                        File::delete(public_path('/uploads/product/small/'.$product->thumbnail));
                     }
 
                     $image_name          =strtolower(Str::random(10)).time().".".$image->getClientOriginalExtension();
                     $original_image_path = public_path().'/uploads/product/original/'.$image_name;
-                    $resize_image_path    = public_path().'/uploads/product/resize/'.$image_name;
+                    $large_image_path = public_path().'/uploads/product/large/'.$image_name;
+                    $medium_image_path = public_path().'/uploads/product/medium/'.$image_name;
+                    $small_image_path = public_path().'/uploads/product/small/'.$image_name;
 
-                    //Resize Image
                     Image::make($image)->save($original_image_path);
-                    Image::make($image)->resize(465,465)->save($resize_image_path);
+                    /*large = 1080*675*/
+                    Image::make($image)->resize(1080,675)->save($large_image_path);
+                    /*medium = 512*320*/
+                    Image::make($image)->resize(512,320)->save($medium_image_path);
+                    /*small = 256*200*/
+                    Image::make($image)->resize(256,200)->save($small_image_path);
                     $product->thumbnail = $image_name;
                 }
                 $product->save();
@@ -349,9 +378,9 @@ class ProductController extends Controller
             $product->save();
             DB::commit();
             return \response()->json([
-               'message' => 'Status Updated',
-               'response' => Response::HTTP_OK,
-               'type' => 'success'
+                'message' => 'Status Updated',
+                'response' => Response::HTTP_OK,
+                'type' => 'success'
             ]);
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -365,7 +394,7 @@ class ProductController extends Controller
 
     /**
      * Get Product Meta Information
-    */
+     */
     public function getMetaInfo(Request $request)
     {
         $product = Product::find($request->id);
@@ -375,7 +404,7 @@ class ProductController extends Controller
 
     /**
      * Store Flash Deal
-    */
+     */
     public function storeFlashDeal(MerchentProductFlashDealRequest $request): JsonResponse
     {
         try {
@@ -408,7 +437,7 @@ class ProductController extends Controller
 
     /**
      * Get Product
-    */
+     */
     public function getProduct(Request $request)
     {
         $product = Product::find($request->id);
@@ -418,7 +447,7 @@ class ProductController extends Controller
 
     /**
      * Control Panel
-    */
+     */
     public function controlPanel(Request $request) : JsonResponse
     {
 
@@ -454,4 +483,38 @@ class ProductController extends Controller
             ]);
         }
     }
+
+    /**
+     * Delete Merchant Product
+    */
+    public function delete(Request $request)
+    {
+
+        $data=Product::findOrFail($request->item_id);
+
+        if (File::exists(public_path('/uploads/product/original/'.$data->thumbnail)))
+        {
+            File::delete(public_path('/uploads/product/original/'.$data->thumbnail));
+        }
+        if (File::exists(public_path('/uploads/product/large/'.$data->thumbnail)))
+        {
+            File::delete(public_path('/uploads/product/large/'.$data->thumbnail));
+        }
+        if (File::exists(public_path('/uploads/product/medium/'.$data->thumbnail)))
+        {
+            File::delete(public_path('/uploads/product/medium/'.$data->thumbnail));
+        }
+        if (File::exists(public_path('/uploads/product/small/'.$data->thumbnail)))
+        {
+            File::delete(public_path('/uploads/product/small/'.$data->thumbnail));
+        }
+        $data->delete();
+        return \response()->json([
+            'message' => 'Successfully deleted',
+            'status_code' => 200,
+            'type'=>'success',
+        ], Response::HTTP_OK);
+
+    }
+
 }
