@@ -49,12 +49,6 @@
                                     <input id="myDIV" placeholder="Enter Category Title" name="name" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text" value="{{ $category->name }}">
                                 </div>
                             </div>
-                            <div class="w-5/12">
-                                <div class="w-full">
-                                    <h4 class="mb-2 font-medium text-zinc-700">Position</h4>
-                                    <input placeholder="Enter Priority" name="priority" oninput="validity.valid||(value='');" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="number" value="{{ $category->priority }}">
-                                </div>
-                            </div>
                         </div>
                         <div class="flex flex-col md:flex-row justify-between gap-3">
                             <div class="w-1/2">
@@ -116,12 +110,7 @@
                                     <input id="myDIV" placeholder="Enter Category Title" name="name" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text" >
                                 </div>
                             </div>
-                            <div class="w-5/12">
-                                <div class="w-full">
-                                    <h4 class="mb-2 font-medium text-zinc-700">Priority</h4>
-                                    <input placeholder="Enter Priority" name="priority" min="1" oninput="validity.valid||(value='');" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="number" >
-                                </div>
-                            </div>
+
                         </div>
                         <div class="flex flex-col md:flex-row justify-between gap-3">
 
@@ -173,11 +162,6 @@
                                     Digital Asset
                                 </div>
                             </th>
-                            <th scope="col" class="px-6 whitespace-nowrap py-3">
-                                <div class="text-center">
-                                    Position
-                                </div>
-                            </th>
                             <th scope="col" class="px-2 py-3">
                                 <div class="text-center">
                                     Status
@@ -208,9 +192,6 @@
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
                                     {{ $item->digital_asset == 1 ? 'Yes' : 'No' }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $item->priority }}
                                 </td>
 
                                 <td class="px-2 py-4 text-black border-r text-center">

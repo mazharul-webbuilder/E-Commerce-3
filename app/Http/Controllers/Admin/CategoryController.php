@@ -48,11 +48,9 @@ class CategoryController extends Controller
        $request->validate([
            'name' => 'required|max:255',
            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
-           'priority'=>'required|unique:categories,priority',
        ],[
                'name.required'=>'Category Title filed is required',
                'name.max'=>'Category Name Maximum Limit 255 Characters',
-               'priority.required'=>'Priority  filed is required',
            ]
        );
         try {
@@ -78,7 +76,6 @@ class CategoryController extends Controller
             $create = Category::create([
                'name'=>$request->name,
                'image'=> $destinationPath,
-               'priority'=>$request->priority,
                'slug'=>str_replace(' ','_',$request->name),
                'digital_asset'=>$request->digital_asset,
             ]);
@@ -134,12 +131,9 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
-            'priority'=>'required|unique:categories,priority,'.$id,
         ],[
                 'name.required'=>'Category Title filed is required',
                 'name.max'=>'Category Name Maximum Limit 255 Characters',
-                'priority.required'=>'Priority  filed is required',
-                'priority.unique'=>'Priority  Should Be Unique',
             ]
         );
 
@@ -168,7 +162,6 @@ class CategoryController extends Controller
             }
 
             $category->name = $request->name;
-            $category->priority = $request->priority;
             $category->slug = str_replace(' ','_',$request->name);
             $category->digital_asset = $request->digital_asset;
             $category->save();
