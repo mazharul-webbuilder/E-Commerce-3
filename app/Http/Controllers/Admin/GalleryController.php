@@ -39,19 +39,16 @@ class GalleryController extends Controller
                 if($request->hasFile('image')){
                     $image=$request->image;
                     $image_name=strtolower(Str::random(10)).time().".".$image->getClientOriginalExtension();
-                    $original=null;
-                    $resize=null;
-                    if (!file_exists(public_path().'/uploads/gallery/original/')){
-                        $original=File::makeDirectory(public_path().'/uploads/gallery/original/',0777,true);
-                    }
-                    if (!file_exists(public_path().'/uploads/gallery/resize/')){
-                        $resize=File::makeDirectory(public_path().'/uploads/gallery/resize/',0777,true);
-                    }
+
                     $original_image_path = public_path().'/uploads/gallery/original/'.$image_name;
-                    $resize_image_path = public_path().'/uploads/gallery/resize/'.$image_name;
+                    $resize_large_path = public_path().'/uploads/gallery/large/'.$image_name;
+//                    $resize_medium_path = public_path().'/uploads/gallery/medium/'.$image_name;
+                    $resize_small_path = public_path().'/uploads/gallery/small/'.$image_name;
                     //Resize Image
                     Image::make($image)->save($original_image_path);
-                    Image::make($image)->resize(500,300)->save($resize_image_path);
+                    Image::make($image)->resize(1080,675)->save($resize_large_path);
+//                    Image::make($image)->resize(512,320)->save($resize_medium_path);
+                    Image::make($image)->resize(256,200)->save($resize_small_path);
                     $gallery->image = $image_name;
                 }
                 $gallery->save();
@@ -89,17 +86,30 @@ class GalleryController extends Controller
                     {
                         File::delete(public_path('/uploads/gallery/original/'.$gallery->image));
                     }
-                    if (File::exists(public_path('/uploads/gallery/resize/'.$gallery->image)))
+                    if (File::exists(public_path('/uploads/gallery/large/'.$gallery->image)))
                     {
-                        File::delete(public_path('/uploads/gallery/resize/'.$gallery->image));
+                        File::delete(public_path('/uploads/gallery/large/'.$gallery->image));
                     }
+//                    if (File::exists(public_path('/uploads/gallery/medium/'.$gallery->image)))
+//                    {
+//                        File::delete(public_path('/uploads/gallery/medium/'.$gallery->image));
+//                    }
+                    if (File::exists(public_path('/uploads/gallery/small/'.$gallery->image)))
+                    {
+                        File::delete(public_path('/uploads/gallery/small/'.$gallery->image));
+                    }
+
                     $image=$request->image;
                     $image_name=strtolower(Str::random(10)).time().".".$image->getClientOriginalExtension();
                     $original_image_path = public_path().'/uploads/gallery/original/'.$image_name;
-                    $resize_image_path = public_path().'/uploads/gallery/resize/'.$image_name;
+                    $resize_large_path = public_path().'/uploads/gallery/large/'.$image_name;
+//                    $resize_medium_path = public_path().'/uploads/gallery/medium/'.$image_name;
+                    $resize_small_path = public_path().'/uploads/gallery/small/'.$image_name;
                     //Resize Image
                     Image::make($image)->save($original_image_path);
-                    Image::make($image)->resize(400,200)->save($resize_image_path);
+                    Image::make($image)->resize(1080,675)->save($resize_large_path);
+//                    Image::make($image)->resize(512,320)->save($resize_medium_path);
+                    Image::make($image)->resize(256,200)->save($resize_small_path);
                     $gallery->image = $image_name;
                 }
                 $gallery->save();
@@ -128,9 +138,17 @@ class GalleryController extends Controller
         {
             File::delete(public_path('/uploads/gallery/original/'.$data->image));
         }
-        if (File::exists(public_path('/uploads/gallery/resize/'.$data->image)))
+        if (File::exists(public_path('/uploads/gallery/large/'.$data->image)))
         {
-            File::delete(public_path('/uploads/gallery/resize/'.$data->image));
+            File::delete(public_path('/uploads/gallery/large/'.$data->image));
+        }
+//        if (File::exists(public_path('/uploads/gallery/medium/'.$data->image)))
+//        {
+//            File::delete(public_path('/uploads/gallery/medium/'.$data->image));
+//        }
+        if (File::exists(public_path('/uploads/gallery/small/'.$data->image)))
+        {
+            File::delete(public_path('/uploads/gallery/small/'.$data->image));
         }
         $data->delete();
         return \response()->json([
