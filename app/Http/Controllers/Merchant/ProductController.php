@@ -81,13 +81,13 @@ class ProductController extends Controller
             })
             ->addColumn('stock_manager', function ($product) {
                 return '
-                        <a href="'.route('merchant.product.view', $product->id).'" type="button" class="text-white bg-fuchsia-500 hover:bg-sky-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                        <a href="'.route('merchant.stock.index',$product->id).'" type="button" class="text-white bg-fuchsia-500 hover:bg-sky-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                         Stock
                     </a>';
             })
             ->addColumn('gallery', function ($product) {
                 return '
-                        <a href="'.route('merchant.product.view', $product->id).'" type="button" class="text-white bg-pink-500 hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                        <a href="'.route('merchant.gallery.index', $product->id).'" type="button" class="text-white bg-pink-500 hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                         Gallery
                     </a>';
             })
@@ -414,5 +414,44 @@ class ProductController extends Controller
         $product = Product::find($request->id);
 
         return \response()->json($product);
+    }
+
+    /**
+     * Control Panel
+    */
+    public function controlPanel(Request $request) : JsonResponse
+    {
+
+        try {
+            DB::beginTransaction();
+            $product = Product::find($request->productId);
+
+            switch ($request->action) {
+                case 'recent':
+                    $product->recent = $product->recent == 1 ? 0 : 1;
+                    break;
+                case 'best-sale':
+                    $product->best_sale = $product->best_sale == 1 ? 0 : 1;
+                    break;
+                case 'most-sale':
+                    $product->most_sale = $product->most_sale == 1 ? 0 : 1;
+                    break;
+            }
+            $product->save();
+            DB::commit();
+            return \response()->json([
+                'response' => Response::HTTP_OK,
+                'type' => 'success',
+                'message' => 'Status Change Successfully'
+            ]);
+        } catch (QueryException $e) {
+            DB::rollBack();
+
+            return \response()->json([
+                'response' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'type' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 }

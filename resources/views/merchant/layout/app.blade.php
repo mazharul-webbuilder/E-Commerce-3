@@ -318,9 +318,10 @@
         }
     }
 </script>
-@yield('extra_js')
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <script>
     const Toast = Swal.mixin({
         toast: true,
@@ -333,8 +334,9 @@
             toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
     })
+  </script>
+@yield('extra_js')
 
-</script>
 
 </body>
 </html>
