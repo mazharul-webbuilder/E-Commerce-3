@@ -4,6 +4,7 @@ use App\Http\Controllers\Merchant\DashboardController;
 use App\Http\Controllers\Merchant\LoginController;
 use App\Http\Controllers\Merchant\ProductController;
 use App\Http\Controllers\Merchant\StockController;
+use App\Http\Controllers\Merchant\GalleryController;
 
 
 
@@ -36,6 +37,15 @@ Route::group(['prefix' => 'stock', 'as' => 'merchant.'], function () {
     Route::get('/edit/{id}', [StockController::class, 'edit'])->name('stock.edit');
     Route::post('/update', [StockController::class, 'update'])->name('stock.update');
     Route::post('/delete', [StockController::class, 'delete'])->name('stock.delete');
+});
+
+// Gallery route
+Route::group(['prefix' => 'gallery', 'as' => 'merchant.'], function () {
+    Route::get('/{product_id}', [GalleryController::class, 'index'])->name('gallery.index');
+    Route::post('/store', [GalleryController::class, 'store'])->name('gallery.store');
+    Route::get('/edit/{id}', [GalleryController::class, 'edit'])->name('gallery.edit');
+    Route::post('/update', [GalleryController::class, 'update'])->name('gallery.update');
+    Route::post('/delete', [GalleryController::class, 'delete'])->name('gallery.delete');
 });
 
 
