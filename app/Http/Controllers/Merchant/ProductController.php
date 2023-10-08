@@ -37,7 +37,7 @@ class ProductController extends Controller
         return DataTables::of($datas)
             ->addIndexColumn()
             ->editColumn('thumbnail',function(Product $data){
-                $url=$data->thumbnail ? asset("uploads/product/resize/".$data->thumbnail)
+                $url=$data->thumbnail ? asset("uploads/product/small/".$data->thumbnail)
                     :default_image();
                 return '<img src='.$url.' border="0" width="120" height="50" class="img-rounded" />';
             })
@@ -284,6 +284,10 @@ class ProductController extends Controller
             'current_coin'=>'required',
             'thumbnail'=>'nullable',
             'description'=>'nullable',
+            'reseller_commission'=>'required_if:is_reseller,1',
+            'company_commission'=>'required_if:is_reseller,1',
+            'company_commission_af'=>'required_if:is_affiliate,1',
+            'affiliate_commission'=>'required_if:is_affiliate,1',
         ]);
 
         if ($request->isMethod('post'))
@@ -307,6 +311,8 @@ class ProductController extends Controller
                 $product->description       = $request->description;
                 $product->delivery_charge_in_dhaka= $request->delivery_charge_in_dhaka;
                 $product->delivery_charge_out_dhaka= $request->delivery_charge_out_dhaka;
+                $product->is_reseller = $request->is_reseller;
+                $product->is_affiliate = $request->is_affiliate;
                 if ($request->sub_category_id)
                 {
                     $product->sub_category_id   = $request->sub_category_id;
@@ -348,6 +354,24 @@ class ProductController extends Controller
                     $product->thumbnail = $image_name;
                 }
                 $product->save();
+
+                /*Insert Data into Product_Commissions Table*/
+                if ($request->is_reseller == 1) {
+                    $product_commission = ProductCommission::where('product_id', $product->id)->first();
+                    $product_commission->product_id = $product->id;
+                    $product_commission->reseller_commission = $request->reseller_commission;
+                    $product_commission->company_commission = $request->company_commission;
+                    $product_commission->save();
+                }
+                /*Insert Data into Product Affiliate_Commissions Table*/
+                if ($request->is_affiliate == 1) {
+                    $product_affiliate_com = ProductAffiliateCommission::where('product_id', $product->id)->first();
+                    $product_affiliate_com->product_id = $product->id;
+                    $product_affiliate_com->affiliate_commission = $request->affiliate_commission;
+                    $product_affiliate_com->company_commission = $request->company_commission_af;
+                    $product_affiliate_com->save();
+                }
+
                 DB::commit();
                 return \response()->json([
                     'message' => 'Successfully Updated',
