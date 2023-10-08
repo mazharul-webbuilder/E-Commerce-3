@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Merchant\DashboardController;
 use App\Http\Controllers\Merchant\LoginController;
 use App\Http\Controllers\Merchant\ProductController;
+use App\Http\Controllers\Merchant\StockController;
 
 
 
@@ -13,7 +14,6 @@ Route::get('dashboard',[DashboardController::class,'index'])->name('merchant.das
 
 //manage product
 Route::group(['prefix'=>'product', 'as'=>'merchant.'],function(){
-
     Route::get('product_load',[ProductController::class,'datatable'])->name('product.load');
     Route::get('/',[ProductController::class,'index'])->name('product.index');
     Route::get('/create',[ProductController::class,'create'])->name('product.create');
@@ -27,8 +27,15 @@ Route::group(['prefix'=>'product', 'as'=>'merchant.'],function(){
     Route::get('/control-panel',[ProductController::class,'controlPanel'])->name('product.control.panel');
     Route::get('/get-product',[ProductController::class,'getProduct'])->name('product');
     Route::post('/delete',[ProductController::class,'delete'])->name('product.delete');
+});
 
-
+// Stock route
+Route::group(['prefix' => 'stock', 'as' => 'merchant.'], function () {
+    Route::get('/{product_id}', [StockController::class, 'index'])->name('stock.index');
+    Route::post('/store', [StockController::class, 'store'])->name('stock.store');
+    Route::get('/edit/{id}', [StockController::class, 'edit'])->name('stock.edit');
+    Route::post('/update', [StockController::class, 'update'])->name('stock.update');
+    Route::post('/delete', [StockController::class, 'delete'])->name('stock.delete');
 });
 
 
