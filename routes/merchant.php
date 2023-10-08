@@ -27,7 +27,7 @@ Route::group(['prefix'=>'product', 'as'=>'merchant.'],function(){
     Route::post('/store-flash-deal',[ProductController::class,'storeFlashDeal'])->name('product.flash-deal.store');
     Route::get('/control-panel',[ProductController::class,'controlPanel'])->name('product.control.panel');
     Route::get('/get-product',[ProductController::class,'getProduct'])->name('product');
-    Route::post('/delete',[ProductController::class,'delete'])->name('product.delete');
+    Route::get('/delete',[ProductController::class,'delete'])->name('product.delete');
 });
 
 // Stock route

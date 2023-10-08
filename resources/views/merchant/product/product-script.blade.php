@@ -174,4 +174,39 @@
             }
         })
     }
+
+    /*Delete a Product*/
+    $('body').on('click','.delete_item',function(){
+        let item_id=$(this).attr('data-id');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    url: '{{route('merchant.product.delete')}}',
+                    method:'get',
+                    data:{item_id:item_id},
+                    success:function(data){
+                        Toast.fire({
+                            icon: data.type,
+                            title: data.message
+                        })
+                        $('#dataTable').DataTable().ajax.reload();
+                    }
+                });
+            }
+        })
+    })
+
+
+
+
+
 </script>
