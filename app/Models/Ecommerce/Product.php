@@ -3,6 +3,8 @@
 namespace App\Models\Ecommerce;
 
 use App\Models\Merchant\Merchant;
+use App\Models\ProductAffiliateCommission;
+use App\Models\ProductCommission;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Ecommerce\Unit;
@@ -61,6 +63,15 @@ class Product extends Model
             $price=$this->current_price;
         }
         return $price;
+    }
+
+    public function product_commission()
+    {
+        return $this->hasOne(ProductCommission::class, 'product_id', 'id');
+    }
+    public function product_affiliate_commission()
+    {
+        return $this->hasOne(ProductAffiliateCommission::class, 'product_id', 'id');
     }
 
 }

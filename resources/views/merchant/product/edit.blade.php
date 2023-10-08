@@ -168,6 +168,90 @@
                                 </div>
                             </div>
                         </div>
+                        {{--Merchant Extra Configuration--}}
+                        <div class="flex flex-col md:flex-row justify-between gap-3">
+                            <div class="w-full">
+                                <div class="w-full">
+                                    {{--Reseller Configuration--}}
+                                    <h4 class="mb-2 font-medium text-zinc-700">Is Reseller Allow</h4>
+                                    <div class="flex items-center space-x-4">
+                                        <label for="ResellerAgree" class="flex items-center">
+                                            <input id="ResellerAgree" name="is_reseller" value="1" type="radio" class="mr-2"
+                                                   {{$product->is_reseller == 1 ? "checked" : ''}}>
+                                            Yes
+                                        </label>
+                                        <label for="ResellerDisAgree" class="flex items-center">
+                                            <input id="ResellerDisAgree" name="is_reseller" value="0" type="radio" class="mr-2" {{$product->is_reseller == 0 ? "checked" : ''}}>
+                                            No
+                                        </label>
+                                    </div>
+                                    <span class="is_reseller text-red-400"></span>
+                                    {{--DisplayResellerConfiguration--}}
+                                    <div class="w-1/2 mt-3" id="DisplayResellerConfiguration" @if ($product->is_reseller == 0) style="display: none!important;" @endif>
+                                        <div class="">
+                                            <input min="0" placeholder="Reseller Commission" step="0.01"
+                                                   name="reseller_commission"
+                                                   class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                                   type="number"
+                                                   value="{{$product->is_reseller == 1 ? $product->product_commission->reseller_commission : ''}}"
+                                            >
+                                            <span class="reseller_commission_error text-red-400"></span>
+                                        </div>
+                                        <div class="mt-3">
+                                            <input min="0" placeholder="Company Commission" step="0.01"
+                                                   name="company_commission"
+                                                   class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                                   type="number"
+                                                   value="{{$product->is_reseller == 1 ? $product->product_commission->company_commission: ''}}"
+                                            >
+                                            <span class="company_commission_error text-red-400"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{--Affiliator Configuration--}}
+                            <div class="w-full">
+                                <div class="w-full">
+                                    <h4 class="mb-2 font-medium text-zinc-700">Is Affiliator Allow</h4>
+                                    <div class="flex items-center space-x-4">
+                                        <label for="AffiliateAgree" class="flex items-center">
+                                            <input id="AffiliateAgree" name="is_affiliate" value="1" type="radio" class="mr-2" {{$product->is_affiliate == 1 ? "checked" : ''}}>
+                                            Yes
+                                        </label>
+                                        <label for="AffiliateDisAgree" class="flex items-center">
+                                            <input id="AffiliateDisAgree" name="is_affiliate" value="0" type="radio" class="mr-2" {{$product->is_affiliate == 0 ? "checked" : ''}}>
+                                            No
+                                        </label>
+                                    </div>
+                                    <span class="is_affiliate text-red-400"></span>
+                                    {{--Display Affiliate Configuration--}}
+                                    <div class="w-1/2 mt-3" id="DisplayAffiliateConfiguration" @if ($product->is_affiliate != 1) style="display: none!important" @endif>
+                                        <div class="">
+                                            <input min="0" placeholder="Affiliate Commission" step="0.01"
+                                                   name="affiliate_commission"
+                                                   class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                                   type="number"
+                                                   value="{{$product->is_affiliate == 1 ?  $product->product_affiliate_commission->affiliate_commission : ''}}"
+                                            >
+                                            <span class="affiliate_commission_error text-red-400"></span>
+                                        </div>
+                                        <div class="mt-3">
+                                            <input min="0" placeholder="Company Commission" step="0.01"
+                                                   name="company_commission_af"
+                                                   class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                                   type="number"
+                                                   value="{{$product->is_affiliate == 1 ? $product->product_affiliate_commission->company_commission : ''}}"
+                                            >
+                                            <span class="company_commission_af_error text-red-400"></span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{--End Merchant Extra Configuration--}}
+
                         <div class="flex flex-col md:flex-row justify-between gap-3">
                             <div class="w-full">
                                 <div class="w-full">
@@ -348,6 +432,23 @@
             $('.dropify').dropify();
             $('.summernote').summernote();
 
+            /*Reseller Commission Configuration*/
+            $('#ResellerAgree').on('click', function (){
+                $('#DisplayResellerConfiguration').css("display", "block")
+            })
+
+            $('#ResellerDisAgree').on('click', function (){
+                $('#DisplayResellerConfiguration').css("display", "none")
+            })
+
+            /*Affiliate Commission Configuration*/
+            $('#AffiliateAgree').on('click', function (){
+                $('#DisplayAffiliateConfiguration').css("display", "block")
+            })
+
+            $('#AffiliateDisAgree').on('click', function (){
+                $('#DisplayAffiliateConfiguration').css("display", "none")
+            })
         })
     </script>
 
