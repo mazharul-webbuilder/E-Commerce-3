@@ -65,7 +65,6 @@ $(document).ready(function(){
                 {
                     $('#best_sale').prop('checked', false)
 
-
                 }
                 if (data.most_sale===1)
                 {
