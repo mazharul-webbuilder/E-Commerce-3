@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\ProductResource;
 use App\Models\Ecommerce\Category;
+use App\Models\Ecommerce\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -20,6 +22,17 @@ class EcommerceController extends Controller
             'datas'=>$datas,
             'status'=>200,
             'type'=>'success'
+        ],Response::HTTP_OK);
+    }
+
+    public function category_wise_product($id){
+        $datas=Product::where('category_id',$id)->latest()->paginate(8);
+        $products=ProductResource::collection($datas);
+
+        return \response()->json([
+            'products'=>$datas,
+            'type'=>'success',
+            'status'=>Response::HTTP_OK
         ],Response::HTTP_OK);
     }
 
