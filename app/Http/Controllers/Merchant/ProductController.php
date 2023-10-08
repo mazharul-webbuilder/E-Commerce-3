@@ -37,7 +37,7 @@ class ProductController extends Controller
         return DataTables::of($datas)
             ->addIndexColumn()
             ->editColumn('thumbnail',function(Product $data){
-                $url=$data->thumbnail ? asset("uploads/product/resize/".$data->thumbnail)
+                $url=$data->thumbnail ? asset("uploads/product/small/".$data->thumbnail)
                     :default_image();
                 return '<img src='.$url.' border="0" width="120" height="50" class="img-rounded" />';
             })
