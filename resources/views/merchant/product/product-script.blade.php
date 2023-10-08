@@ -143,16 +143,35 @@
         /* Change Status Of Product */
         $('body').on('click', '.recentProduct', function () {
             const productId = $('.set_product_id').val();
-            alert(productId + 'recentproduct');
+            controlProduct(productId, 'recent')
         });
 
         $('.bestSaleProduct').on('click', function (){
             const productId = $('.set_product_id').val();
-            alert(productId + 'best sale product');
+            controlProduct(productId, 'best-sale')
         })
         $('.mostSaleProduct').on('click', function (){
             const productId = $('.set_product_id').val();
-            alert(productId + 'mostsale product');
+            controlProduct(productId, 'most-sale')
         })
     })
+
+    function controlProduct(productId, action) {
+        $.ajax({
+            url: '{{route('merchant.product.control.panel')}}',
+            method: 'GET',
+            data: {
+                productId: productId,
+                action: action
+            },
+            success: function (data) {
+                if (data.response === 200) {
+                    Toast.fire({
+                        icon: data.type,
+                        title: data.message
+                    });
+                }
+            }
+        })
+    }
 </script>

@@ -415,4 +415,43 @@ class ProductController extends Controller
 
         return \response()->json($product);
     }
+
+    /**
+     * Control Panel
+    */
+    public function controlPanel(Request $request) : JsonResponse
+    {
+
+        try {
+            DB::beginTransaction();
+            $product = Product::find($request->productId);
+
+            switch ($request->action) {
+                case 'recent':
+                    $product->recent = $product->recent == 1 ? 0 : 1;
+                    break;
+                case 'best-sale':
+                    $product->best_sale = $product->best_sale == 1 ? 0 : 1;
+                    break;
+                case 'most-sale':
+                    $product->most_sale = $product->most_sale == 1 ? 0 : 1;
+                    break;
+            }
+            $product->save();
+            DB::commit();
+            return \response()->json([
+                'response' => Response::HTTP_OK,
+                'type' => 'success',
+                'message' => 'Status Change Successfully'
+            ]);
+        } catch (QueryException $e) {
+            DB::rollBack();
+
+            return \response()->json([
+                'response' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'type' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
 }
