@@ -14,13 +14,13 @@
                     <li aria-current="page" class="flex items-center">
                         <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
                         <div class="flex items-center">
-                            <span class="ml-1 font-medium text-gray-500 md:ml-2 dark:text-gray-400">Slider</span>
+                            <span class="ml-1 font-medium text-gray-500 md:ml-2 dark:text-gray-400">Banner</span>
                         </div>
                     </li>
                 </ol>
             </div>
           <div class="flex justify-end">
-              <a href="{{route('slider.create')}}"  class="text-white bg-blue-700 hover:bg-blue-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center">
+              <a href="{{route('banner.create')}}"  class="text-white bg-blue-700 hover:bg-blue-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center">
                   <i class="fas fa-plus mr-2"></i>
                   Add New
               </a>
@@ -28,7 +28,7 @@
             <!-- end menu -->
                 <div class="border border-[#8e0789] rounded-md mt-5">
                     <div class="bg-[#8e0789] overflow-hidden w-full px-0 flex items-center">
-                        <h2 class="text-2xl font-bold py-2 text-white pl-3">Slider List</h2>
+                        <h2 class="text-2xl font-bold py-2 text-white pl-3">Banner List</h2>
 
                     </div>
                     <div class="py-2 px-1 mt-3" style="overflow-x: auto;">
@@ -47,26 +47,16 @@
                                 </th>
                                 <th scope="col" class="px-2 whitespace-nowrap py-3">
                                     <div class="text-center">
-                                        Title 1
+                                        Title
                                     </div>
                                 </th>
                                 <th scope="col" class="px-2 whitespace-nowrap py-3">
                                     <div class="text-center">
-                                        Title 2
+                                        Priority
                                     </div>
                                 </th>
 
                                 <th scope="col" class="px-6 whitespace-nowrap py-3">
-                                    <div class="text-center">
-                                        Button Title
-                                    </div>
-                                </th>
-                                <th scope="col" class="px-6 whitespace-nowrap py-3">
-                                    <div class="text-center">
-                                        Button Link
-                                    </div>
-                                </th>
-                                <th scope="col" class="px-2 py-3">
                                     <div class="text-center">
                                         Status
                                     </div>
@@ -79,41 +69,34 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($sliders as $slider)
-                                <tr class="hide_row{{$slider->id}} bg-white  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            @foreach($banners as $banner)
+                                <tr class="hide_row{{$banner->id}} bg-white  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td class="px-2 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r text-center">
                                         {{ $loop->iteration }}
                                     </td>
                                     <td class="px-2 py-4 text-black border-r text-center">
-                                            <img style="width: 200px;height: 100px" src=" {{asset('uploads/slider/medium/'.$slider->image) }}">
+                                            <img style="width: 200px;height: 100px" src=" {{asset('uploads/banner/resize/'.$banner->image) }}">
                                     </td>
                                     <td class="px-2 py-4 text-black border-r text-center">
-                                        {{ $slider->title_1 }}
-                                    </td>
-
-                                    <td class="px-2 py-4 text-black border-r text-center">
-                                        {{ $slider->title_2 }}
+                                        {{ $banner->title }}
                                     </td>
                                     <td class="px-2 py-4 text-black border-r text-center">
-                                        {{ $slider->button_title }}
+                                        {{ $banner->priority }}
                                     </td>
-                                    <td class="px-2 py-4 text-black border-r text-center">
-                                        {{ $slider->button_link }}
-                                    </td>
-
                                     <td class="px-2 py-4 text-black border-r text-center">
                                         <label class="inline-flex items-center ">
-                                            <input type="checkbox" data-id="{{$slider->id}}" class="SliderStatusBtn form-checkbox h-5 w-5 text-indigo-600 transition duration-150 ease-in-out"
-                                                {{ $slider->status == 1 ? 'checked' : '' }}>
-                                            <span class="ml-2">{{ $slider->status == 1 ? 'Active' : 'Inactive' }}</span>
+                                            <input type="checkbox" data-id="{{$banner->id}}" class="bannerStatusBtn form-checkbox h-5 w-5 text-indigo-600 transition duration-150 ease-in-out"
+                                                {{ $banner->status == 1 ? 'checked' : '' }}>
+                                            <span class="ml-2">{{ $banner->status == 1 ? 'Active' : 'Inactive' }}</span>
                                         </label>
                                     </td>
+
                                     <td class="whitespace-nowrap space-x-1 text-center px-2 flex items-center justify-center">
-                                        <a href="{{ route('slider.edit', $slider->id)  }}" class="text-white bg-sky-400 hover:bg-sky-500 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 py-2 text-center">
+                                        <a href="{{ route('banner.edit', $banner->id)  }}" class="text-white bg-sky-400 hover:bg-sky-500 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 py-2 text-center">
                                             <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg>
                                             Edit
                                         </a>
-                                        <a href="javascriptL:;" data-action="{{route('slider.delete')}}"  item_id="{{$slider->id}}" type="button" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                                        <a href="javascriptL:;" data-action="{{route('banner.delete')}}"  item_id="{{$banner->id}}" type="button" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                                             <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                                             Delete
                                         </a>
@@ -168,12 +151,12 @@
     </script>
     <script>
         $(document).ready(function (){
-            $('body').on('click','.SliderStatusBtn', function (){
-                const sliderId = $(this).data('id');
+            $('body').on('click','.bannerStatusBtn', function (){
+                const bannerId = $(this).data('id');
                 $.ajax({
-                    url: '{{route('slider.status.change')}}',
+                    url: '{{route('banner.status.change')}}',
                     method: 'get',
-                    data: {id: sliderId},
+                    data: {id: bannerId},
                     success: function (data) {
                         if (data.response === 200) {
                             Toast.fire({

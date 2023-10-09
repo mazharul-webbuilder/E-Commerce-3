@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Admin\WithdrawHistoryController;
 use App\Http\Controllers\Admin\WithdrawPaymentController;
 use App\Http\Controllers\Ludo\CampaignController;
+use App\Http\Controllers\Admin\BannerController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -420,7 +421,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
         Route::post('/store', [SliderController::class, 'store'])->name('slider.store');
         Route::get('/edit/{id}', [SliderController::class, 'edit'])->name('slider.edit');
         Route::post('/update/{id}', [SliderController::class, 'update'])->name('slider.update');
+        Route::get('/update-slider-status', [SliderController::class, 'updateStatus'])->name('slider.status.change');
         Route::post('/delete', [SliderController::class, 'delete'])->name('slider.delete');
+    });
+    // Banner controller
+    Route::group(['prefix' => 'banner'], function () {
+        Route::get('/', [BannerController::class, 'index'])->name('banner.index');
+        Route::get('/create', [BannerController::class, 'create'])->name('banner.create');
+        Route::post('/store', [BannerController::class, 'store'])->name('banner.store');
+        Route::get('/edit/{id}', [BannerController::class, 'edit'])->name('banner.edit');
+        Route::get('/update-banner-status', [BannerController::class, 'updateStatus'])->name('banner.status.change');
+        Route::post('/update/{id}', [BannerController::class, 'update'])->name('banner.update');
+        Route::post('/delete', [BannerController::class, 'delete'])->name('banner.delete');
     });
 
     // unit route
