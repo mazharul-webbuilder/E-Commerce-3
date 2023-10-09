@@ -73,14 +73,6 @@ class ProductController extends Controller
                     . ($product->flash_deal == 1 ? "Yes" : "No") .
                     '</button>';
             })
-            ->addColumn('config', function ($product) {
-                return '
-                        <button data-id="'.$product->id.'"
-                         type="button"
-                         class="ConfigBtn text-white bg-pink-500 hover:bg-sky-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
-                            Config
-                        </button>';
-            })
             ->addColumn('control_panel', function ($product) {
                 return '
                         <button type="button" data-id="'.$product->id.'" class="ControlPanelBtn text-white bg-emerald-500 hover:bg-sky-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
@@ -115,7 +107,7 @@ class ProductController extends Controller
     ';
             })
 
-            ->rawColumns(['thumbnail', 'current_price', 'status','action', 'flash_deal', 'control_panel', 'stock_manager', 'gallery', 'config'])
+            ->rawColumns(['thumbnail', 'current_price', 'status','action', 'flash_deal', 'control_panel', 'stock_manager', 'gallery'])
             ->make(true);
     }
 
