@@ -17,4 +17,5 @@ Route::get('/product_list', [EcommerceController::class, 'product_list']);
 Route::get('/recommended_product/{category_ids?}', [EcommerceController::class, 'recommended_product']);
 Route::get('product_detail/{id}/{seller_or_affiliate?}/{type?}', [EcommerceController::class, 'product_detail'])->name('api.product_detail');
 Route::get('product_detail/{id}/{seller_or_affiliate?}/{type?}', [EcommerceController::class, 'product_detail'])->name('api.product_detail');
+Route::get('slider_list', [EcommerceController::class, 'slider_list']);
 Route::post('add_to_cart', [EcommerceController::class, 'add_to_cart']);

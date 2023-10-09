@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ProductResource;
+use App\Http\Resources\SliderResource;
 use App\Models\Ecommerce\Category;
 use App\Models\Ecommerce\Product;
+use App\Models\Ecommerce\Slider;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class EcommerceController extends Controller
 {
@@ -73,6 +76,17 @@ class EcommerceController extends Controller
         ],Response::HTTP_OK);
     }
     public function add_to_cart(Request $request){
+
+    }
+
+    public function slider_list(){
+        $sliders=DB::table('sliders')->where('status',1)->latest()->get();
+        $datas=SliderResource::collection($sliders);
+        return \response()->json([
+            'datas'=>$datas,
+            'type'=>'success',
+            'status'=>Response::HTTP_OK
+        ],Response::HTTP_OK);
 
     }
 }

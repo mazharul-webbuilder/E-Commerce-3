@@ -16,10 +16,11 @@ class SliderResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'title'=>$this->title,
-            'image'=>asset('/uploads/slider/resize/'.$this->image),
-            'slug'=>$this->slug,
-            'priority'=>$this->priority,
+            'title_1'=>$this->title_1,
+            'title_2'=>$this->title_2,
+            'button_title'=>$this->button_title,
+            'button_link'=>$this->button_link,
+            'image'=>asset('/uploads/slider/medium/'.$this->image),
         ];
     }
 }
