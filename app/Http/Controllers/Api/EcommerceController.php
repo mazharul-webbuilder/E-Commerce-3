@@ -40,6 +40,17 @@ class EcommerceController extends Controller
         $data=[$id,$seller_or_affiliate,$type];
         return $data;
     }
+
+    public function product_list(){
+        $datas=Product::where('current_price','<=',300)->latest()->paginate(8);
+        $products=ProductResource::collection($datas);
+
+        return \response()->json([
+            'products'=>$datas,
+            'type'=>'success',
+            'status'=>Response::HTTP_OK
+        ],Response::HTTP_OK);
+    }
     public function add_to_cart(Request $request){
 
     }
