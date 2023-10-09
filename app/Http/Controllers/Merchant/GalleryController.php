@@ -31,7 +31,7 @@ class GalleryController extends Controller
     }
 
     public function create(){
-        return view('webend.ecommerce.slider.create');
+        return view('merchant.slider.create');
     }
 
     public function store(Request $request){
@@ -79,7 +79,7 @@ class GalleryController extends Controller
 
     public function edit($id){
         $gallery =Gallery::find($id);
-        return view('webend.ecommerce.gallery.edit',compact('gallery'));
+        return view('merchant.gallery.edit',compact('gallery'));
     }
     public function update(Request $request){
         if ($request->isMethod('post'))
