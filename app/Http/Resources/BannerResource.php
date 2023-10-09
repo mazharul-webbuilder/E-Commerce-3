@@ -16,9 +16,11 @@ class BannerResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'title'=>$this->title != null ? $this->title :"",
-            'image'=>asset($this->image),
-            'priority'=>$this->priority,
+            'title_1'=>$this->title_1,
+            'title_2'=>$this->title_2,
+            'button_title'=>$this->button_title,
+            'button_link'=>$this->button_link,
+            'image'=>asset('/uploads/banner/resize/'.$this->image),
         ];
     }
 }

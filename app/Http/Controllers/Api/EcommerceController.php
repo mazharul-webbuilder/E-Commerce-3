@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BannerResource;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\SliderResource;
@@ -88,5 +89,15 @@ class EcommerceController extends Controller
             'status'=>Response::HTTP_OK
         ],Response::HTTP_OK);
 
+    }
+
+    public function banner_list(){
+        $banners=DB::table('banners')->where('status',1)->latest()->get();
+        $datas=BannerResource::collection($banners);
+        return \response()->json([
+            'datas'=>$datas,
+            'type'=>'success',
+            'status'=>Response::HTTP_OK
+        ],Response::HTTP_OK);
     }
 }
