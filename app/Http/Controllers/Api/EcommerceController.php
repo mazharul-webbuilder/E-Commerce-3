@@ -26,7 +26,7 @@ class EcommerceController extends Controller
     }
 
     public function category_wise_product($id){
-        $datas=Product::where('category_id',$id)->latest()->paginate(8);
+        $datas=Product::where('category_id',$id)->where('status',1)->latest()->paginate(8);
         $products=ProductResource::collection($datas);
 
         return \response()->json([
@@ -37,12 +37,33 @@ class EcommerceController extends Controller
     }
 
     public function product_detail($id,$seller_or_affiliate=null,$type=null){
+
         $data=[$id,$seller_or_affiliate,$type];
         return $data;
     }
 
     public function product_list(){
-        $datas=Product::where('current_price','<=',300)->latest()->paginate(8);
+        $datas=Product::where('current_price','<=',300)->where('status',1)->latest()->paginate(8);
+        $products=ProductResource::collection($datas);
+
+        return \response()->json([
+            'products'=>$datas,
+            'type'=>'success',
+            'status'=>Response::HTTP_OK
+        ],Response::HTTP_OK);
+    }
+    public function recommended_product($category_ids=null){
+
+
+
+        if (!is_null($category_ids)){
+            $categories=explode(',',$category_ids);
+
+            $datas=Product::whereIn('category_id',$categories)->where('status',1)->latest()->paginate(8);
+
+        }else{
+            $datas=Product::where('status',1)->inRandomOrder()->paginate(8);
+        }
         $products=ProductResource::collection($datas);
 
         return \response()->json([
