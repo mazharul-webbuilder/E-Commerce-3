@@ -156,5 +156,31 @@ class SliderController extends Controller
         }
     }
 
+    public function updateStatus(Request $request)
+    {
+        if ($request->ajax()) {
+            try {
+                DB::beginTransaction();
+                $slider = Slider::find($request->id);
+                $slider->status = $slider->status == 1 ? 0 : 1;
+                $slider->save();
+                DB::commit();
+                return \response()->json([
+                    'type' => 'success',
+                    'response' => Response::HTTP_OK,
+                    'message' => 'Status Updated Successfully'
+                ]);
+
+            } catch (QueryException $e) {
+                DB::rollBack();
+                return \response()->json([
+                    'type' => 'error',
+                    'response' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                    'message' => $e->getMessage()
+                ]);
+            }
+        }
+    }
+
 
 }

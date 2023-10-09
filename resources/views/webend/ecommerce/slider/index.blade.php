@@ -102,7 +102,11 @@
                                     </td>
 
                                     <td class="px-2 py-4 text-black border-r text-center">
-                                        {{ $slider->status == 1 ? 'Active' : 'Inactive' }}
+                                        <label class="inline-flex items-center ">
+                                            <input type="checkbox" data-id="{{$slider->id}}" class="SliderStatusBtn form-checkbox h-5 w-5 text-indigo-600 transition duration-150 ease-in-out"
+                                                {{ $slider->status == 1 ? 'checked' : '' }}>
+                                            <span class="ml-2">{{ $slider->status == 1 ? 'Active' : 'Inactive' }}</span>
+                                        </label>
                                     </td>
                                     <td class="whitespace-nowrap space-x-1 text-center px-2 flex items-center justify-center">
                                         <a href="{{ route('slider.edit', $slider->id)  }}" class="text-white bg-sky-400 hover:bg-sky-500 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 py-2 text-center">
@@ -160,6 +164,26 @@
                     });
             })
 
+        })
+    </script>
+    <script>
+        $(document).ready(function (){
+            $('body').on('click','.SliderStatusBtn', function (){
+                const sliderId = $(this).data('id');
+                $.ajax({
+                    url: '{{route('slider.status.change')}}',
+                    method: 'get',
+                    data: {id: sliderId},
+                    success: function (data) {
+                        if (data.response === 200) {
+                            Toast.fire({
+                                icon: data.type,
+                                title: data.message
+                            })
+                        }
+                    }
+                })
+            })
         })
     </script>
 @endsection
