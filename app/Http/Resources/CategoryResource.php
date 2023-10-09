@@ -18,8 +18,7 @@ class CategoryResource extends JsonResource
             'id'=>$this->id,
             'name'=>$this->name,
             'image'=>asset($this->image != null ? $this->image: 'webend/placeholder.jpg'),
-            'priority'=>$this->priority,
-            'digital_asset'=>$this->digital_asset == 1? "Yes":"No",
+            'digital_asset'=>$this->digital_asset
         ];
     }
 }
