@@ -15,7 +15,7 @@ class EcommerceController extends Controller
 
 
     public function get_category(){
-        $categories=Category::where('status',1)->orderBy('priority','ASC')->get();
+        $categories=Category::where('status',1)->orderBy('id','DESC')->get();
         $datas=CategoryResource::collection($categories);
 
         return response()->json([
