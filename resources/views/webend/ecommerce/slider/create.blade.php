@@ -46,21 +46,38 @@
                         <h2 class="text-2xl font-bold py-2 text-white pl-3">Slider Create</h2>
                     </div>
                     <!-- Category form start -->
-                    <form action="{{ route('slider.store') }}" method="POST" enctype="multipart/form-data">
+                    <form id="SliderForm" action="{{ route('slider.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="flex flex-col gap-4 p-4 mt-3">
                             <div class="flex flex-col md:flex-row justify-between gap-3">
-
                                 <div class="w-6/12">
                                     <div class="w-full">
-                                        <h4 class="mb-2 font-medium text-zinc-700">Title (Optional)</h4>
-                                        <input placeholder="Enter Slider Title" name="title" value="{{old('title')}}" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text" >
+                                        <h4 class="mb-2 font-medium text-zinc-700">Title 1</h4>
+                                        <input placeholder="Enter Slider Title 1" name="title_1" value="{{old('title_1')}}" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text" >
+                                        <span class="error-message" id="email-error"></span>
                                     </div>
                                 </div>
                                 <div class="w-6/12">
                                     <div class="w-full">
-                                        <h4 class="mb-2 font-medium text-zinc-700">Priority</h4>
-                                        <input placeholder="Enter Priority" value="{{old('priority')}}" name="priority" min="1" oninput="validity.valid||(value='');" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="number" >
+                                        <h4 class="mb-2 font-medium text-zinc-700">Title 2</h4>
+                                        <input placeholder="Enter Slider Title 2" name="title_2" value="{{old('title_2')}}" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text" >
+                                        <span class="error-message" id="email-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col md:flex-row justify-between gap-3">
+                                <div class="w-6/12">
+                                    <div class="w-full">
+                                        <h4 class="mb-2 font-medium text-zinc-700">Button Title</h4>
+                                        <input placeholder="Enter Button Title" name="button_title" value="{{old('button_title')}}" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text" >
+                                        <span class="error-message" id="email-error"></span>
+                                    </div>
+                                </div>
+                                <div class="w-6/12">
+                                    <div class="w-full">
+                                        <h4 class="mb-2 font-medium text-zinc-700">Button Link</h4>
+                                        <input placeholder="Enter Button Link" name="button_link" value="{{old('button_link')}}" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text" >
+                                        <span class="error-message" id="email-error"></span>
                                     </div>
                                 </div>
                             </div>
@@ -70,12 +87,13 @@
                                     <h4 class="mb-2 font-medium text-gray">Image <span>(400x200)</span> </h4>
                                     <div class="relative inline-flex w-full">
                                         <input  type='file' name="image"  class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none dropify"/>
+                                        <span class="error-message" id="email-error"></span>
                                     </div>
 
                                 </div>
                             </div>
                             <div class="w-full flex justify-end">
-                                <button type="submit" class="inline-block px-8 py-2.5 font-medium text-center transition-all ease-in-out text-white rounded-md bg-[#3f3ff3] cursor-pointer hover:bg-blue-800">
+                                <button type="submit" class="submit-btn inline-block px-8 py-2.5 font-medium text-center transition-all ease-in-out text-white rounded-md bg-[#3f3ff3] cursor-pointer hover:bg-blue-800">
                                     Submit
                                 </button>
                             </div>
@@ -83,9 +101,6 @@
                     </form>
                     <!-- Category form end -->
                 </div>
-
-
-
         </div>
     </section>
 @endsection
@@ -96,6 +111,6 @@
             $('.dropify').dropify();
         })
     </script>
-
+    @include('webend.ecommerce.slider.slider-script')
 @endsection
 

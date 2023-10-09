@@ -10,4 +10,13 @@ class Settings extends Model
     use HasFactory;
     protected $guarded = [];
 
+    CONST LARGE_IMAGE_WIDTH = 1080;
+    CONST LARGE_IMAGE_HEIGHT = 675;
+
+    CONST MEDIUM_IMAGE_WIDTH = 512;
+    CONST MEDIUM_IMAGE_HEIGHT = 320;
+
+    CONST SMALL_IMAGE_WIDTH = 256;
+    CONST SMALL_IMAGE_HEIGHT = 200;
+
 }
