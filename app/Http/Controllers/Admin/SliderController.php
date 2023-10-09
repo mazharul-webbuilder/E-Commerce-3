@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminSliderStoreRequest;
+use App\Http\Requests\AdminSliderUpdateRequest;
 use App\Models\Ecommerce\Slider;
 use App\Models\Settings;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -18,9 +20,10 @@ class SliderController extends Controller
 {
 
 
-    public function index(){
+    public function index(): View
+    {
+        $sliders = DB::table('sliders')->latest()->get();
 
-        $sliders=DB::table('sliders')->latest()->get();
         return view('webend.ecommerce.slider.index',compact('sliders'));
     }
 
@@ -85,77 +88,73 @@ class SliderController extends Controller
     }
 
 
-    public function edit($slug){
-        $slider =Slider::where('slug',$slug)->first();
+    /**
+     * Edit Slider
+    */
+    public function edit($id): View
+    {
+        $slider =Slider::find($id);
+
         return view('webend.ecommerce.slider.edit',compact('slider'));
     }
 
-    public function update(Request $request){
-        $slider=Slider::find($request->id);
-        $request->validate([
-            'title' => 'nullable|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
-            'priority'=>'required|unique:sliders,priority,'.$slider->id
-        ]);
+    public function update(AdminSliderUpdateRequest $request, $id)
+    {
+        $slider = Slider::find($id);
+
         if ($request->isMethod('post'))
         {
             DB::beginTransaction();
             try{
-                $slider->title = $request->title;
-                $slider->priority = $request->priority;
+                $slider->title_1 = $request->title_1;
+                $slider->title_2 = $request->title_2;
+                $slider->button_title = $request->button_title;
+                $slider->button_link = $request->button_link;
                 if($request->hasFile('image')){
-                    if (File::exists(public_path('/uploads/slider/original/'.$slider->image)))
-                    {
-                        File::delete(public_path('/uploads/slider/original/'.$slider->image));
-                    }
-                    if (File::exists(public_path('/uploads/slider/original/'.$slider->image)))
-                    {
-                        File::delete(public_path('/uploads/slider/original/'.$slider->image));
-                    }
-                    $image=$request->image;
-                    $image_name=strtolower(Str::random(10)).time().".".$image->getClientOriginalExtension();
-                    $original_image_path = public_path().'/uploads/slider/original/'.$image_name;
-                    $resize_image_path = public_path().'/uploads/slider/resize/'.$image_name;
-                    //Resize Image
-                    Image::make($image)->save($original_image_path);
-                    Image::make($image)->resize(400,200)->save($resize_image_path);
-                    $slider->image = $image_name;
+                    $this->deleteIfSliderImageExist($slider);
+                    $slider->image = $this->getImageName($request);
                 }
                 $slider->save();
-                if ($slider){
-                    DB::commit();
-                    Alert::success('Slider updated Successfully!.');
-                    return back();
-                }else
-                {
-                    DB::rollBack();
-                    Alert::warning('Slider updation Failed!.');
-                    return back();
-                }
+                DB::commit();
+                return redirect()->back()->with('success', 'Slider Updated Successfully');
+
             }catch (QueryException $ex){
                 DB::rollBack();
-                return $ex->getMessage();
+                return redirect()->back()->with('error', 'Something Went Wrong');
             }
         }
     }
 
     public function delete(Request $request){
-        $data=Slider::findOrFail($request->item_id);
-
-        if (File::exists(public_path('/uploads/slider/original/'.$data->image)))
-        {
-            File::delete(public_path('/uploads/slider/original/'.$data->image));
-        }
-        if (File::exists(public_path('/uploads/slider/resize/'.$data->image)))
-        {
-            File::delete(public_path('/uploads/slider/resize/'.$data->image));
-        }
-        $data->delete();
+        $slider = Slider::findOrFail($request->item_id);
+        $this->deleteIfSliderImageExist($slider);
+        $slider->delete();
         return \response()->json([
             'message' => 'Slider Delete Successfully',
             'status_code' => 200,
             'type'=>'success'
         ], Response::HTTP_OK);
     }
+
+    public function deleteIfSliderImageExist($slider)
+    {
+        if (File::exists(public_path('/uploads/slider/original/'.$slider->image)))
+        {
+            File::delete(public_path('/uploads/slider/original/'.$slider->image));
+        }
+        if (File::exists(public_path('/uploads/slider/large/'.$slider->image)))
+        {
+            File::delete(public_path('/uploads/slider/large/'.$slider->image));
+        }
+        if (File::exists(public_path('/uploads/slider/medium/'.$slider->image)))
+        {
+            File::delete(public_path('/uploads/slider/medium/'.$slider->image));
+        }
+        if (File::exists(public_path('/uploads/slider/small/'.$slider->image)))
+        {
+            File::delete(public_path('/uploads/slider/small/'.$slider->image));
+        }
+    }
+
 
 }
