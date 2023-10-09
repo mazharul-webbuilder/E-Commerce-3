@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BannerResource;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\ProductDetailResource;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\SliderResource;
 use App\Models\Ecommerce\Category;
@@ -42,8 +43,15 @@ class EcommerceController extends Controller
 
     public function product_detail($id,$seller_or_affiliate=null,$type=null){
 
-        $data=[$id,$seller_or_affiliate,$type];
-        return $data;
+        //$data=[$id,$seller_or_affiliate,$type];
+        $product=Product::find($id);
+        $product=new ProductDetailResource($product,$seller_or_affiliate,$type);
+
+        return \response()->json([
+            'products'=>$product,
+            'type'=>'success',
+            'status'=>Response::HTTP_OK
+        ],Response::HTTP_OK);
     }
 
     public function product_list(){
