@@ -136,7 +136,7 @@ class SliderController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function deleteIfSliderImageExist($slider)
+    public function deleteIfSliderImageExist($slider): void
     {
         if (File::exists(public_path('/uploads/slider/original/'.$slider->image)))
         {

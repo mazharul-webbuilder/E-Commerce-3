@@ -3,186 +3,150 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminSliderStoreRequest;
+use App\Http\Requests\AdminSliderUpdateRequest;
 use App\Models\Ecommerce\Banner;
-use App\Models\Ecommerce\Category;
-use Carbon\Carbon;
+use App\Models\Ecommerce\Slider;
+use App\Models\Settings;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
-use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\File;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Str;
 
 class BannerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+
+    public function index(): View
     {
-        $banners = Banner::latest()->get();
-        return view('webend.ecommerce.banner',compact('banners'));
+        $banners = DB::table('banners')->latest()->get();
+
+        return view('webend.ecommerce.banner.index',compact('banners'));
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
+
+    public function create(){
+        return view('webend.ecommerce.banner.create');
+    }
+
+    public function store(Request $request){
         $request->validate([
-            'title' => 'nullable|max:255',
+           'title' => 'nullable',
+           'priority' => 'required|integer',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
-            'priority'=>'required|unique:banners,priority',
-        ],[
-                'title.max'=>'Banner Title Maximum Limit 255 Characters',
-                'image.required'=>'Banner Image is Required',
-                'priority.required'=>'Priority  filed is required',
-                'priority.unique'=>'Priority is already Given,try another',
-            ]
-        );
-        try {
+        ]);
+        try{
             DB::beginTransaction();
-            if ($request->image != null )
-            {
-                $image = $request->file('image');
-                $name =  rand(10000,99999).'.'.$image->getClientOriginalExtension();
-
-                $destinationPath = public_path('/uploads/banner');
-                if (!File::exists($destinationPath)) {
-                    File::makeDirectory($destinationPath);
-                }
-                $img =Image::make($image->getRealPath());
-                $img->resize(400, 200, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->save($destinationPath.'/'.$name);
-                $destinationPath ='uploads/banner/'.$name;
-            }
-            $create = Banner::create([
-                'title'=>$request->title != null ? $request->title : null,
-                'image'=> $destinationPath,
-                'priority'=>$request->priority,
-                'slug'=> Str::slug(Carbon::now()->format('Y-m-d')).'_'.rand(1000,9999),
-                'status'=>1,
+            Banner::create([
+                'title' => $request->title,
+                'priority' => $request->priority,
+                'slug' => Str::slug($request->title . Str::random(10), '-'),
+                'image' => $this->getImageName($request),
             ]);
-            if ($create){
-                DB::commit();
-                Alert::success('Banner Created Successfully!.');
-                return back();
-            }else
-            {
-                DB::rollBack();
-                Alert::warning('Banner Created Failed!.');
-                return back();
-            }
-
-        }catch (\Exception $ex){
-            DB::rollBack();
-            return $ex->getMessage();
-        }
-    }
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($slug)
-    {
-        $banner = Banner::where('slug',$slug)->firstorfail();
-        return view('webend.ecommerce.banner',compact('banner'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'title' => 'nullable|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
-            'priority'=>'required|unique:banners,priority,'.$id,
-        ],[
-                'name.required'=>'Category Title filed is required',
-                'name.max'=>'Category Name Maximum Limit 255 Characters',
-                'priority.required'=>'Priority  filed is required',
-                'priority.unique'=>'Priority  Should Be Unique',
-            ]
-        );
-
-        try {
-            $banner = Banner::findOrFail($id);
-
-            DB::beginTransaction();
-            if ($request->file('image'))
-            {
-                if($banner->image != null){
-                    unlink(public_path($banner->image));
-                }
-                $image = $request->file('image');
-                $name =  rand(10000,99999).'.'.$image->getClientOriginalExtension();
-
-                $destinationPath = public_path('/uploads/banner');
-                if (!File::exists($destinationPath)) {
-                    File::makeDirectory($destinationPath);
-                }
-                $img =Image::make($image->getRealPath());
-                $img->resize(400, 200, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->save($destinationPath.'/'.$name);
-                $destinationPath ='uploads/banner/'.$name;
-                $banner->image = $destinationPath;
-            }
-
-            $banner->title = $request->title;
-            $banner->priority = $request->priority;
-            $banner->status = $request->status;
-            $banner->save();
             DB::commit();
-            Alert::success('Banner Updated Successfully!.');
-            return redirect()->route('banner.all');
+            return \response()->json([
+                'response' => Response::HTTP_OK,
+                'type' => 'success',
+                'message' => 'Banner Created Successfully'
+            ]);
 
-        }catch (\Exception $ex){
+        } catch (QueryException $e){
             DB::rollBack();
-            return $ex->getMessage();
+            return \response()->json([
+                'response' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'type' => 'error',
+                'message' => $e->getMessage()
+            ]);
         }
-
-
-
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Return Image Name
      */
-    public function destroy($id)
+    public function getImageName($request)
     {
-        $banner = Banner::findOrFail($id);
-        if($banner->image != null){
-            unlink(public_path($banner->image));
+        if($request->hasFile('image')){
+            $image = $request->image;
+
+            /*Make Unique Image Name*/
+            $image_name = strtolower(Str::random(10)).time() .".". $image->getClientOriginalExtension();
+
+            /*Make 4 different Size Path*/
+            $original_image_path = public_path().'/uploads/banner/original/'.$image_name;
+            $resize_banner_path = public_path().'/uploads/banner/resize/'.$image_name;
+
+
+            //Resize Image
+            Image::make($image)->save($original_image_path);
+            Image::make($image)->resize(Settings::RESIZE_BANNER_WIDTH,Settings::RESIZE_BANNER_HEIGHT)->save($resize_banner_path);
+
+            return $image_name;
         }
-        $banner->delete();
-        Alert::success('Banner Deleted successfully');
-        return back();
     }
+
+
+    /**
+     * Edit Slider
+     */
+    public function edit($id): View
+    {
+        $banner = Banner::find($id);
+
+        return view('webend.ecommerce.banner.edit',compact('banner'));
+    }
+
+    public function update(AdminSliderUpdateRequest $request, $id)
+    {
+        $banner = Banner::find($id);
+
+        if ($request->isMethod('post'))
+        {
+            DB::beginTransaction();
+            try{
+                $banner->title = $request->title;
+                $banner->priority = $request->priority;
+                $banner->slug = Str::slug($request->title . Str::random(10), '-');
+                if($request->hasFile('image')){
+                    $this->deleteIfBannerImageExist($banner);
+                    $banner->image = $this->getImageName($request);
+                }
+                $banner->save();
+                DB::commit();
+                return redirect()->back()->with('success', 'Banner Updated Successfully');
+
+            }catch (QueryException $ex){
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Something Went Wrong');
+            }
+        }
+    }
+
+    public function delete(Request $request)
+    {
+        $banner = Banner::find($request->item_id);
+        $this->deleteIfBannerImageExist($banner);
+        $banner->delete();
+        return \response()->json([
+            'message' => 'Banner Delete Successfully',
+            'status_code' => 200,
+            'type'=>'success'
+        ], Response::HTTP_OK);
+    }
+
+    public function deleteIfBannerImageExist($banner): void
+    {
+        if (File::exists(public_path('/uploads/slider/original/'.$banner->image)))
+        {
+            File::delete(public_path('/uploads/slider/original/'.$banner->image));
+        }
+        if (File::exists(public_path('/uploads/resize/large/'.$banner->image)))
+        {
+            File::delete(public_path('/uploads/resize/large/'.$banner->image));
+        }
+    }
+
+
 }
