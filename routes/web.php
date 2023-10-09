@@ -418,8 +418,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
         Route::get('/', [SliderController::class, 'index'])->name('slider.index');
         Route::get('/create', [SliderController::class, 'create'])->name('slider.create');
         Route::post('/store', [SliderController::class, 'store'])->name('slider.store');
-        Route::get('/edit/{slug}', [SliderController::class, 'edit'])->name('slider.edit');
-        Route::post('/update', [SliderController::class, 'update'])->name('slider.update');
+        Route::get('/edit/{id}', [SliderController::class, 'edit'])->name('slider.edit');
+        Route::post('/update/{id}', [SliderController::class, 'update'])->name('slider.update');
         Route::post('/delete', [SliderController::class, 'delete'])->name('slider.delete');
     });
 

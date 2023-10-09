@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdminSliderStoreRequest extends FormRequest
+class AdminSliderUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,7 +28,7 @@ class AdminSliderStoreRequest extends FormRequest
             'title_2' => 'nullable|max:255',
             'button_title' => 'nullable|max:255',
             'button_link' => 'nullable',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ];
     }
 }
