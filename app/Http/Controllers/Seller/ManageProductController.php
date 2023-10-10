@@ -39,7 +39,7 @@ class ManageProductController extends Controller
             })
             ->editColumn('action',function(Product $data){
                 return '
-                       <a href="javascript:;"   type="button" class="delete_item text-white bg-purple-600 hover:bg-purple-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                       <a href="'.route('seller.merchant.product.details', $data->id).'"  class="delete_item text-white bg-purple-600 hover:bg-purple-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                             View Detail
                         </a>
                         <a href="javascript:;" data-action="'.route('seller.product.add_to_store').'" item_id="'.$data->id.'" type="button" class="add_to_store text-white bg-cyan-600 hover:bg-cyan-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center">
@@ -217,6 +217,16 @@ class ManageProductController extends Controller
             ]);
         }
         return \response()->json(null);
+    }
+
+    /**
+     *  Get Details of Merchant Product
+    */
+    public  function merchantProductDetail($id): View
+    {
+        $product = Product::find($id);
+
+        return  view('seller.product.merchant-product-details', compact('product'));
     }
 
 }
