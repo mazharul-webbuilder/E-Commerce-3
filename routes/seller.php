@@ -24,5 +24,6 @@ Route::group([ 'as'=>'seller.'],function(){
         Route::get('/details',[ManageProductController::class,'details'])->name('product.details');
         Route::post('/store-config',[ManageProductController::class,'configStore'])->name('product.config.store');
         Route::get('/view-product/{id}',[ManageProductController::class,'viewProduct'])->name('product.view');
+        Route::get('/delete-product',[ManageProductController::class,'deleteProduct'])->name('product.delete');
     });
 });

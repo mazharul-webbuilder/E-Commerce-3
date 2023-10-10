@@ -43,7 +43,7 @@ class ManageProductController extends Controller
                             View Detail
                         </a>
                         <a href="javascript:;" data-action="'.route('seller.product.add_to_store').'" item_id="'.$data->id.'" type="button" class="add_to_store text-white bg-cyan-600 hover:bg-cyan-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center">
-                            Add My Store
+                            Add To My Shop
                         </a>
                         ';
             })
@@ -128,7 +128,7 @@ class ManageProductController extends Controller
             })
             ->editColumn('action',function(SellerProduct $data){
                 $seller=Auth::guard('seller')->user();
-                return '<a href="javascript:;" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                return '<a href="javascript:;" data-id="'.$data->id.'" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                              Remove
                          </a>
                          <a href="javascript:;" share_link="'.route('api.product_detail',['id'=>$data->product_id,'seller_or_affiliate'=>$seller->seller_number,'type'=>'seller']).'" class="copy_link text-white bg-purple-600 hover:bg-purple-700 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
@@ -201,4 +201,22 @@ class ManageProductController extends Controller
 
         return  view('seller.product.details', compact('product', 'sellerProduct'));
     }
+
+    /**
+     * Delete PRoduct
+    */
+    public function deleteProduct(Request $request): JsonResponse
+    {
+        if ($request->ajax()) {
+            $sellerProduct = SellerProduct::find($request->sellerProductId);
+            $sellerProduct->delete();
+            return \response()->json([
+                'message' => 'Product Remove Successfully',
+                'response' => Response::HTTP_OK,
+                'type' => 'success'
+            ]);
+        }
+        return \response()->json(null);
+    }
+
 }
