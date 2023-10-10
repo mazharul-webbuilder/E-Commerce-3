@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CartResource;
 use App\Models\Ecommerce\Cart;
 use App\Models\Ecommerce\Product;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
@@ -84,5 +86,48 @@ class CartController extends Controller
             'total_item'=>Cart::total_item(),
             'status'=>Response::HTTP_OK,
         ],Response::HTTP_OK);
+    }
+
+    public function update_cart(Request  $request){
+         if ($request->isMethod('post')){
+             try {
+                 DB::beginTransaction();
+                 Cart::find($request->cart_id)->update(['quantity'=>$request->quantity]);
+                 DB::commit();
+                 return response()->json([
+                     'data'=>'Successfully updated',
+                     'subtotal'=>Cart::subtotal(),
+                     'total_item'=>Cart::total_item(),
+                     'status'=>Response::HTTP_OK,
+                 ],Response::HTTP_OK);
+             }catch (QueryException $exception){
+                 return response()->json([
+                     'data'=>CartResource::collection(Cart::carts()),
+                     'type'=>'error',
+                     'status'=>Response::HTTP_INTERNAL_SERVER_ERROR,
+                 ],Response::HTTP_INTERNAL_SERVER_ERROR);
+             }
+         }
+    }
+
+    public function delete_cart(Request  $request){
+        if ($request->isMethod('post')){
+            try {
+                Cart::find($request->cart_id)->delete();
+
+                return response()->json([
+                    'data'=>'Successfully delete',
+                    'subtotal'=>Cart::subtotal(),
+                    'total_item'=>Cart::total_item(),
+                    'status'=>Response::HTTP_OK,
+                ],Response::HTTP_OK);
+            }catch (QueryException $exception){
+                return response()->json([
+                    'data'=>CartResource::collection(Cart::carts()),
+                    'type'=>'error',
+                    'status'=>Response::HTTP_INTERNAL_SERVER_ERROR,
+                ],Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        }
     }
 }

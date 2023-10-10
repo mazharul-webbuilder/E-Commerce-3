@@ -24,5 +24,7 @@ Route::get('banner_list', [EcommerceController::class, 'banner_list']);
 
 Route::post('add_to_cart', [CartController::class, 'add_to_cart']);
 Route::get('view_cart', [CartController::class, 'view_cart']);
+Route::post('update_cart', [CartController::class, 'update_cart']);
+Route::post('delete_cart', [CartController::class, 'delete_cart']);
 
 

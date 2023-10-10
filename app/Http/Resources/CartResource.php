@@ -20,7 +20,7 @@ class CartResource extends JsonResource
             'quantity'=>$this->quantity,
             'product_title'=>$this->product->title,
             'thumbnail'=>$this->product->thumbnail,
-            'price'=>$this->seller_id==null ? $this->product->price() : seller_price($this->seller_id,$this->product_id)->seller_price,
+            'unit_price'=>$this->seller_id==null ? $this->product->price() : seller_price($this->seller_id,$this->product_id)->seller_price,
             'size'=>$this->size ? $this->size->name  : null,
         ];
     }
