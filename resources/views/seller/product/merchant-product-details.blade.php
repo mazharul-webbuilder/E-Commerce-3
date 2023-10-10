@@ -1,4 +1,4 @@
-@extends('merchant.layout.app')
+@extends('seller.layout.app')
 @section('extra_css')
     <link href="{{ asset('webend/style/css/dropify.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
