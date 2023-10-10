@@ -3,6 +3,7 @@ use App\Models\Seller\Seller;
 use App\Models\Merchant\Merchant;
 use App\Models\Affiliate\Affiliator;
 use Carbon\Carbon;
+use App\Models\SellerProduct;
 function default_image()
 {
     return asset('uploads/default.png');
@@ -44,6 +45,11 @@ function product_price($product_id){
 
     return $price;
 
+}
+
+ function seller_price($seller_id,$product_id)
+{
+    return SellerProduct::where(['seller_id'=>$seller_id,'product_id'=>$product_id])->first();
 }
 
 

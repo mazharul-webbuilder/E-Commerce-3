@@ -21,7 +21,8 @@ Route::get('slider_list', [EcommerceController::class, 'slider_list']);
 Route::get('banner_list', [EcommerceController::class, 'banner_list']);
 
 //cart api
-//Route::group(['middleware'=>['auth:api']],function (){
-    Route::post('add_to_cart', [CartController::class, 'add_to_cart']);
-//});
+
+Route::post('add_to_cart', [CartController::class, 'add_to_cart']);
+Route::get('view_cart', [CartController::class, 'view_cart']);
+
 

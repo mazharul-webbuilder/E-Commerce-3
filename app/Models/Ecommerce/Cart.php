@@ -23,7 +23,6 @@ class Cart extends Model
         return $this->belongsTo(User::class);
     }
 
-
     public function size()
     {
         return $this->belongsTo(Size::class);
@@ -49,13 +48,12 @@ class Cart extends Model
                 $subtotal += $cart->product->price() * $cart->quantity;
 
             }else{
-                $seller_product=SellerProduct::where(['seller_id'=>$cart->seller_id,'product_id'=>$cart->product_id])->first();
-                $subtotal += $seller_product->seller_price * $cart->quantity;
+                $subtotal += seller_price($cart->seller_id,$cart->product_id)->seller_price * $cart->quantity;
             }
         }
         return $subtotal;
-
     }
+
 
     public static function total_item()
     {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CartResource;
 use App\Models\Ecommerce\Cart;
 use App\Models\Ecommerce\Product;
 use Illuminate\Http\Request;
@@ -74,5 +75,14 @@ class CartController extends Controller
             ],Response::HTTP_OK);
 
         }
+    }
+
+    public function view_cart(){
+        return response()->json([
+            'data'=>CartResource::collection(Cart::carts()),
+            'subtotal'=>Cart::subtotal(),
+            'total_item'=>Cart::total_item(),
+            'status'=>Response::HTTP_OK,
+        ],Response::HTTP_OK);
     }
 }
