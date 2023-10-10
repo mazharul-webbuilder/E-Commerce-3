@@ -11,6 +11,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Yajra\DataTables\DataTables;
 
 class ManageProductController extends Controller
@@ -37,11 +39,11 @@ class ManageProductController extends Controller
             })
             ->editColumn('action',function(Product $data){
                 return '
-                       <a href="javascript:;"   type="button" class="delete_item text-white bg-purple-600 hover:bg-purple-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                       <a href="'.route('seller.merchant.product.details', $data->id).'"  class="delete_item text-white bg-purple-600 hover:bg-purple-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                             View Detail
                         </a>
                         <a href="javascript:;" data-action="'.route('seller.product.add_to_store').'" item_id="'.$data->id.'" type="button" class="add_to_store text-white bg-cyan-600 hover:bg-cyan-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center">
-                            Add My Store
+                            Add To My Shop
                         </a>
                         ';
             })
@@ -112,22 +114,29 @@ class ManageProductController extends Controller
             })
             ->addColumn('config', function (SellerProduct $data){
                 return '
-                    <button data-id="'.$data->id.'"  class="ConfigBtn text-white bg-lime-500 hover:bg-red-950 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                    <button data-id="'.$data->id.'" type="button" data-bs-toggle="modal"  class="ConfigBtn text-white bg-lime-500 hover:bg-red-950 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                              Config
                      </button>
                 ';
             })
+            ->addColumn('view-details', function (SellerProduct $data){
+                return '
+                    <a href="'.route('seller.product.view', $data->product_id).'" type="button" class="text-white bg-blue-700 hover:bg-blue-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                             View
+                     </a>
+                ';
+            })
             ->editColumn('action',function(SellerProduct $data){
                 $seller=Auth::guard('seller')->user();
-                return '<a href="javascript:;" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
-                             Release
+                return '<a href="javascript:;" data-id="'.$data->id.'" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                             Remove
                          </a>
                          <a href="javascript:;" share_link="'.route('api.product_detail',['id'=>$data->product_id,'seller_or_affiliate'=>$seller->seller_number,'type'=>'seller']).'" class="copy_link text-white bg-purple-600 hover:bg-purple-700 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                              Copy Link
                          </a>
                          ';
             })
-            ->rawColumns(['thumbnail','product_name', 'config','action'])
+            ->rawColumns(['thumbnail','product_name', 'config', 'view-details','action'])
             ->make(true);
 
 
@@ -146,4 +155,78 @@ class ManageProductController extends Controller
 
         return \response()->json($seller_product);
     }
+
+    /**
+     * Store Seller Configuration
+    */
+    public function configStore(Request $request): JsonResponse
+    {
+        $request->validate([
+            'sellerProductId' => 'required|integer',
+            'seller_price' => 'required|numeric|min:1',
+            'seller_company_commission' => 'required|numeric|min:0',
+        ]);
+        try {
+            DB::beginTransaction();
+            $seller_product = SellerProduct::find($request->sellerProductId);
+            $seller_product->seller_price = $request->seller_price;
+            $seller_product->seller_company_commission = $request->seller_company_commission;
+            $seller_product->save();
+            DB::commit();
+            return \response()->json([
+                'type' => 'success',
+                'response' => Response::HTTP_OK,
+                'message' => 'Product Configured Successfully'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return \response()->json([
+                'type' => 'error',
+                'response' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'message' => $e->getMessage()
+            ]);
+
+        }
+    }
+
+    /**
+     * View Product Detail
+    */
+    public function viewProduct($id): View //id is products table product id
+    {
+        $product = Product::find($id);
+
+        $sellerProduct = SellerProduct::where('product_id', $product->id)
+                ->where('seller_id', \auth()->guard('seller')->id())->first();
+
+        return  view('seller.product.details', compact('product', 'sellerProduct'));
+    }
+
+    /**
+     * Delete PRoduct
+    */
+    public function deleteProduct(Request $request): JsonResponse
+    {
+        if ($request->ajax()) {
+            $sellerProduct = SellerProduct::find($request->sellerProductId);
+            $sellerProduct->delete();
+            return \response()->json([
+                'message' => 'Product Remove Successfully',
+                'response' => Response::HTTP_OK,
+                'type' => 'success'
+            ]);
+        }
+        return \response()->json(null);
+    }
+
+    /**
+     *  Get Details of Merchant Product
+    */
+    public  function merchantProductDetail($id): View
+    {
+        $product = Product::find($id);
+
+        return  view('seller.product.merchant-product-details', compact('product'));
+    }
+
 }

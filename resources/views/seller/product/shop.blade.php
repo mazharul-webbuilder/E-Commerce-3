@@ -8,7 +8,7 @@
                 <ol class="flex items-center space-x-1 md:space-x-3 flex-wrap">
                     <li class="flex items-center">
                         <svg class="mr-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
-                        <a href="{{ route('dashboard') }}" class="flex items-center font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:scale-105">
+                        <a href="{{ route('seller.dashboard') }}" class="flex items-center font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:scale-105">
                             Home
                         </a>
                     </li>
@@ -50,7 +50,22 @@
                             </th>
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
                                 <div class="text-center">
+                                    Price
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    Company Commission
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
                                     Config
+                                </div>
+                            </th>
+                            <th scope="col" class="px-4 py-3">
+                                <div class="text-center">
+                                    View
                                 </div>
                             </th>
                             <th scope="col" class="px-4 py-3">
@@ -70,6 +85,7 @@
 
         </div>
     </section>
+    @include('seller.product._config_modal_')
 @endsection
 
 @section('extra_js')
@@ -94,7 +110,10 @@
                 { data: 'DT_RowIndex',name:'DT_RowIndex' },
                 { data: 'thumbnail',name:'thumbnail'},
                 { data: 'product_name',name:'product_name'},
+                { data: 'seller_price',name:'seller_price' },
+                { data: 'seller_company_commission',name:'seller_company_commission' },
                 { data: 'config',name:'config' },
+                { data: 'view-details',name:'view-details' },
                 { data: 'action',name:'action' },
             ],
 

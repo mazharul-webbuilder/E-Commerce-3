@@ -243,7 +243,7 @@
                         <li>
                             <a href="{{route('seller.product.shop')}}" class="text-lg text-white font-normal rounded-lg  flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">
                                 <i class="fas fa-trophy text-white group-hover:text-white transition duration-75"></i>
-                                <span class="ml-3 group-hover:text-white transition duration-150">My Store</span>
+                                <span class="ml-3 group-hover:text-white transition duration-150">My Shop</span>
                             </a>
                         </li>
                     </ul>
@@ -321,6 +321,23 @@
             blah.src = URL.createObjectURL(file)
         }
     }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script>
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
 </script>
 @yield('extra_js')
 
