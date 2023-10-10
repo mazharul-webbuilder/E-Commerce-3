@@ -23,5 +23,6 @@ Route::group([ 'as'=>'seller.'],function(){
         Route::get('/shop',[ManageProductController::class,'shop'])->name('product.shop');
         Route::get('/details',[ManageProductController::class,'details'])->name('product.details');
         Route::post('/store-config',[ManageProductController::class,'configStore'])->name('product.config.store');
+        Route::get('/view-product/{id}',[ManageProductController::class,'viewProduct'])->name('product.view');
     });
 });

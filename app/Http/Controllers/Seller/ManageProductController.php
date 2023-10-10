@@ -119,6 +119,13 @@ class ManageProductController extends Controller
                      </button>
                 ';
             })
+            ->addColumn('view-details', function (SellerProduct $data){
+                return '
+                    <a href="'.route('seller.product.view', $data->product_id).'" type="button" class="text-white bg-blue-700 hover:bg-blue-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                             View
+                     </a>
+                ';
+            })
             ->editColumn('action',function(SellerProduct $data){
                 $seller=Auth::guard('seller')->user();
                 return '<a href="javascript:;" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
@@ -129,7 +136,7 @@ class ManageProductController extends Controller
                          </a>
                          ';
             })
-            ->rawColumns(['thumbnail','product_name', 'config','action'])
+            ->rawColumns(['thumbnail','product_name', 'config', 'view-details','action'])
             ->make(true);
 
 
@@ -180,5 +187,18 @@ class ManageProductController extends Controller
             ]);
 
         }
+    }
+
+    /**
+     * View Product Detail
+    */
+    public function viewProduct($id): View //id is products table product id
+    {
+        $product = Product::find($id);
+
+        $sellerProduct = SellerProduct::where('product_id', $product->id)
+                ->where('seller_id', \auth()->guard('seller')->id())->first();
+
+        return  view('seller.product.details', compact('product', 'sellerProduct'));
     }
 }

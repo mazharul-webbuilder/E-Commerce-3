@@ -50,7 +50,22 @@
                             </th>
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
                                 <div class="text-center">
+                                    Price
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    Company Commission
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
                                     Config
+                                </div>
+                            </th>
+                            <th scope="col" class="px-4 py-3">
+                                <div class="text-center">
+                                    View
                                 </div>
                             </th>
                             <th scope="col" class="px-4 py-3">
@@ -95,7 +110,10 @@
                 { data: 'DT_RowIndex',name:'DT_RowIndex' },
                 { data: 'thumbnail',name:'thumbnail'},
                 { data: 'product_name',name:'product_name'},
+                { data: 'seller_price',name:'seller_price' },
+                { data: 'seller_company_commission',name:'seller_company_commission' },
                 { data: 'config',name:'config' },
+                { data: 'view-details',name:'view-details' },
                 { data: 'action',name:'action' },
             ],
 
