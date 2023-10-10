@@ -48,6 +48,11 @@
                                     Name
                                 </div>
                             </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    Config
+                                </div>
+                            </th>
                             <th scope="col" class="px-4 py-3">
                                 <div class="text-center">
                                     Action
@@ -89,6 +94,7 @@
                 { data: 'DT_RowIndex',name:'DT_RowIndex' },
                 { data: 'thumbnail',name:'thumbnail'},
                 { data: 'product_name',name:'product_name'},
+                { data: 'config',name:'config' },
                 { data: 'action',name:'action' },
             ],
 
@@ -161,4 +167,5 @@
             })
         })
     </script>
+    @include('seller.product._seller_product_script_')
 @endsection

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Ecommerce\Product;
 use App\Models\SellerProduct;
 use Doctrine\DBAL\Query\QueryException;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -13,36 +15,35 @@ use Yajra\DataTables\DataTables;
 
 class ManageProductController extends Controller
 {
-
-
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('seller');
     }
-    public function datatable(){
+    public function datatable()
+    {
         $auth_user=Auth::guard('seller')->user();
-        $datas=Product::where('is_reseller',1)->orderBy('id','DESC')->get();
+
+        $datas = Product::where('is_reseller',1)->orderBy('id','DESC')->get();
 
         return DataTables::of($datas)
             ->addIndexColumn()
             ->editColumn('thumbnail',function(Product $data){
-                $url=$data->thumbnail ? asset("uploads/product/resize/".$data->thumbnail)
-                    :default_image();
+                $url = $data->thumbnail ? asset("uploads/product/small/".$data->thumbnail)
+                    : default_image();
                 return '<img src='.$url.' border="0" width="120" height="50" class="img-rounded" />';
             })
             ->editColumn('merchant',function(Product $data){
-               return '<div><p>Name:'.$data->merchant->name ?? "".'</p></div>';
+               return '<div><p>Name: '.$data->merchant->name ?? "".'</p></div>';
             })
             ->editColumn('action',function(Product $data){
-                return '<a href="javascript:;"   type="button" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
-                                            Delete
-                                        </a>
-                                        <a href="javascript:;"   type="button" class="delete_item text-white bg-purple-600 hover:bg-purple-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
-                                            View Detail
-                                        </a>
-                                        <a href="javascript:;" data-action="'.route('seller.product.add_to_store').'" item_id="'.$data->id.'" type="button" class="add_to_store text-white bg-cyan-600 hover:bg-cyan-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center">
-                                            Add My Store
-                                        </a>
-                                        ';
+                return '
+                       <a href="javascript:;"   type="button" class="delete_item text-white bg-purple-600 hover:bg-purple-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                            View Detail
+                        </a>
+                        <a href="javascript:;" data-action="'.route('seller.product.add_to_store').'" item_id="'.$data->id.'" type="button" class="add_to_store text-white bg-cyan-600 hover:bg-cyan-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center">
+                            Add My Store
+                        </a>
+                        ';
             })
             ->rawColumns(['thumbnail','merchant','action'])
             ->make(true);
@@ -65,6 +66,7 @@ class ManageProductController extends Controller
                     $data=new SellerProduct();
                     $data->seller_id=$auth_user->id;
                     $data->product_id=$request->item_id;
+                    $data->seller_price = Product::find($request->item_id)->current_price; // Set Default Price
                     $data->save();
 
                     return response()->json([
@@ -101,12 +103,19 @@ class ManageProductController extends Controller
         return DataTables::of($datas)
             ->addIndexColumn()
             ->editColumn('thumbnail',function(SellerProduct $data){
-                $url=$data->product->thumbnail ? asset("uploads/product/resize/".$data->product->thumbnail)
+                $url=$data->product->thumbnail ? asset("uploads/product/small/".$data->product->thumbnail)
                     :default_image();
                 return '<img src='.$url.' border="0" width="120" height="50" class="img-rounded" />';
             })
             ->editColumn('product_name',function(SellerProduct $data){
                 return $data->product->title;
+            })
+            ->addColumn('config', function (SellerProduct $data){
+                return '
+                    <button data-id="'.$data->id.'"  class="ConfigBtn text-white bg-lime-500 hover:bg-red-950 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                             Config
+                     </button>
+                ';
             })
             ->editColumn('action',function(SellerProduct $data){
                 $seller=Auth::guard('seller')->user();
@@ -118,12 +127,23 @@ class ManageProductController extends Controller
                          </a>
                          ';
             })
-            ->rawColumns(['thumbnail','product_name','action'])
+            ->rawColumns(['thumbnail','product_name', 'config','action'])
             ->make(true);
 
 
     }
-    public function shop(){
+    public function shop(): View
+    {
         return view('seller.product.shop');
+    }
+
+    /**
+     * Get Seller Product Details
+    */
+    public function details(Request $request): JsonResponse
+    {
+        $seller_product = SellerProduct::select('id', 'seller_price', 'seller_company_commission')->find($request->sellerProductId);
+
+        return \response()->json($seller_product);
     }
 }
