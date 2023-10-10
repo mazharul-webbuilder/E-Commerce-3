@@ -2,6 +2,7 @@
 
 namespace App\Models\Ecommerce;
 
+use App\Models\SellerProduct;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,10 +23,6 @@ class Cart extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function products()
-    {
-        return $this->hasMany(Product::class);
-    }
 
     public function size()
     {
@@ -33,23 +30,37 @@ class Cart extends Model
     }
     public static function carts()
     {
-       $carts = Cart::where('user_id',Auth::user()->id)->where('status',1)->get();
-        return $carts;
+       if (auth()->guard('api')->check()){
+           $carts=Cart::where('user_id',auth()->guard('api')->user()->id)->get();
+       }else{
+           $carts=Cart::where('ip_address',\Request::ip())->get();
+       }
+       return $carts;
     }
 
 
     public static function subtotal()
     {
-        $carts = Cart::where('user_id',Auth::user()->id)->where('status',1)->get();
+        $carts = self::carts();
         $subtotal = 0;
-        foreach ($carts as $data)
+        foreach ($carts as $cart)
         {
-            $product = Product::find($data->product_id);
-            $subtotal += $product->price() * $data->quantity;
+            if ($cart->seller_id==null){
+                $subtotal += $cart->product->price() * $cart->quantity;
 
+            }else{
+                $seller_product=SellerProduct::where(['seller_id'=>$cart->seller_id,'product_id'=>$cart->product_id])->first();
+                $subtotal += $seller_product->seller_price * $cart->quantity;
+            }
         }
         return $subtotal;
 
+    }
+
+    public static function total_item()
+    {
+        $carts = self::carts();
+        return count($carts);
     }
     public static function total_coin()
     {

@@ -36,6 +36,7 @@ class CartController extends Controller
             $cart = Cart::where('product_id', $request->product_id)
                 ->where('size_id', $request->size_id)
                 ->where('user_id', auth()->user()->id)->first();
+
             if (is_null($cart)) {
                 $cart = new Cart();
                 $cart->product_id = $request->product_id;

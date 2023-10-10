@@ -51,7 +51,8 @@
             "app/Helper/RankSetting.php",
             "app/Helper/Campaign.php",
             "app/Helper/Tournament.php",
-            "app/Helper/Campaign.php"
+            "app/Helper/Campaign.php",
+            "app/Helper/Common.php"
         ]
     },
     "autoload-dev": {

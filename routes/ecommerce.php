@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\EcommerceController;
+use App\Http\Controllers\Api\CartController;
 
 
 Route::post('merchant_register',[RegisterController::class,'merchant_register']);
@@ -18,4 +19,9 @@ Route::get('/recommended_product/{category_ids?}', [EcommerceController::class, 
 Route::get('product_detail/{id}/{seller_or_affiliate?}/{type?}', [EcommerceController::class, 'product_detail'])->name('api.product_detail');
 Route::get('slider_list', [EcommerceController::class, 'slider_list']);
 Route::get('banner_list', [EcommerceController::class, 'banner_list']);
-Route::post('add_to_cart', [EcommerceController::class, 'add_to_cart']);
+
+//cart api
+//Route::group(['middleware'=>['auth:api']],function (){
+    Route::post('add_to_cart', [CartController::class, 'add_to_cart']);
+//});
+

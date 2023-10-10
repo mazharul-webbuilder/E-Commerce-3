@@ -84,9 +84,6 @@ class EcommerceController extends Controller
             'status'=>Response::HTTP_OK
         ],Response::HTTP_OK);
     }
-    public function add_to_cart(Request $request){
-
-    }
 
     public function slider_list(){
         $sliders=DB::table('sliders')->where('status',1)->latest()->get();
