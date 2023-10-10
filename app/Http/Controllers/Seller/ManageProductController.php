@@ -11,6 +11,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Yajra\DataTables\DataTables;
 
 class ManageProductController extends Controller
@@ -112,7 +114,7 @@ class ManageProductController extends Controller
             })
             ->addColumn('config', function (SellerProduct $data){
                 return '
-                    <button data-id="'.$data->id.'"  class="ConfigBtn text-white bg-lime-500 hover:bg-red-950 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                    <button data-id="'.$data->id.'" type="button" data-bs-toggle="modal"  class="ConfigBtn text-white bg-lime-500 hover:bg-red-950 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                              Config
                      </button>
                 ';
@@ -120,7 +122,7 @@ class ManageProductController extends Controller
             ->editColumn('action',function(SellerProduct $data){
                 $seller=Auth::guard('seller')->user();
                 return '<a href="javascript:;" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
-                             Release
+                             Remove
                          </a>
                          <a href="javascript:;" share_link="'.route('api.product_detail',['id'=>$data->product_id,'seller_or_affiliate'=>$seller->seller_number,'type'=>'seller']).'" class="copy_link text-white bg-purple-600 hover:bg-purple-700 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                              Copy Link
@@ -145,5 +147,38 @@ class ManageProductController extends Controller
         $seller_product = SellerProduct::select('id', 'seller_price', 'seller_company_commission')->find($request->sellerProductId);
 
         return \response()->json($seller_product);
+    }
+
+    /**
+     * Store Seller Configuration
+    */
+    public function configStore(Request $request): JsonResponse
+    {
+        $request->validate([
+            'sellerProductId' => 'required|integer',
+            'seller_price' => 'required|numeric|min:1',
+            'seller_company_commission' => 'required|numeric|min:0',
+        ]);
+        try {
+            DB::beginTransaction();
+            $seller_product = SellerProduct::find($request->sellerProductId);
+            $seller_product->seller_price = $request->seller_price;
+            $seller_product->seller_company_commission = $request->seller_company_commission;
+            $seller_product->save();
+            DB::commit();
+            return \response()->json([
+                'type' => 'success',
+                'response' => Response::HTTP_OK,
+                'message' => 'Product Configured Successfully'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return \response()->json([
+                'type' => 'error',
+                'response' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'message' => $e->getMessage()
+            ]);
+
+        }
     }
 }

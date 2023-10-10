@@ -70,6 +70,7 @@
 
         </div>
     </section>
+    @include('seller.product._config_modal_')
 @endsection
 
 @section('extra_js')
