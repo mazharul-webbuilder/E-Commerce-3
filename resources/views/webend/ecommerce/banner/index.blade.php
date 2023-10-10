@@ -47,12 +47,22 @@
                                 </th>
                                 <th scope="col" class="px-2 whitespace-nowrap py-3">
                                     <div class="text-center">
-                                        Title
+                                        Title 1
                                     </div>
                                 </th>
                                 <th scope="col" class="px-2 whitespace-nowrap py-3">
                                     <div class="text-center">
-                                        Priority
+                                        Title 2
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                    <div class="text-center">
+                                        Button Title
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                    <div class="text-center">
+                                        Button Link
                                     </div>
                                 </th>
 
@@ -78,10 +88,16 @@
                                             <img style="width: 200px;height: 100px" src=" {{asset('uploads/banner/resize/'.$banner->image) }}">
                                     </td>
                                     <td class="px-2 py-4 text-black border-r text-center">
-                                        {{ $banner->title }}
+                                        {{ $banner->title_1 }}
                                     </td>
                                     <td class="px-2 py-4 text-black border-r text-center">
-                                        {{ $banner->priority }}
+                                        {{ $banner->title_2 }}
+                                    </td>
+                                    <td class="px-2 py-4 text-black border-r text-center">
+                                        {{ $banner->button_title }}
+                                    </td>
+                                    <td class="px-2 py-4 text-black border-r text-center">
+                                        {{ $banner->button_link }}
                                     </td>
                                     <td class="px-2 py-4 text-black border-r text-center">
                                         <label class="inline-flex items-center ">

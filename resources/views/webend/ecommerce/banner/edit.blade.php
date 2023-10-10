@@ -48,19 +48,36 @@
                         <div class="flex flex-col md:flex-row justify-between gap-3">
                             <div class="w-6/12">
                                 <div class="w-full">
-                                    <h4 class="mb-2 font-medium text-zinc-700">Title</h4>
-                                    <input placeholder="Enter Slider Title" name="title" value="{{$banner->title}}" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text" >
+                                    <h4 class="mb-2 font-medium text-zinc-700">Title 1</h4>
+                                    <input placeholder="Enter  Title 1" name="title_1" value="{{$banner->title_1}}" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text" >
                                     <span class="error-message" id="email-error"></span>
                                 </div>
                             </div>
                             <div class="w-6/12">
                                 <div class="w-full">
-                                    <h4 class="mb-2 font-medium text-zinc-700">Priority</h4>
-                                    <input placeholder="Enter Priority" name="priority" value="{{$banner->priority}}" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text" >
+                                    <h4 class="mb-2 font-medium text-zinc-700">Title 2</h4>
+                                    <input placeholder="Enter Title 2" name="title_2" value="{{$banner->title_2}}" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text" >
                                     <span class="error-message" id="email-error"></span>
                                 </div>
                             </div>
                         </div>
+                        <div class="flex flex-col gap-4 p-4 mt-3">
+                            <div class="flex flex-col md:flex-row justify-between gap-3">
+                                <div class="w-6/12">
+                                    <div class="w-full">
+                                        <h4 class="mb-2 font-medium text-zinc-700">Button Title</h4>
+                                        <input placeholder="Enter Button Title" name="button_title" value="{{$banner->button_title}}" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text" >
+                                        <span class="error-message" id="email-error"></span>
+                                    </div>
+                                </div>
+                                <div class="w-6/12">
+                                    <div class="w-full">
+                                        <h4 class="mb-2 font-medium text-zinc-700">Button Link</h4>
+                                        <input placeholder="Enter Link" name="button_link" value="{{$banner->button_link}}" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text" >
+                                        <span class="error-message" id="email-error"></span>
+                                    </div>
+                                </div>
+                            </div>
                         <div class="flex flex-col md:flex-row justify-between gap-3">
 
                             <div class="w-1/2">

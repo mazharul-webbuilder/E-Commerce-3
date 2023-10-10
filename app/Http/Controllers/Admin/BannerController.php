@@ -34,16 +34,19 @@ class BannerController extends Controller
 
     public function store(Request $request){
         $request->validate([
-           'title' => 'nullable',
-           'priority' => 'required|integer',
+           'title_1' => 'nullable',
+           'title_2' => 'nullable',
+           'button_title' => 'nullable',
+           'button_link' => 'nullable',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
         try{
             DB::beginTransaction();
             Banner::create([
-                'title' => $request->title,
-                'priority' => $request->priority,
-                'slug' => Str::slug($request->title . Str::random(10), '-'),
+                'title_1' => $request->title_1,
+                'title_2' => $request->title_2,
+                'button_title' => $request->button_title,
+                'button_link' => $request->button_link,
                 'image' => $this->getImageName($request),
             ]);
             DB::commit();
@@ -106,9 +109,10 @@ class BannerController extends Controller
         {
             DB::beginTransaction();
             try{
-                $banner->title = $request->title;
-                $banner->priority = $request->priority;
-                $banner->slug = Str::slug($request->title . Str::random(10), '-');
+                $banner->title_1 = $request->title_1;
+                $banner->title_2 = $request->title_2;
+                $banner->button_title = $request->button_title;
+                $banner->button_link = $request->button_link;
                 if($request->hasFile('image')){
                     $this->deleteIfBannerImageExist($banner);
                     $banner->image = $this->getImageName($request);
