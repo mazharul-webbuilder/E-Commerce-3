@@ -25,7 +25,7 @@ class StockController extends Controller
     public function store(Request $request){
 
         $request->validate([
-            'size_id' => 'required',
+            'size_id' => 'nullable',
             'quantity' => 'required',
         ]);
         if ($request->isMethod('post'))
