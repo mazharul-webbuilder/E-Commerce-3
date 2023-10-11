@@ -222,6 +222,22 @@ class EcommerceController extends Controller
             ],Response::HTTP_OK);
         }
 
+    }
 
+    public function search_product(Request $request){
+        if ($request->isMethod("post")){
+            $datas=Product::where('short_description',"LIKE","%$request->keyword%")
+                ->orWhere('title',"LIKE","%$request->keyword%")
+                ->orWhere('current_price',"LIKE","%$request->keyword%")
+                ->where(['status'=>1])->paginate(8);
+
+            $products=ProductResource::collection($datas);
+
+            return \response()->json([
+                'products'=>$datas,
+                'type'=>'success',
+                'status'=>Response::HTTP_OK
+            ],Response::HTTP_OK);
+        }
     }
 }
