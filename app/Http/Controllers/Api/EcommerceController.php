@@ -117,6 +117,7 @@ class EcommerceController extends Controller
         })->paginate(5)->map(function ($data){
             return [
                 'id'=>$data->id,
+                'category_id'=>$data->category_id,
                 'title'=>$data->title,
                 'previous_price'=>$data->previous_price,
                 'current_price'=>$data->current_price,
