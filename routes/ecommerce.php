@@ -22,6 +22,7 @@ Route::get('slider_list', [EcommerceController::class, 'slider_list']);
 Route::get('banner_list', [EcommerceController::class, 'banner_list']);
 Route::post('add_to_wishlist', [EcommerceController::class, 'add_to_wishlist']);
 Route::get('view_wishlist', [EcommerceController::class, 'view_wishlist']);
+Route::post('delete_wishlist', [EcommerceController::class, 'delete_wishlist']);
 
 //cart api
 

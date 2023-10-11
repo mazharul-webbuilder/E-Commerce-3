@@ -199,9 +199,29 @@ class EcommerceController extends Controller
         }
 
         return \response()->json([
-            'message'=>$data,
+            'datas'=>$data,
             'type'=>'success',
             'status'=>Response::HTTP_OK
         ],Response::HTTP_OK);
+    }
+
+    public function delete_wishlist(Request $request){
+        $data=Wishlist::find($request->wishlist_id);
+        if (!is_null($data)){
+            $data->delete();
+            return \response()->json([
+                'message'=>"Successfully delete",
+                'type'=>'success',
+                'status'=>Response::HTTP_OK
+            ],Response::HTTP_OK);
+        }else{
+            return \response()->json([
+                'message'=>"Data not found",
+                'type'=>'warning',
+                'status'=>Response::HTTP_NO_CONTENT
+            ],Response::HTTP_OK);
+        }
+
+
     }
 }
