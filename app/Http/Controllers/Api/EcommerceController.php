@@ -193,9 +193,9 @@ class EcommerceController extends Controller
 
     public function view_wishlist(){
         if (auth()->guard('api')->check()){
-            $data=Wishlist::where(['user_id'=>auth()->guard('api')->user()->id])->get();
+            $data=Wishlist::with(['product:id,title,previous_price,current_price,thumbnail',])->where(['user_id'=>auth()->guard('api')->user()->id])->get();
         }else{
-            $data=Wishlist::where('ip_address',\Request::ip())->get();
+            $data=Wishlist::with(['product:id,title,previous_price,current_price,thumbnail',])->where('ip_address',\Request::ip())->get();
         }
 
         return \response()->json([
