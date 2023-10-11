@@ -11,6 +11,7 @@ use App\Http\Resources\SliderResource;
 use App\Models\Ecommerce\Category;
 use App\Models\Ecommerce\Product;
 use App\Models\Ecommerce\Slider;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -66,8 +67,6 @@ class EcommerceController extends Controller
     }
     public function recommended_product($category_ids=null){
 
-
-
         if (!is_null($category_ids)){
             $categories=explode(',',$category_ids);
 
@@ -104,5 +103,35 @@ class EcommerceController extends Controller
             'type'=>'success',
             'status'=>Response::HTTP_OK
         ],Response::HTTP_OK);
+    }
+
+    public function flash_deal_product(){
+        $today=Carbon::now()->format('d-m-Y');
+        $datas=Product::where('status',1)->where('flash_deal',1)->where(function ($query) use($today){
+                $query->where('deal_start_date','<=',$today);
+                $query->where('deal_end_date','>=',$today);
+        })->get()->map(function ($data){
+            return [
+                'id'=>$data->id,
+                'title'=>$data->title,
+                'previous_price'=>$data->previous_price,
+                'current_price'=>$data->current_price,
+                'previous_coin'=>$data->previous_coin,
+                'current_coin'=>$data->current_coin,
+                'thumbnail'=>$data->thumbnail,
+                'deal_start_date'=>$data->deal_start_date,
+                'deal_end_date'=>$data->deal_end_date,
+                'deal_amount'=>$data->deal_amount,
+                'deal_type'=>$data->deal_type
+            ];
+        });
+
+        return \response()->json([
+            'datas'=>$datas,
+            'type'=>'success',
+            'status'=>Response::HTTP_OK
+        ],Response::HTTP_OK);
+
+
     }
 }
