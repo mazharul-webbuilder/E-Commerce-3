@@ -31,6 +31,7 @@ use App\Http\Controllers\Admin\WithdrawHistoryController;
 use App\Http\Controllers\Admin\WithdrawPaymentController;
 use App\Http\Controllers\Ludo\CampaignController;
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\BrandController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -413,6 +414,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/sub-category-edit/{slug}', [Admin\SubCategoryController::class, 'edit'])->name('sub-category.edit');
     Route::post('/sub-category-update/{id}', [Admin\SubCategoryController::class, 'update'])->name('sub-category.update');
     Route::get('/sub-category-delete/{id}', [Admin\SubCategoryController::class, 'destroy'])->name('sub-category.destroy');
+
+    /*Brand Route*/
+    Route::group(['prefix' => 'brand', 'as' => 'brand.'], function (){
+        Route::get('/', [BrandController::class, 'index'])->name('index');
+        Route::post('/store', [BrandController::class, 'store'])->name('store');
+    });
 
     // slider controller slider
     Route::group(['prefix' => 'slider'], function () {
