@@ -428,8 +428,8 @@ class ProductController extends Controller
 
             $product = Product::find($request->product_id);
             $product->flash_deal = $request->flashDealStatus;
-            $product->deal_start_date = $request->startDate;
-            $product->deal_end_date = $request->endDate;
+            $product->deal_start_date = date("d-m-Y",strtotime($request->startDate));
+            $product->deal_end_date = date("d-m-Y",strtotime($request->startDate));
             $product->deal_amount = $request->amount;
             $product->deal_type = $request->dealType;
             $product->save();
