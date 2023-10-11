@@ -1089,6 +1089,13 @@
                                 </ul>
                             </li>
                             <li>
+                                <a href="{{ route('brand.index') }}"
+                                    class="{{ Route::is('brand.index') ? 'bg-blue-500' : '' }} text-lg text-white font-normal rounded-lg flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">
+                                    <i class="fas fa-th text-white group-hover:text-white transition duration-75"></i>
+                                    <span class="ml-3 group-hover:text-white transition duration-150">Brand</span>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('banner.all') }}"
                                     class="{{ Route::is('banner.all') ? 'bg-blue-500' : '' }} text-lg text-white font-normal rounded-lg flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">
                                     <i class="fas fa-th text-white group-hover:text-white transition duration-75"></i>

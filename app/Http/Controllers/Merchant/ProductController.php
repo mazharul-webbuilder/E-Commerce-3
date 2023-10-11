@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Merchant;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MerchentProductFlashDealRequest;
+use App\Models\Brand;
 use App\Models\Ecommerce\Category;
 use App\Models\Ecommerce\Product;
 use App\Models\Ecommerce\SubCategory;
@@ -120,7 +121,10 @@ class ProductController extends Controller
     public function create(){
         $categories=Category::where('status',1)->latest()->get();
         $units=Unit::where('status',1)->latest()->get();
-        return view('merchant.product.create',compact('categories','units'));
+
+        $brands = Brand::where('status', 1)->latest()->get();
+
+        return view('merchant.product.create',compact('categories','units', 'brands'));
     }
 
     public function store(Request $request)
@@ -145,6 +149,7 @@ class ProductController extends Controller
             'company_commission'=>'required_if:is_reseller,1',
             'company_commission_af'=>'required_if:is_affiliate,1',
             'affiliate_commission'=>'required_if:is_affiliate,1',
+            'brand_id'=>'nullable|integer',
         ]);
         if ($request->isMethod('post'))
         {
@@ -170,7 +175,9 @@ class ProductController extends Controller
                 $product->merchant_id=$auth_user->id;
                 $product->is_reseller = $request->is_reseller;
                 $product->is_affiliate = $request->is_affiliate;
-
+                if ($request->brand_id){
+                    $product->brand_id = $request->brand_id;
+                }
                 if ($request->sub_category_id)
                 {
                     $product->sub_category_id   = $request->sub_category_id;
@@ -428,8 +435,8 @@ class ProductController extends Controller
 
             $product = Product::find($request->product_id);
             $product->flash_deal = $request->flashDealStatus;
-            $product->deal_start_date = $request->startDate;
-            $product->deal_end_date = $request->endDate;
+            $product->deal_start_date = date("d-m-Y",strtotime($request->startDate));
+            $product->deal_end_date = date("d-m-Y",strtotime($request->startDate));
             $product->deal_amount = $request->amount;
             $product->deal_type = $request->dealType;
             $product->save();

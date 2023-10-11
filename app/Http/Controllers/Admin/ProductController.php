@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Orderdetails;
+use App\Models\Brand;
 use App\Models\Ecommerce\Category;
 use App\Models\Ecommerce\Order;
 use App\Models\Ecommerce\Order_detail;
@@ -31,7 +32,10 @@ class ProductController extends Controller
     {
         $categories=Category::where('status',1)->latest()->get();
         $units=Unit::where('status',1)->latest()->get();
-        return view('webend.ecommerce.product.create',compact('categories','units'));
+
+        $brands = Brand::where('status', 1)->latest()->get();
+
+        return view('webend.ecommerce.product.create',compact('categories','units', 'brands'));
     }
 
     public function store(Request $request)
@@ -52,6 +56,7 @@ class ProductController extends Controller
             'delivery_charge_out_dhaka'=>'required',
             'thumbnail'=>'required',
             'description'=>'nullable',
+            'brand_id'=>'nullable|integer',
         ]);
         if ($request->isMethod('post'))
         {
@@ -74,6 +79,10 @@ class ProductController extends Controller
                 $product->description       = $request->description;
                 $product->product_code       =rand(10000, 99999);
                 $product->admin_id       =  auth()->guard('admin')->user()->id;
+
+                if ($request->brand_id){
+                    $product->brand_id = $request->brand_id;
+                }
 
                 if ($request->sub_category_id)
                 {

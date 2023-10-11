@@ -50,7 +50,7 @@
                                                 name="size_id">
                                             <option value="">Select Size</option>
                                             @foreach($sizes as $size)
-                                                <option value="{{$size->id}}">{{$size->name}}</option>
+                                                <option value="{{$size->id}}">{{$size->name ? : 'no size'}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -125,7 +125,7 @@
                                     </td>
 
                                     <td class="px-2 py-4 text-black border-r text-center">
-                                        {{ $stock->size->name }}
+                                        {{ $stock->size_id ?  $stock->size->name ? : 'no size' : '' }}
                                     </td>
 
                                     <td class="px-2 py-4 text-black border-r text-center">
