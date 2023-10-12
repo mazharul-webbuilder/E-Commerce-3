@@ -71,6 +71,7 @@
                 method: 'GET',
                 data: {id: id},
                 success: function (data) {
+                    $('.brand-id').val(data.id)
                     $('.brandName').val(data.brand_name)
                     $('.existing-image').attr('src', '{{asset('uploads/brand/resize')}}' + '/' + data.image)
                 }
@@ -79,6 +80,51 @@
             $('#editModal').removeClass('hidden')
             $('#editModalClose').on('click', function (){
                 $('#editModal').addClass('hidden')
+            })
+
+        })
+        /*Update Brand*/
+        $('.updateForm').on('submit', function (e){
+            e.preventDefault()
+            const updateFormData = new FormData(this)
+            $.ajax({
+                url: '{{route('brand.update')}}',
+                method: 'POST',
+                data: updateFormData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    if (data.response === 200) {
+                        Toast.fire({
+                            icon: data.type,
+                            title: data.message
+                        })
+                        $('.submit-btn').text('Update').prop('disabled', false)
+                        $('#editModal').addClass('hidden')
+                        window.location.reload()
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log('error')
+                    if (xhr.status === 422) {
+                        $('.submit-btn').text('Submit').prop('disabled', false)
+                        const errors = xhr.responseJSON.errors;
+
+                        // Clear previous error messages
+                        $('.error-message').remove();
+
+                        // Display error messages for each input field
+                        Object.keys(errors).forEach(function(field) {
+                            const errorMessage = errors[field][0];
+                            const inputField = $('[name="' + field + '"]');
+                            inputField.after('<span class="error-message text-red-500">' + errorMessage + '</span>');
+                        });
+
+                    } else {
+                        console.log('An error occurred:', status, error);
+                    }
+                }
             })
 
         })

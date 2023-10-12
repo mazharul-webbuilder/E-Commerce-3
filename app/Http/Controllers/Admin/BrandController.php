@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
@@ -85,7 +86,7 @@ class BrandController extends Controller
     /**
      * Get Brand Details
     */
-    public function detail(Request $request)
+    public function detail(Request $request): JsonResponse
     {
         if ($request->ajax()) {
             $brand = Brand::find($request->id);
@@ -93,4 +94,69 @@ class BrandController extends Controller
             return \response()->json($brand);
         }
     }
+
+    /**
+     * Update Brand Data
+    */
+    public function update(Request $request): JsonResponse
+    {
+        $request->validate([
+            'brand_name' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+        ]);
+        try {
+            $brand = Brand::find($request->id);
+
+            if ($request->has('image')) {
+                $this->deleteImage($brand);
+            }
+            DB::beginTransaction();
+
+            $brand->update([
+                'brand_name' => $request->brand_name,
+                'image' => $request->has('image') ? $this->getImageName($request) : $brand->image,
+            ]);
+            DB::commit();
+            return response()->json([
+                'type' => 'success',
+                'response' => Response::HTTP_OK,
+                'message' => 'Updated Successfully'
+            ]);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'type' => 'error',
+                'response' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'message' => $e->getMessage(),
+            ]);
+        }catch (\Exception $e) {
+            return response()->json([
+                'type' => 'error',
+                'response' => Response::HTTP_OK,
+                'message' => 'Something Went Wrong',
+            ]);
+        }
+    }
+
+    /**
+     * Delete Image
+     */
+    private function deleteImage($brand): void
+    {
+        // Define the paths to the image files on your server.
+        $originalImagePath = public_path('uploads/brand/original/' . $brand->image);
+        $resizeImagePath = public_path('uploads/brand/resize/' . $brand->image);
+
+        // Check if the files exist and then delete them.
+        if (File::exists($originalImagePath)) {
+            File::delete($originalImagePath);
+        }
+
+        if (File::exists($resizeImagePath)) {
+            File::delete($resizeImagePath);
+        }
+    }
+
+
+
 }

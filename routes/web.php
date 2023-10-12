@@ -420,6 +420,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
         Route::get('/', [BrandController::class, 'index'])->name('index');
         Route::post('/store', [BrandController::class, 'store'])->name('store');
         Route::get('/details', [BrandController::class, 'detail'])->name('detail');
+        Route::post('/update', [BrandController::class, 'update'])->name('update');
     });
 
     // slider controller slider

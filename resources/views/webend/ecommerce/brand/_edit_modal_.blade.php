@@ -16,6 +16,7 @@
             <!-- Flash Deal Form -->
             <form class="updateForm" enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" class="brand-id" name="id">
                 <div class="mb-4">
                     <label class="block text-gray-600 text-sm font-semibold mb-2" for="amount">Name*</label>
                     <input type="text" id="brandName" name="brand_name" class="brandName w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-400" placeholder="Enter Name">
@@ -34,7 +35,7 @@
                 </div>
 
                 <div class="text-center">
-                    <button type="submit" class="submit-btn bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-400">Create</button>
+                    <button type="submit" class="submit-btn bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-400">Update</button>
                 </div>
             </form>
             <!-- End of Flash Deal Form -->
