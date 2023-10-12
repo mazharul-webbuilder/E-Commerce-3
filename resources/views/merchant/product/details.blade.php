@@ -79,15 +79,8 @@
                             </div>
                         </div>
                         <!-- table start -->
-                        <div class="border border-[#8e0789] rounded-md mt-10">
-                            <div class="bg-[#8e0789] overflow-hidden w-full px-0 flex items-center">
-                                <h2 class="text-2xl font-bold py-2 text-white pl-3">Product Details</h2>
-                                <div
-                                    class="text-center text-2xl font-bold text-white flex flex-col  justify-center w-10/12">
-                                    <p>Product Code: {{ $product->product_code ? $product->product_code : '' }}</p>
-                                </div>
-                            </div>
-                            <div class="mt-4">
+                        <div class="border border-[#8e0789] rounded-md">
+                            <div class="">
                                 <div class="w-full rounded-lg mt-2 bg-gray-light p-2">
                                     <table class="w-full">
                                         <tbody class="text-left">
@@ -288,42 +281,42 @@
                                     </div>
                                 </div>
                             </div>
-{{--                            <div class="w-full" style="display:none;">--}}
-{{--                                <div class="w-full p-4">--}}
-{{--                                    <div class="flex items-start gap-x-8">--}}
-{{--                                        <div class="font-medium">Review</div>--}}
-{{--                                        <div>--}}
-{{--                                            <div class="flex flex-grow gap-2 items-start justify-between">--}}
-{{--                                                <div class="flex gap-x-2 items-center">--}}
-{{--                                                    <div--}}
-{{--                                                        class="h-12 w-12 bg-slate-300 rounded-full overflow-hidden border border-gray-200">--}}
-{{--                                                        <img src="./asset/images/1.jpg" alt="">--}}
-{{--                                                    </div>--}}
-{{--                                                    <div class="font-medium">--}}
-{{--                                                        <div>Russel Arnold</div>--}}
-{{--                                                        <div class="flex gap-2 items-center">--}}
-{{--                                                            <div class="flex gap-2">--}}
-{{--                                                                <i class="text-amber-600 fas fa-star"></i>--}}
-{{--                                                                <i class="text-amber-600 fas fa-star"></i>--}}
-{{--                                                                <i class="text-amber-600 fas fa-star"></i>--}}
-{{--                                                                <i class="text-amber-600 fas fa-star"></i>--}}
-{{--                                                                <i class="text-zinc-600 fas fa-star"></i>--}}
-{{--                                                            </div>--}}
-{{--                                                            <div class="font-medium">4.3 out of 5</div>--}}
-{{--                                                        </div>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                                <div>2022, 2 hours ago</div>--}}
-{{--                                            </div>--}}
-{{--                                            <div class="mt-2">Lorem, ipsum dolor sit amet consectetur adipisicing elit.--}}
-{{--                                                Veniam tempore numquam nobis? Nostrum minus dolorem quas rem--}}
-{{--                                                consequuntur laboriosam quidem eos, accusamus, repudiandae aliquid--}}
-{{--                                                magni. Sequi voluptate dicta veritatis tempore?--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
+                            {{--                            <div class="w-full" style="display:none;">--}}
+                            {{--                                <div class="w-full p-4">--}}
+                            {{--                                    <div class="flex items-start gap-x-8">--}}
+                            {{--                                        <div class="font-medium">Review</div>--}}
+                            {{--                                        <div>--}}
+                            {{--                                            <div class="flex flex-grow gap-2 items-start justify-between">--}}
+                            {{--                                                <div class="flex gap-x-2 items-center">--}}
+                            {{--                                                    <div--}}
+                            {{--                                                        class="h-12 w-12 bg-slate-300 rounded-full overflow-hidden border border-gray-200">--}}
+                            {{--                                                        <img src="./asset/images/1.jpg" alt="">--}}
+                            {{--                                                    </div>--}}
+                            {{--                                                    <div class="font-medium">--}}
+                            {{--                                                        <div>Russel Arnold</div>--}}
+                            {{--                                                        <div class="flex gap-2 items-center">--}}
+                            {{--                                                            <div class="flex gap-2">--}}
+                            {{--                                                                <i class="text-amber-600 fas fa-star"></i>--}}
+                            {{--                                                                <i class="text-amber-600 fas fa-star"></i>--}}
+                            {{--                                                                <i class="text-amber-600 fas fa-star"></i>--}}
+                            {{--                                                                <i class="text-amber-600 fas fa-star"></i>--}}
+                            {{--                                                                <i class="text-zinc-600 fas fa-star"></i>--}}
+                            {{--                                                            </div>--}}
+                            {{--                                                            <div class="font-medium">4.3 out of 5</div>--}}
+                            {{--                                                        </div>--}}
+                            {{--                                                    </div>--}}
+                            {{--                                                </div>--}}
+                            {{--                                                <div>2022, 2 hours ago</div>--}}
+                            {{--                                            </div>--}}
+                            {{--                                            <div class="mt-2">Lorem, ipsum dolor sit amet consectetur adipisicing elit.--}}
+                            {{--                                                Veniam tempore numquam nobis? Nostrum minus dolorem quas rem--}}
+                            {{--                                                consequuntur laboriosam quidem eos, accusamus, repudiandae aliquid--}}
+                            {{--                                                magni. Sequi voluptate dicta veritatis tempore?--}}
+                            {{--                                            </div>--}}
+                            {{--                                        </div>--}}
+                            {{--                                    </div>--}}
+                            {{--                                </div>--}}
+                            {{--                            </div>--}}
                         </div>
                     </div>
                 </div>
