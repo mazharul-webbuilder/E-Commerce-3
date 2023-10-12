@@ -34,6 +34,8 @@
                         $('.addModal')[0].reset();
                         $('.submit-btn').text('Submit').prop('disabled', false)
                         $('#addModal').addClass('hidden')
+                        /*Reload After Successfully Brand Creation*/
+                        location.reload()
 
                     }
                 },
