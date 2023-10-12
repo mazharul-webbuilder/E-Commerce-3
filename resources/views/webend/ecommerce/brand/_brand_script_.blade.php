@@ -1,6 +1,6 @@
 <script>
     $(document).ready(function (){
-        /*Modal*/
+        /*Add Modal*/
         $('#AddModal').on('click', function (){
             /*Appear Add Modal*/
             $('#addModal').removeClass('hidden')
@@ -62,5 +62,26 @@
             })
 
         })
+        /*Edit Modal*/
+        $('body').on('click', '.edit-brand', function (e){
+            e.preventDefault()
+            const id = $(this).data('id')
+            $.ajax({
+                url: '{{route('brand.detail')}}',
+                method: 'GET',
+                data: {id: id},
+                success: function (data) {
+                    $('.brandName').val(data.brand_name)
+                    $('.existing-image').attr('src', '{{asset('uploads/brand/resize')}}' + '/' + data.image)
+                }
+            })
+            /*Modal Control*/
+            $('#editModal').removeClass('hidden')
+            $('#editModalClose').on('click', function (){
+                $('#editModal').addClass('hidden')
+            })
+
+        })
+
     })
 </script>

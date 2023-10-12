@@ -81,4 +81,16 @@ class BrandController extends Controller
             return $image_name;
         }
     }
+
+    /**
+     * Get Brand Details
+    */
+    public function detail(Request $request)
+    {
+        if ($request->ajax()) {
+            $brand = Brand::find($request->id);
+
+            return \response()->json($brand);
+        }
+    }
 }
