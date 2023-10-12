@@ -422,7 +422,7 @@ class ProductController extends Controller
     {
         $product = Product::find($request->id);
 
-        return \response()->json($product->flash_deal);
+        return \response()->json($product);
     }
 
     /**

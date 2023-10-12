@@ -41,6 +41,7 @@
                 <div class="mb-4">
                     <label class="block text-gray-600 text-sm font-semibold mb-2" for="dealType">Deal Type:</label>
                     <select id="dealType" name="dealType" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-400">
+                        <option value="">Select</option>
                         <option value="flat">Flat</option>
                         <option value="percent">Percent</option>
                     </select>

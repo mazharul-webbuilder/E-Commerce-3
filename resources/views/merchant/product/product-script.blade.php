@@ -29,8 +29,10 @@
                 method: 'get',
                 data: { id: productId, _token: csrfToken },
                 success: function (data) {
-                    $('#getFlashDealStatus').text(data === 1 ? "Yes" : "No")
-                    $('#flashDealStatus').val(data)
+                    $('#getFlashDealStatus').text(data.flash_deal === 1 ? "Yes" : "No")
+                    $('#flashDealStatus').val(data.flash_deal)
+                    $('#dealType').val(data.deal_type)
+                    $('#amount').val(data.deal_amount)
                     $('#FlashDealProductId').val(productId)
 
                     $('#flashDealModal').removeClass('hidden');
@@ -204,4 +206,15 @@
             }
         })
     })
+    /*Convert Date Format*/
+    // function convertDateFormat(inputDate) {
+    //     var parts = inputDate.split('-');
+    //     if (parts.length === 3) {
+    //         var day = parts[0];
+    //         var month = parts[1];
+    //         var year = parts[2];
+    //         return month + '/' + day + '/' + year;
+    //     }
+    //     return '';
+    // }
 </script>
