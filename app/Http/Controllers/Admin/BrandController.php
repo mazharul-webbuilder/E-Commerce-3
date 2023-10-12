@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
+use function PHPUnit\Framework\exactly;
 
 class BrandController extends Controller
 {
@@ -154,6 +155,34 @@ class BrandController extends Controller
 
         if (File::exists($resizeImagePath)) {
             File::delete($resizeImagePath);
+        }
+    }
+
+    /**
+     * Delete Brand
+    */
+    public function delete(Request $request) : JsonResponse
+    {
+        if ($request->ajax()) {
+            try {
+                $brand = Brand::find($request->id);
+                DB::beginTransaction();
+                $this->deleteImage($brand);
+                $brand->delete();
+                DB::commit();
+                return  \response()->json([
+                    'message' => 'Brand Deleted Successfully',
+                    'type' => 'success',
+                    'response' => Response::HTTP_OK
+                ]);
+            } catch (QueryException $e) {
+                DB::rollBack();
+                return  \response()->json([
+                    'message' => 'Brand Deleted Successfully',
+                    'type' => 'success',
+                    'response' => Response::HTTP_OK
+                ]);
+            }
         }
     }
 

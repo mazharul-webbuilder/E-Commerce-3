@@ -128,6 +128,40 @@
             })
 
         })
+        /*Delete Brand*/
+        $('body').on('click', '.delete-brand', function (e){
+            e.preventDefault();
+            const id = $(this).data('id')
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        url: '{{ route('brand.delete') }}',
+                        method: 'POST',
+                        data: {id: id},
+                        success: function (data) {
+                            if (data.response === 200) {
+                                Toast.fire({
+                                    icon: data.type,
+                                    title: data.message
+                                })
+                                window.location.reload()
+                            }
+                        }
+                    });
+
+                }
+            })
+
+        })
 
     })
 </script>
