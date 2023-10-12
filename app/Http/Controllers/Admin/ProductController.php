@@ -43,10 +43,10 @@ class ProductController extends Controller
         $this->validate($request,[
             'title'=>'required|max:255',
             'short_description'=>'required',
-            'weight'=>'required',
+            'weight'=>'nullable',
             'category_id'=>'required',
             'sub_category_id'=>'nullable',
-            'unit_id'=>'required',
+            'unit_id'=>'nullable',
             'purchase_price'=>'required',
             'previous_price'=>'required',
             'current_price'=>'required',
