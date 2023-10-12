@@ -8,13 +8,17 @@ use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ProductDetailResource;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\SliderResource;
+use App\Models\Ecommerce\Cart;
 use App\Models\Ecommerce\Category;
 use App\Models\Ecommerce\Product;
 use App\Models\Ecommerce\Slider;
+use App\Models\Ecommerce\Wishlist;
 use Carbon\Carbon;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class EcommerceController extends Controller
 {
@@ -110,9 +114,10 @@ class EcommerceController extends Controller
         $datas=Product::where('status',1)->where('flash_deal',1)->where(function ($query) use($today){
                 $query->where('deal_start_date','<=',$today);
                 $query->where('deal_end_date','>=',$today);
-        })->get()->map(function ($data){
+        })->paginate(5)->map(function ($data){
             return [
                 'id'=>$data->id,
+                'category_id'=>$data->category_id,
                 'title'=>$data->title,
                 'previous_price'=>$data->previous_price,
                 'current_price'=>$data->current_price,
@@ -131,7 +136,109 @@ class EcommerceController extends Controller
             'type'=>'success',
             'status'=>Response::HTTP_OK
         ],Response::HTTP_OK);
+    }
+
+    public function add_to_wishlist(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'product_id'=>'required|integer',
+        ]);
+
+        if ($validator->fails()){
+            return \response()->json([
+                'data'=>$validator->errors()->first(),
+                'type'=>'error',
+                'status'=>Response::HTTP_UNPROCESSABLE_ENTITY
+            ],Response::HTTP_UNPROCESSABLE_ENTITY);
+        }else{
+            if ($request->isMethod("POST")){
+                try {
+                    DB::beginTransaction();
+                    if (auth()->guard('api')->check()){
+                        $data=Wishlist::where(['product_id'=>$request->product_id,'user_id'=>auth()->guard('api')->user()->id])->first();
+                    }else{
+                        $data=Wishlist::where(['product_id'=>$request->product_id,'ip_address'=>$request->ip()])->first();
+                    }
+                    if (is_null($data)){
+                        $wishlist=new Wishlist();
+                        $wishlist->product_id=$request->product_id;
+                        $wishlist->ip_address=$request->ip();
+                        $wishlist->user_id=auth()->guard('api')->check() ? auth()->guard('api')->user()->id : null;
+                        $wishlist->save();
+                        DB::commit();
+                        return \response()->json([
+                            'message'=>"Successfully added to favorite",
+                            'type'=>'success',
+                            'status'=>Response::HTTP_OK
+                        ],Response::HTTP_OK);
+
+                    }else{
+                        return \response()->json([
+                            'message'=>"Already added to wishlist",
+                            'type'=>'success',
+                            'status'=>Response::HTTP_OK
+                        ],Response::HTTP_OK);
+                    }
 
 
+                }catch (QueryException $exception){
+                    return \response()->json([
+                        'message'=>$exception->getMessage(),
+                        'type'=>'error',
+                        'status'=>Response::HTTP_INTERNAL_SERVER_ERROR
+                    ],Response::HTTP_INTERNAL_SERVER_ERROR);
+                }
+            }
+        }
+    }
+
+    public function view_wishlist(){
+        if (auth()->guard('api')->check()){
+            $data=Wishlist::with(['product:id,title,previous_price,current_price,thumbnail',])->where(['user_id'=>auth()->guard('api')->user()->id])->get();
+        }else{
+            $data=Wishlist::with(['product:id,title,previous_price,current_price,thumbnail',])->where('ip_address',\Request::ip())->get();
+        }
+
+        return \response()->json([
+            'datas'=>$data,
+            'type'=>'success',
+            'status'=>Response::HTTP_OK
+        ],Response::HTTP_OK);
+    }
+
+    public function delete_wishlist(Request $request){
+        $data=Wishlist::find($request->wishlist_id);
+        if (!is_null($data)){
+            $data->delete();
+            return \response()->json([
+                'message'=>"Successfully delete",
+                'type'=>'success',
+                'status'=>Response::HTTP_OK
+            ],Response::HTTP_OK);
+        }else{
+            return \response()->json([
+                'message'=>"Data not found",
+                'type'=>'warning',
+                'status'=>Response::HTTP_NO_CONTENT
+            ],Response::HTTP_OK);
+        }
+
+    }
+
+    public function search_product(Request $request){
+        if ($request->isMethod("post")){
+            $datas=Product::where('short_description',"LIKE","%$request->keyword%")
+                ->orWhere('title',"LIKE","%$request->keyword%")
+                ->orWhere('current_price',"LIKE","%$request->keyword%")
+                ->where(['status'=>1])->paginate(8);
+
+            $products=ProductResource::collection($datas);
+
+            return \response()->json([
+                'products'=>$datas,
+                'type'=>'success',
+                'status'=>Response::HTTP_OK
+            ],Response::HTTP_OK);
+        }
     }
 }
