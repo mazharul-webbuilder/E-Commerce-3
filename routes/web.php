@@ -422,6 +422,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
         Route::get('/details', [BrandController::class, 'detail'])->name('detail');
         Route::post('/update', [BrandController::class, 'update'])->name('update');
         Route::post('/delete', [BrandController::class, 'delete'])->name('delete');
+        Route::post('/update-status', [BrandController::class, 'statusUpdate'])->name('status.update');
     });
 
     // slider controller slider

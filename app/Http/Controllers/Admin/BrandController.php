@@ -186,6 +186,26 @@ class BrandController extends Controller
         }
     }
 
+    /**
+     * Update Status
+    */
+    public function statusUpdate(Request $request): JsonResponse
+    {
+        try {
+            $brand = Brand::find($request->id);
+            $brand->status = $brand->status == 1 ? 0 : 1;
+            $brand->save();
+            return \response()->json([
+                'response' => Response::HTTP_OK,
+                'message' => 'Status Updated Successfully',
+                'type' => 'success'
+            ]);
+
+        } catch (\Exception $e) {
+            return  \response()->json();
+        }
+    }
+
 
 
 }
