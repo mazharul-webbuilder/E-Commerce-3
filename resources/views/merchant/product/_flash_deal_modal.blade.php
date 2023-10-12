@@ -22,6 +22,7 @@
                 <div class="mb-4">
                     <label class="block text-gray-600 text-sm font-semibold mb-2" for="flashDealStatus">Flash Deal Status:</label>
                     <select id="flashDealStatus" name="flashDealStatus" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-400">
+                        <option value="">Select</option>
                         <option value="1">Yes</option>
                         <option value="0">NO</option>
                     </select>

@@ -30,7 +30,7 @@
                 data: { id: productId, _token: csrfToken },
                 success: function (data) {
                     $('#getFlashDealStatus').text(data.flash_deal === 1 ? "Yes" : "No")
-                    $('#flashDealStatus').val(data.flash_deal)
+                    $('#flashDealStatus').val(data.flash_deal === 1 ? 1 : '')
                     $('#dealType').val(data.deal_type)
                     $('#amount').val(data.deal_amount)
                     $('#FlashDealProductId').val(productId)
