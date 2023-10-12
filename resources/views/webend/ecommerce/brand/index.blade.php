@@ -88,9 +88,8 @@
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
                                     <label class="inline-flex items-center ">
-                                        <input type="checkbox" data-id="{{$brand->id}}" class="brandStatusBtn form-checkbox h-5 w-5 text-indigo-600 transition duration-150 ease-in-out"
+                                        <input type="checkbox" data-id="{{$brand->id}}" class="brandStatusBtn brandStatusBtn{{$brand->id}} form-checkbox h-5 w-5 text-indigo-600 transition duration-150 ease-in-out"
                                             {{ $brand->status == 1 ? 'checked' : '' }}>
-                                        <span class="ml-2">{{ $brand->status == 1 ? 'Active' : 'Inactive' }}</span>
                                     </label>
                                 </td>
 

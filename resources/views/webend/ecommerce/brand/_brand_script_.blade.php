@@ -167,19 +167,26 @@
             e.preventDefault();
             const brandId = $(this).data('id')
             $.ajax({
-                url: '{{route('brand.status.update')}}',
+                url: '{{ route('brand.status.update') }}',
                 method: 'POST',
-                data: {id: brandId},
+                data: { id: brandId },
                 success: function (data) {
                     if (data.response === 200) {
                         Toast.fire({
                             icon: data.type,
                             title: data.message
-                        })
-                        window.location.reload()
+                        });
+
+                        const $checkbox = $('.brandStatusBtn' + brandId);
+                        if ($checkbox.prop('checked')) {
+                            $checkbox.prop('checked', false);
+                        } else {
+                            $checkbox.prop('checked', true);
+                        }
                     }
                 }
-            })
+            });
+
         })
 
     })
