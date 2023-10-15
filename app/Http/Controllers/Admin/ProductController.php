@@ -12,6 +12,7 @@ use App\Models\Ecommerce\Product;
 use App\Models\Ecommerce\SubCategory;
 use App\Models\Ecommerce\Unit;
 use Doctrine\DBAL\Query\QueryException;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -132,13 +133,18 @@ class ProductController extends Controller
     }
 
 
-    public function edit($id)
+    /**
+     * Show Product Edit page for admin
+    */
+    public function edit($id): View
     {
-        $categories=Category::where('status',1)->latest()->get();
-        $units=Unit::where('status',1)->latest()->get();
-        $product=Product::find($id);
+        $categories = Category::where('status',1)->latest()->get();
+        $units = Unit::where('status',1)->latest()->get();
+        $product = Product::find($id);
         $subcategories = SubCategory::where('category_id',$product->category_id)->get();
-        return view('webend.ecommerce.product.edit',compact("product","categories","units","subcategories"));
+        $brands = Brand::where('status', 1)->latest()->get();
+
+        return view('webend.ecommerce.product.edit',compact("product","categories","units","subcategories", "brands"));
     }
 
 
@@ -160,6 +166,8 @@ class ProductController extends Controller
             'current_coin'=>'required',
             'thumbnail'=>'nullable',
             'description'=>'nullable',
+            'brand_id'=>'nullable|integer',
+
         ]);
 
         if ($request->isMethod('post'))
@@ -174,6 +182,7 @@ class ProductController extends Controller
                 $product->short_description =$request->short_description;
                 $product->category_id       = $request->category_id;
                 $product->unit_id           = $request->unit_id;
+                $product->brand_id           = $request->brand_id;
                 $product->purchase_price    = $request->purchase_price;
                 $product->previous_price    = $request->previous_price;
                 $product->current_price     = $request->current_price;
