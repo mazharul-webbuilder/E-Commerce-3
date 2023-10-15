@@ -68,7 +68,8 @@ class ManageProductController extends Controller
 
                 $product_in_due_product = DueProduct::where('seller_id', $auth_user->id)->first();
 
-                if (is_null($checker)){ // if product not in seller table then store it
+                if (is_null($checker)){
+                    // if product not in seller table then store it
                     if (!($auth_user->balance >= Settings::RESELLER_PRODUCT_ADD_CHARGE)) {
                         if (is_null($product_in_due_product)) {
                             return response()->json([

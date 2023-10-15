@@ -53,6 +53,18 @@ class ProductDetailResource extends JsonResource
                     "size_name"  => $data->size->name,
                 ];
             }),
+            'public_reviews'=>$this->public_reviews->map(function ($data){
+               return[
+                   'id'=>$data->id,
+                   'ratting'=>$data->ratting,
+                   'created'=>$data->created_at,
+                   'comment'=>$data->comment,
+                   'reviewer'=>[
+                       'name'=>$data->user->name,
+                       'avatar'=>$data->user->avatar
+                   ]
+               ];
+            })
         ];
     }
 
@@ -82,7 +94,6 @@ class ProductDetailResource extends JsonResource
                 return $product->current_price;
             }
         }
-
     }
 
 

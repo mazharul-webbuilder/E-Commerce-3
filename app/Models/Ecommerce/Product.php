@@ -74,4 +74,12 @@ class Product extends Model
         return $this->hasOne(ProductAffiliateCommission::class, 'product_id', 'id');
     }
 
+    public function reviews(){
+       return $this->hasMany(Review::class);
+    }
+    public function public_reviews(){
+        return $this->hasMany(Review::class)->where('status',1);
+    }
+
+
 }
