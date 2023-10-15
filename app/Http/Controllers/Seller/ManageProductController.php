@@ -66,29 +66,28 @@ class ManageProductController extends Controller
 
                 $checker = SellerProduct::where(['seller_id'=>$auth_user->id,'product_id'=>$request->item_id])->first();
 
-                $product_in_due_product = DueProduct::where('seller_id', $auth_user->id)->first();
+                $product_in_due_product = DueProduct::where(['seller_id' => $auth_user->id, 'status' => 1])->first();
 
                 if (is_null($checker)){ // if product not in seller table then store it
-                    if (!($auth_user->balance >= Settings::RESELLER_PRODUCT_ADD_CHARGE)) {
-                        if (is_null($product_in_due_product)) {
-                            return response()->json([
-                                'data'=>'Insufficient Balance Or No Due Product',
-                                'type'=>'warning',
-                                'status'=>201
-                            ],Response::HTTP_OK);
-                        }
+                    if (isset($product_in_due_product) && $product_in_due_product->status == 1){
+                        $product_in_due_product->status = 0;
+                        $product_in_due_product->save();
+                    } elseif ($auth_user->balance >= Settings::RESELLER_PRODUCT_ADD_CHARGE ) {
+                        $auth_user->balance -= Settings::RESELLER_PRODUCT_ADD_CHARGE;
+                        $auth_user->save();
+                    }
+                    else {
+                        return response()->json([
+                            'data'=>'Insufficient Balance Or No Due Product Left.',
+                            'type'=>'warning',
+                            'status'=>201
+                        ],Response::HTTP_OK);
                     }
                     $data=new SellerProduct();
                     $data->seller_id=$auth_user->id;
                     $data->product_id=$request->item_id;
                     $data->seller_price = Product::find($request->item_id)->current_price; // Set Default Price
                     $data->save();
-                    if (!(is_null($product_in_due_product))) {
-                        $product_in_due_product->delete();
-                    } else {
-                        $auth_user->balance -= Settings::RESELLER_PRODUCT_ADD_CHARGE;
-                        $auth_user->save();
-                    }
                     return response()->json([
                         'data'=>'Successfully added',
                         'type'=>'success',
