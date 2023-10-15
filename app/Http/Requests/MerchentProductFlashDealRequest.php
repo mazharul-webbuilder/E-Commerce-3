@@ -26,10 +26,12 @@ class MerchentProductFlashDealRequest extends FormRequest
         return [
             'product_id' => 'required|integer',
             'flashDealStatus' => 'required|integer',
-            'startDate' => 'required|date|after_or_equal:today', // Start date must be today or a future date
-            'endDate' => 'required|date|after:start_date', // End date must be greater than the start date
-            'amount' => 'required|numeric',
-            'dealType' => 'required|in:flat,percent', // Validate that dealType is either 'flat' or 'percent'
+            'startDate' => 'required_if:flashDealStatus,1|nullable|date|after_or_equal:today',
+            'endDate' => 'required_if:flashDealStatus,1|nullable|date|after:startDate',
+            'amount' => 'required_if:flashDealStatus,1|nullable|numeric',
+            'dealType' => 'required_if:flashDealStatus,1|nullable|in:flat,percent',
         ];
     }
+
+
 }
