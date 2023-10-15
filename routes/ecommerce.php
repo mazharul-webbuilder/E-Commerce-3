@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\EcommerceController;
 use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\CheckoutController;
 
 
 Route::post('merchant_register',[RegisterController::class,'merchant_register']);
@@ -28,6 +29,8 @@ Route::post('search_product', [EcommerceController::class, 'search_product']);
 //===Authenticate guard=====
 Route::group(['middleware'=>'api'],function (){
     Route::post('provide_review',[EcommerceController::class,'provide_review']);
+    Route::post('checkout',[CheckoutController::class,'checkout']);
+    Route::get('get_payment',[CheckoutController::class,'get_payment']);
 });
 
 //cart api
