@@ -13,6 +13,7 @@ use App\Models\Ecommerce\SubCategory;
 use App\Models\Ecommerce\Unit;
 use App\Models\ProductAffiliateCommission;
 use App\Models\ProductCommission;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -257,14 +258,18 @@ class ProductController extends Controller
         return  view('merchant.product.details', compact('product'));
     }
 
-    public function edit($id)
+    /**
+     * Show Merchant Product Edit Page
+    */
+    public function edit($id): View
     {
-
-        $categories=Category::where('status',1)->latest()->get();
-        $units=Unit::where('status',1)->latest()->get();
-        $product=Product::find($id);
+        $categories = Category::where('status',1)->latest()->get();
+        $units = Unit::where('status',1)->latest()->get();
+        $product = Product::find($id);
         $subcategories = SubCategory::where('category_id',$product->category_id)->get();
-        return view('merchant.product.edit',compact("product","categories","units","subcategories"));
+        $brands = Brand::where('status', 1)->latest()->get();
+
+        return view('merchant.product.edit',compact("product","categories","units","subcategories", "brands"));
     }
 
     public function update(Request $request)
@@ -289,6 +294,7 @@ class ProductController extends Controller
             'company_commission'=>'required_if:is_reseller,1',
             'company_commission_af'=>'required_if:is_affiliate,1',
             'affiliate_commission'=>'required_if:is_affiliate,1',
+            'brand_id'=>'nullable|integer',
         ]);
 
         if ($request->isMethod('post'))
@@ -302,6 +308,7 @@ class ProductController extends Controller
                 $product->title             = $request->title;
                 $product->short_description =$request->short_description;
                 $product->category_id       = $request->category_id;
+                $product->brand_id           = $request->brand_id;
                 $product->unit_id           = $request->unit_id;
                 $product->purchase_price    = $request->purchase_price;
                 $product->previous_price    = $request->previous_price;

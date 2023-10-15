@@ -2,6 +2,7 @@
 
 namespace App\Models\Ecommerce;
 
+use App\Models\Brand;
 use App\Models\Merchant\Merchant;
 use App\Models\ProductAffiliateCommission;
 use App\Models\ProductCommission;
@@ -79,6 +80,11 @@ class Product extends Model
     }
     public function public_reviews(){
         return $this->hasMany(Review::class)->where('status',1);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
     }
 
 

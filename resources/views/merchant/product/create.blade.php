@@ -119,7 +119,7 @@
                                     <select
                                         class="w-full h-12 pl-4 pr-10 cursor-pointer bg-white border border-gray-300 rounded-md appearance-none text-zinc-700 focus:outline-none"
                                         name="brand_id">
-                                        <option value="">Select Unit</option>
+                                        <option value="">Select Brand</option>
                                         @foreach ($brands as $brand)
                                             <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
                                         @endforeach
