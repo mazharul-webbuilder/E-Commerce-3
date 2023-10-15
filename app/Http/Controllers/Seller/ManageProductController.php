@@ -25,7 +25,7 @@ class ManageProductController extends Controller
     {
         $auth_user=Auth::guard('seller')->user();
 
-        $datas = Product::where('is_reseller',1)->orderBy('id','DESC')->get();
+        $datas = Product::where(['status'=>1,'is_reseller'=>1])->orderBy('id','DESC')->get();
 
         return DataTables::of($datas)
             ->addIndexColumn()
