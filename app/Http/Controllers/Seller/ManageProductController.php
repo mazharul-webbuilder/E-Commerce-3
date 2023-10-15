@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Models\DueProduct;
 use App\Models\Ecommerce\Product;
 use App\Models\SellerProduct;
+use App\Models\Settings;
 use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -60,25 +62,39 @@ class ManageProductController extends Controller
 
         if ($request->isMethod("POST")){
             try {
+                $auth_user = Auth::guard('seller')->user();
 
-                $auth_user=Auth::guard('seller')->user();
-                $checker=SellerProduct::where(['seller_id'=>$auth_user->id,'product_id'=>$request->item_id])->first();
+                $checker = SellerProduct::where(['seller_id'=>$auth_user->id,'product_id'=>$request->item_id])->first();
 
-                if (is_null($checker)){
+                $product_in_due_product = DueProduct::where('seller_id', $auth_user->id)->first();
+
+                if (is_null($checker)){ // if product not in seller table then store it
+                    if (!($auth_user->balance >= Settings::RESELLER_PRODUCT_ADD_CHARGE)) {
+                        if (is_null($product_in_due_product)) {
+                            return response()->json([
+                                'data'=>'Insufficient Balance Or No Due Product',
+                                'type'=>'warning',
+                                'status'=>201
+                            ],Response::HTTP_OK);
+                        }
+                    }
                     $data=new SellerProduct();
                     $data->seller_id=$auth_user->id;
                     $data->product_id=$request->item_id;
                     $data->seller_price = Product::find($request->item_id)->current_price; // Set Default Price
                     $data->save();
-
+                    if (!(is_null($product_in_due_product))) {
+                        $product_in_due_product->delete();
+                    } else {
+                        $auth_user->balance -= Settings::RESELLER_PRODUCT_ADD_CHARGE;
+                        $auth_user->save();
+                    }
                     return response()->json([
                         'data'=>'Successfully added',
                         'type'=>'success',
                         'status'=>200
                     ],Response::HTTP_OK);
                 }else{
-
-
                     return response()->json([
                         'data'=>'You have already added',
                         'type'=>'warning',
