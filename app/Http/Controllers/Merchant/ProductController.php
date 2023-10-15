@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Merchant;
 
+use App\Events\MerchantProductStatusChangeEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MerchentProductFlashDealRequest;
+use App\Listeners\DeleteSellerProductListener;
 use App\Models\Brand;
 use App\Models\Ecommerce\Category;
 use App\Models\Ecommerce\Product;
@@ -400,6 +402,10 @@ class ProductController extends Controller
             $product->status = $product->status == 1 ? 0 : 1;
             $product->save();
             DB::commit();
+            /*Delete all Seller Product If Unpublished and give every seller a due point*/
+            if ($product->status == 0) {
+                event(new MerchantProductStatusChangeEvent($product->id));
+            }
             return \response()->json([
                 'message' => 'Status Updated',
                 'response' => Response::HTTP_OK,
