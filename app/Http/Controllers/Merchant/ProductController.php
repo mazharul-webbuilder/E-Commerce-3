@@ -520,8 +520,14 @@ class ProductController extends Controller
     {
         if ($request->ajax()) {
             try {
+                $data = Product::find($request->item_id);
+
                 DB::beginTransaction();
-                $data = Product::findOrFail($request->item_id);
+                /*Check is Merchant Delete Product*/
+                if (\auth()->guard('merchant')->check()) {
+                    /*Dispatch event Merchant did action on product*/
+                    event(new MerchantProductStatusChangeEvent($data->id));
+                }
 
                 if (File::exists(public_path('/uploads/product/original/' . $data->thumbnail))) {
                     File::delete(public_path('/uploads/product/original/' . $data->thumbnail));
@@ -545,6 +551,7 @@ class ProductController extends Controller
                 }
 
                 $data->delete();
+
                 DB::commit();
 
                 return response()->json([
