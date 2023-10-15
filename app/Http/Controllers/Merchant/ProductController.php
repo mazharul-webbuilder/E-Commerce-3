@@ -411,7 +411,7 @@ class ProductController extends Controller
             DB::commit();
             /*Delete all Seller Product If Unpublished and give every seller a due point*/
             if ($product->status == 0) {
-                event(new MerchantProductStatusChangeEvent($product->id));
+                seller_due_product($product->id);
             }
             return \response()->json([
                 'message' => 'Status Updated',
@@ -532,8 +532,7 @@ class ProductController extends Controller
                 DB::beginTransaction();
                 /*Check is Merchant Delete Product*/
                 if (\auth()->guard('merchant')->check()) {
-                    /*Dispatch event Merchant did action on product*/
-                    event(new MerchantProductStatusChangeEvent($data->id));
+                    seller_due_product($data->id);
                 }
 
                 if (File::exists(public_path('/uploads/product/original/' . $data->thumbnail))) {
@@ -550,14 +549,14 @@ class ProductController extends Controller
                 }
                 if ($data->is_reseller == 1) {
                     $product_commission = ProductCommission::where('product_id', $data->id)->first();
-                    $product_commission->delete();
+                    $product_commission->delete;
                 }
                 if ($data->is_affiliate == 1) {
                     $product_commission = ProductAffiliateCommission::where('product_id', $data->id)->first();
-                    $product_commission->delete();
+                    $product_commission->delete;
                 }
 
-                $data->delete();
+                $data->delete;
 
                 DB::commit();
 

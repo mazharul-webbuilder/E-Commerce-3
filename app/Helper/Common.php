@@ -1,10 +1,15 @@
 <?php
+
+use App\Models\DueProduct;
+use App\Models\Ecommerce\Product;
 use App\Models\Seller\Seller;
 use App\Models\Merchant\Merchant;
 use App\Models\Affiliate\Affiliator;
 use Carbon\Carbon;
 use App\Models\SellerProduct;
 use App\Models\Ecommerce\Review;
+use Illuminate\Support\Facades\DB;
+
 function default_image()
 {
     return asset('uploads/default.png');
@@ -64,6 +69,31 @@ function average_review($product_id){
         return 0;
     }
 
+}
+
+
+function seller_due_product($product_id){
+    try {
+        DB::beginTransaction();
+        /*Get Product id from event*/
+        $product = Product::find($product_id);
+        /*Find all sellers who added this product on their store*/
+        $sellers_ids = SellerProduct::where('product_id', $product_id)->pluck('seller_id');
+
+        /*Give Every Seller a Due Point*/
+        foreach ($sellers_ids as $seller_id) {
+            $due_product = new DueProduct();
+            $due_product->seller_id = $seller_id;
+            $due_product->merchant_id = $product->merchant->id;
+            $due_product->save();
+        }
+        /*Delete all product that seller added their store*/
+        SellerProduct::where('product_id', $product_id)->delete();
+
+        DB::commit();
+    } catch (\Exception $exception) {
+        DB::rollBack();
+    }
 }
 
 
