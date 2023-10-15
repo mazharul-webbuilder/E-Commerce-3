@@ -25,11 +25,17 @@ Route::get('view_wishlist', [EcommerceController::class, 'view_wishlist']);
 Route::post('delete_wishlist', [EcommerceController::class, 'delete_wishlist']);
 Route::post('search_product', [EcommerceController::class, 'search_product']);
 
+//===Authenticate guard=====
+Route::group(['middleware'=>'api'],function (){
+    Route::post('provide_review',[EcommerceController::class,'provide_review']);
+});
+
 //cart api
 
 Route::post('add_to_cart', [CartController::class, 'add_to_cart']);
 Route::get('view_cart', [CartController::class, 'view_cart']);
 Route::post('update_cart', [CartController::class, 'update_cart']);
 Route::post('delete_cart', [CartController::class, 'delete_cart']);
+
 
 

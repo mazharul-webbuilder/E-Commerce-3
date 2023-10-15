@@ -10,7 +10,9 @@ use App\Http\Resources\ProductResource;
 use App\Http\Resources\SliderResource;
 use App\Models\Ecommerce\Cart;
 use App\Models\Ecommerce\Category;
+use App\Models\Ecommerce\Order_detail;
 use App\Models\Ecommerce\Product;
+use App\Models\Ecommerce\Review;
 use App\Models\Ecommerce\Slider;
 use App\Models\Ecommerce\Wishlist;
 use Carbon\Carbon;
@@ -239,6 +241,66 @@ class EcommerceController extends Controller
                 'type'=>'success',
                 'status'=>Response::HTTP_OK
             ],Response::HTTP_OK);
+        }
+    }
+
+    public function provide_review(Request $request){
+        $user= auth()->guard('api')->user();
+        $product=Product::find($request->product_id);
+
+        $validator = Validator::make($request->all(), [
+            'product_id' => 'required|integer',
+            'ratting' => 'required|integer',
+            'comment' => 'required|string'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors()->first(),
+                'type' => "error",
+                'status' => 422
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } else {
+            if ($request->isMethod("post")) {
+                try {
+                    DB::beginTransaction();
+                    $check_order = Order_detail::where('product_id', $request->product_id)
+                        ->where(['user_id' => $user->id, 'order_id' => $request->order_id])
+                        ->first();
+                    if (!is_null($check_order)) {
+                        $review = new Review();
+                        $review->product_id = $request->product_id;
+                        $review->user_id = auth()->user()->id;
+                        $review->ratting = $request->ratting;
+                        $review->comment = $request->comment;
+                        $review->order_id = $check_order->order_id;
+                        $review->merchant_id=$product->merchant_id;
+                        $review->save();
+                        $check_order->review_status = 0;
+                        $check_order->save();
+
+                        DB::commit();
+                        return response()->json([
+                            'message' => "Review added successfully",
+                            'type' => "success",
+                            'status' => 200
+                        ], Response::HTTP_OK);
+                    } else {
+                        return response()->json([
+                            'message' => "Please buy this product first",
+                            'type' => "success",
+                            'status' => 201
+                        ], Response::HTTP_OK);
+                    }
+                } catch (\Doctrine\DBAL\Query\QueryException $e) {
+                    DB::rollBack();
+                    $error = $e->getMessage();
+                    return \response()->json([
+                        'error' => $error,
+                        'type' => 'error',
+                        'status_code' => 500
+                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                }
+            }
         }
     }
 }

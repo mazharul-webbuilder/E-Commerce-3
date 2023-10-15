@@ -4,6 +4,7 @@ use App\Models\Merchant\Merchant;
 use App\Models\Affiliate\Affiliator;
 use Carbon\Carbon;
 use App\Models\SellerProduct;
+use App\Models\Ecommerce\Review;
 function default_image()
 {
     return asset('uploads/default.png');
@@ -50,6 +51,19 @@ function product_price($product_id){
  function seller_price($seller_id,$product_id)
 {
     return SellerProduct::where(['seller_id'=>$seller_id,'product_id'=>$product_id])->first();
+}
+
+function average_review($product_id){
+    $reviews=Review::where(['status'=>1,'product_id'=>$product_id])->get();
+
+    if (count($reviews)>0){
+        $total_ratting=$reviews->sum('ratting');
+        $average=$total_ratting/count($reviews);
+        return $average;
+    }else{
+        return 0;
+    }
+
 }
 
 
