@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Merchant;
 
-use App\Events\MerchantProductStatusChangeEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MerchentProductFlashDealRequest;
-use App\Listeners\DeleteSellerProductListener;
 use App\Models\Brand;
 use App\Models\Ecommerce\Category;
 use App\Models\Ecommerce\Product;
@@ -570,14 +568,12 @@ class ProductController extends Controller
                 DB::rollBack();
             }
 
-        } else {
-
-            return response()->json([
-                'message' => 'Something went wrong',
-                'status_code' => 403,
-                'type' => 'error',
-            ], Response::HTTP_FORBIDDEN);
         }
+        return response()->json([
+            'message' => 'Something went wrong',
+            'status_code' => 403,
+            'type' => 'error',
+        ], Response::HTTP_FORBIDDEN);
     }
 
 
