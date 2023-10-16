@@ -21,32 +21,35 @@
                 <input type="hidden" name="product_id" id="FlashDealProductId">
                 <div class="mb-4">
                     <label class="block text-gray-600 text-sm font-semibold mb-2" for="flashDealStatus">Flash Deal Status:</label>
-                    <select id="flashDealStatus" name="flashDealStatus" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-400">
+                    <select id="flashDealStatus" name="flashDealStatus" class="flashDealStatus w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-400">
                         <option value="">Select</option>
                         <option value="1">Yes</option>
                         <option value="0">NO</option>
                     </select>
                 </div>
-                <div class="mb-4">
-                    <label class="block text-gray-600 text-sm font-semibold mb-2" for="startDate" >Start Date:</label>
-                    <input type="date" id="startDate" name="startDate" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-400" placeholder="Select Start Date">
+                <div class="dealDataContainer">
+                    <div class="mb-4">
+                        <label class="block text-gray-600 text-sm font-semibold mb-2" for="startDate">Start Date:</label>
+                        <input type="text" id="startDatePicker" name="startDate" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-400" placeholder="Select Start Date">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-600 text-sm font-semibold mb-2" for="endDate">End Date:</label>
+                        <input type="text" id="endDatePicker" name="endDate" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-400" placeholder="Select End Date">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-600 text-sm font-semibold mb-2" for="amount">Amount:</label>
+                        <input type="number" id="amount" name="amount" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-400" placeholder="Enter Amount">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-600 text-sm font-semibold mb-2" for="dealType">Deal Type:</label>
+                        <select id="dealType" name="dealType" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-400">
+                            <option value="">Select</option>
+                            <option value="flat">Flat</option>
+                            <option value="percent">Percent</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="mb-4">
-                    <label class="block text-gray-600 text-sm font-semibold mb-2" for="endDate">End Date:</label>
-                    <input type="date" id="endDate" name="endDate" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-400" placeholder="Select End Date">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-600 text-sm font-semibold mb-2" for="amount">Amount:</label>
-                    <input type="number" id="amount" name="amount" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-400" placeholder="Enter Amount">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-600 text-sm font-semibold mb-2" for="dealType">Deal Type:</label>
-                    <select id="dealType" name="dealType" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-400">
-                        <option value="">Select</option>
-                        <option value="flat">Flat</option>
-                        <option value="percent">Percent</option>
-                    </select>
-                </div>
+
                 <div class="text-center">
                     <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-400">Set Flash Deal</button>
                 </div>
