@@ -60,6 +60,7 @@
 
             } else {
                 $('.dealDataContainer').removeClass('hidden')
+                $('.error-message').remove();
                 $('#dealType').val('')
                 $('#amount').val('')
                 $('#startDatePicker').datepicker({
