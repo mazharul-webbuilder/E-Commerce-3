@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
 
 class MerchentProductFlashDealRequest extends FormRequest
 {
@@ -28,8 +30,20 @@ class MerchentProductFlashDealRequest extends FormRequest
             'flashDealStatus' => 'required|integer',
             'startDate' => 'required_if:flashDealStatus,1|nullable|date|after_or_equal:today',
             'endDate' => 'required_if:flashDealStatus,1|nullable|date|after:startDate',
-            'amount' => 'required_if:flashDealStatus,1|nullable|numeric',
-            'dealType' => 'required_if:flashDealStatus,1|nullable|in:flat,percent',
+            'dealType' => [
+                'required_if:flashDealStatus,1',
+                'nullable',
+                Rule::in(['flat', 'percent']),
+            ],
+            'amount' => [
+                'required_if:flashDealStatus,1',
+                'nullable',
+                'min:1',
+                'numeric',
+                Rule::when(function ($attributes) {
+                    return $attributes['dealType'] === 'percent';
+                }, ['between:1,100']),
+            ],
         ];
     }
 

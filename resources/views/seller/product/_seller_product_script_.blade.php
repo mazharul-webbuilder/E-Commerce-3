@@ -12,6 +12,7 @@
                     /*Set Existing Values*/
                     $('#sellerProductId').val(data.id)
                     $('#seller_price').val(data.seller_price)
+                    $('#seller_price').attr('min',data.seller_price)
                     $('#seller_company_commission').val(data.seller_company_commission)
 
                     /*show Modal*/
@@ -47,6 +48,7 @@
                             $('.submit-btn').text('Submit')
                             /*Close Modal*/
                             $('#ConfigModal').addClass('hidden')
+                            window.location.reload()
                         }
                     },
                     error: function(xhr, status, error) {
