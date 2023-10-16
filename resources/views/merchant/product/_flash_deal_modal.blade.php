@@ -28,7 +28,7 @@
                     </select>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-600 text-sm font-semibold mb-2" for="startDate">Start Date:</label>
+                    <label class="block text-gray-600 text-sm font-semibold mb-2" for="startDate" >Start Date:</label>
                     <input type="date" id="startDate" name="startDate" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-400" placeholder="Select Start Date">
                 </div>
                 <div class="mb-4">

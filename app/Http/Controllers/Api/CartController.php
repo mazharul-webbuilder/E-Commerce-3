@@ -60,7 +60,7 @@ class CartController extends Controller
                 $data->user_id=auth()->guard('api')->check() ? auth()->guard('api')->user()->id : null;
                 $data->size_id=$request->size_id !=null ? $request->size_id : null;
                 $data->seller_id=$request->seller_number  !=null ? seller($request->seller_number)->id : null;
-                $data->affiliator_id=$request->affilate_number  !=null ? affiliator($request->affiliate_number)->id : null;
+                $data->affiliator_id=$request->affiliate_number  !=null ? affiliator($request->affiliate_number)->id : null;
                 $data->is_flash_deal=$product->flash_deal==1 ? 1 : 0;
                 $data->save();
 

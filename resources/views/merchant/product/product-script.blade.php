@@ -34,9 +34,7 @@
                     $('#dealType').val(data.deal_type)
                     $('#amount').val(data.deal_amount)
                     $('#FlashDealProductId').val(productId)
-
                     $('#flashDealModal').removeClass('hidden');
-
                     $('#flashDealModalClose').click(function() {
                         $('#flashDealModal').addClass('hidden');
                     });
