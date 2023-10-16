@@ -1,4 +1,9 @@
 @extends('merchant.layout.app')
+@section('extra_css')
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+@endsection
 @section('content')
 
     <section class="w-full bg-white p-3 mt-5">
@@ -146,6 +151,22 @@
 
         });
     </script>
+    <script>
+        $(function() {
+            // Initialize the datepickers with appropriate date formats
+            $("#startDatePicker").datepicker({
+                minDate: 0,
+                dateFormat: "dd-mm-yy" // Date format (day-month-year)
+            });
+
+            $("#endDatePicker").datepicker({
+                minDate: 1,
+                dateFormat: "dd-mm-yy" // Date format (day-month-year)
+            });
+        });
+    </script>
+
+
     @include('merchant.product.product-script')
     @include('merchant.product._control_panel_modal')
 @endsection

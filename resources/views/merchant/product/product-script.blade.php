@@ -34,6 +34,17 @@
                     $('#dealType').val(data.deal_type)
                     $('#amount').val(data.deal_amount)
                     $('#FlashDealProductId').val(productId)
+                    /*show existing start date*/
+                    $('#startDatePicker').datepicker({
+                        dateFormat: "dd-mm-yy"
+                    })
+                    $("#startDatePicker").val(data.deal_start_date);
+                    /*Show existing end date*/
+                    $('#endDatePicker').datepicker({
+                        dateFormat: "dd-mm-yy"
+                    })
+                    $("#endDatePicker").val(data.deal_end_date);
+
 
                     $('#flashDealModal').removeClass('hidden');
 
@@ -43,6 +54,14 @@
                 }
             });
         });
+        $('body').on('change', '.flashDealStatus', function (){
+            let status = $(this).val()
+            if (status == 0) {
+                $('.dealDataContainer').addClass('hidden')
+            } else {
+                $('.dealDataContainer').removeClass('hidden')
+            }
+        })
 
         /**
          * Update Status of Flash Deals
