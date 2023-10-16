@@ -13,8 +13,6 @@
                     </svg>
                 </button>
             </div>
-            <p class="text-gray-700 mb-4">Flash Deal Current Status <span id="getFlashDealStatus" class="inline-block px-2 py-1 rounded-full text-white bg-gradient-to-r from-blue-500 to-indigo-500 shadow-md">Active</span></p>
-
             <!-- Flash Deal Form -->
             <form id="flashDealControlForm">
                 @csrf

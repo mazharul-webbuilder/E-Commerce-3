@@ -29,7 +29,6 @@
                 method: 'get',
                 data: { id: productId, _token: csrfToken },
                 success: function (data) {
-                    $('#getFlashDealStatus').text(data.flash_deal === 1 ? "Yes" : "No")
                     $('#flashDealStatus').val(data.flash_deal === 1 ? 1 : '')
                     $('#dealType').val(data.deal_type)
                     $('#amount').val(data.deal_amount)
@@ -58,8 +57,22 @@
             let status = $(this).val()
             if (status == 0) {
                 $('.dealDataContainer').addClass('hidden')
+
             } else {
                 $('.dealDataContainer').removeClass('hidden')
+                $('#dealType').val('')
+                $('#amount').val('')
+                $('#startDatePicker').datepicker({
+                    dateFormat: "dd-mm-yy"
+                });
+                $("#startDatePicker").val("");
+
+                $('#endDatePicker').datepicker({
+                    dateFormat: "dd-mm-yy"
+                });
+                $("#endDatePicker").val("");
+
+
             }
         })
 

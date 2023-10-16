@@ -450,7 +450,14 @@ class ProductController extends Controller
             $product->deal_end_date = date("d-m-Y",strtotime($request->endDate));
             $product->deal_amount = $request->amount;
             $product->deal_type = $request->dealType;
+            if ($product->flash_deal == 0) {
+                $product->deal_start_date = null;
+                $product->deal_end_date = null;
+                $product->deal_amount = null;
+                $product->deal_type = null;
+            }
             $product->save();
+
 
             DB::commit();
             return \response()->json([
