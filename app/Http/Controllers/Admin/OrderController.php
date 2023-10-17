@@ -45,6 +45,14 @@ class OrderController extends Controller
         return view('webend.ecommerce.order.index', compact('orders', 'date_range'));
     }
 
+    /**
+     * Show Admin Orders Page
+    */
+    public function admin_order()
+    {
+        
+    }
+
     public function search_by_date(Request $request)
     {
         // dd($request->all());
@@ -138,7 +146,7 @@ class OrderController extends Controller
         //     ], Response::HTTP_OK);
         // }
 
-        // =================================================================== 
+        // ===================================================================
 
         if ($request->isMethod("POST")) {
             $order = Order::find($request->order_id);
@@ -177,7 +185,7 @@ class OrderController extends Controller
 
                         $total_coin = 0;
                         foreach ($order_details as $order_detail) {
-                            //  
+                            //
                             if (!is_null($order_detail->size_id)) {
                                 $stock = Stock::where(['product_id' => $order_detail->product_id, 'size_id' => $order_detail->size_id])
                                     ->first();

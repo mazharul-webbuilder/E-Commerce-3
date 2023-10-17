@@ -537,6 +537,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     // Order route
     Route::group(['prefix' => 'order'], function () {
         Route::get('/{type?}', [OrderController::class, 'index'])->name('order.index');
+        Route::get('/admin/order', [OrderController::class, 'admin_order'])->name('admin.order');
         Route::get('/create', [OrderController::class, 'create'])->name('order.create');
         Route::post('/store', [OrderController::class, 'store'])->name('order.store');
         Route::get('/edit/{id}', [OrderController::class, 'edit'])->name('order.edit');
