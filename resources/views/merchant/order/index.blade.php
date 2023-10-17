@@ -112,7 +112,7 @@
                 { data: 'DT_RowIndex',name:'DT_RowIndex' },
                 { data: 'order_number',name:'order_number'},
                 { data: 'grand_total',name:'grand_total'},
-                { data: 'quantity',name:'quantity'},
+                { data: 'order_quantity',name:'order_quantity'},
                 { data: 'status',name:'status'},
                 { data: 'created_at',name:'created_at'},
                 { data: 'action',name:'action' },

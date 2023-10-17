@@ -19,49 +19,33 @@ class OrderController extends Controller
     public function datatable(){
 
         $auth_user=Auth::guard('merchant')->user();
-        $all_orders=Order::latest()->get();
-        $orders=[];
-        foreach ($all_orders as $order){
-            $order_details=Order_detail::where('order_id',$order->id)->where('merchant_id',$auth_user->id)->get();
 
-
-            if (count($order_details)>0){
-                if ($order_details[0]->order_id==$order->id){
-
-                    $id=$order->id;
-                    $quantity=0;
-                    $grand_total=0;
-                    $order_number=$order->order_number;
-                    $status=$order->status;
-                    $created_at=$order->created_at;
-                    // calculate seller amount and quantity
-                    foreach ($order_details as $order_detail){
-                        $quantity+=$order_detail->product_quantity;
-                        $product=Product::find($order_detail->product_id);
-                        if ($order_detail->seller_id==null){
-                            $grand_total+=$product->current_price*$order_detail->product_quantity;
-                        }else{
-                            $grand_total+=seller_price($order_detail->seller_id,$order_detail->product_id)->seller_price*$order_detail->product_quantity;
-                        }
-
-                    }
-                    $custom_order=array(
-                        'id'=>$id,
-                        'order_number'=>$order_number,
-                        'grand_total'=>$grand_total,
-                        'quantity'=>$quantity,
-                        'status'=>$status,
-                        'created_at'=>$created_at
-                    );
-                    array_push($orders,$custom_order);
-                }
-            }
-        }
+        $orders = Order::whereHas('order_detail', function ($query) use ($auth_user) {
+            $query->where('merchant_id',$auth_user->id);
+        })->get();
 
         return DataTables::of($orders)
             ->addIndexColumn()
-            ->editColumn('grand_total',function($orders){
-                return number_format($orders['grand_total'],2);
+            ->editColumn('grand_total',function(Order $order) use($auth_user){
+                $datas=Order_detail::where(['order_id'=>$order->id,'merchant_id'=>$auth_user->id])->get();
+                $grand_total=0;
+               foreach ($datas as $data){
+                        if ($data->seller_id==null){
+                            $product=Product::find($data->product_id);
+                            $grand_total+=$product->current_price*$data->product_quantity;
+                       }else{
+                           $grand_total+=seller_price($data->seller_id,$data->product_id)->seller_price*$data->product_quantity;
+                        }
+               }
+               return $grand_total;
+            })
+            ->editColumn('order_quantity',function(Order $order) use($auth_user){
+                $datas=Order_detail::where(['order_id'=>$order->id,'merchant_id'=>$auth_user->id])->get();
+                $quantity=0;
+                foreach ($datas as $data){
+                    $quantity+=$data->product_quantity;
+                }
+                return $quantity;
             })
             ->editColumn('created_at',function($orders){
                 return date("d-m-Y",strtotime($orders['created_at']));
@@ -69,7 +53,7 @@ class OrderController extends Controller
             ->editColumn('action',function($orders){
                 return '<a href="" class="btn btn-dark btn-sm">View</a>';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['grand_total','order_quantity','action'])
             ->make(true);
     }
     public function index(){
