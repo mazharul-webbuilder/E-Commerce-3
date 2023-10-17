@@ -9,4 +9,6 @@ class SellerProductBuyHistory extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DueProduct;
 use App\Models\Ecommerce\Product;
 use App\Models\SellerProduct;
+use App\Models\SellerProductBuyHistory;
 use App\Models\Settings;
 use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Contracts\View\View;
@@ -63,8 +64,10 @@ class ManageProductController extends Controller
         if ($request->isMethod("POST")){
             try {
                 $auth_user = Auth::guard('seller')->user();
+                /*Get Product From DB*/
+                $product = Product::find($request->item_id);
 
-                $checker = SellerProduct::where(['seller_id'=>$auth_user->id,'product_id'=>$request->item_id])->first();
+                $checker = SellerProduct::where(['seller_id'=>$auth_user->id,'product_id'=> $product->id])->first();
 
                 $product_in_due_product = DueProduct::where(['seller_id' => $auth_user->id, 'status' => 1])->first();
 
@@ -72,10 +75,18 @@ class ManageProductController extends Controller
                     if (isset($product_in_due_product) && $product_in_due_product->status == 1){
                         $product_in_due_product->status = 0;
                         $product_in_due_product->save();
-                    } elseif ($auth_user->balance >= Settings::RESELLER_PRODUCT_ADD_CHARGE ) {
-                        $auth_user->balance -= Settings::RESELLER_PRODUCT_ADD_CHARGE;
+                    } elseif ($auth_user->balance >= setting()->seller_product_purchase_charge ) {
+                        $auth_user->balance -= setting()->seller_product_purchase_charge;
                         $auth_user->save();
-                    }
+
+                        /*Insert Record Into Seller Product Buy History*/
+                        SellerProductBuyHistory::create([
+                            'seller_id' => $auth_user->id,
+                            'merchant_id' => $product->merchant_id,
+                            'product_id' => $request->item_id,
+                            'amount' => setting()->seller_product_purchase_charge,
+                        ]);
+                                            }
                     else {
                         return response()->json([
                             'data'=>'Insufficient Balance Or No Due Product Left.',
