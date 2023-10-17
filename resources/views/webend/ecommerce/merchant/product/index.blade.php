@@ -46,7 +46,7 @@
                             </th>
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
                                 <div class="text-center">
-                                    Owner
+                                    Merchant
                                 </div>
                             </th>
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
@@ -67,11 +67,6 @@
                             <th scope="col" class="px-2 py-3" width="90px">
                                 <div class="text-center" style="width: 70px">
                                     Available Stock
-                                </div>
-                            </th>
-                            <th scope="col" class="px-2 py-3" width="90px">
-                                <div class="text-center" style="width: 70px">
-                                    Status
                                 </div>
                             </th>
                             <th scope="col" class="px-4 py-3">
@@ -105,13 +100,6 @@
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
                                     {{$product->stocks->sum('quantity')}}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    <select data-action="{{route('product_status_update')}}" product_id="{{$product->id}}" name="status"
-                                            class="change_product_status w-full h-6 h-10 pl-2 pr-2 cursor-pointer bg-white border border-gray-300 rounded-md appearance-none text-zinc-700 focus:outline-none">
-                                        <option value="1" {{$product->status==1 ? 'selected' : ''}}> Publish</option>
-                                        <option value="0" {{$product->status==0 ? 'selected' : ''}}> Unpublish</option>
-                                    </select>
                                 </td>
 
                                 <td class="whitespace-nowrap px-2 py-4 text-black border-r text-center">
