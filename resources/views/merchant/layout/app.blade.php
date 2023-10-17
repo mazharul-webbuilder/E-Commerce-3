@@ -196,25 +196,44 @@
             <div class="flex items-center">
                 <div class="flex items-center relative">
                     <div class="dropdown relative">
-                        <a class="dropdown-toggle flex items-center hidden-arrow" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();" href="#" id="dropdownMenuButton2" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://mdbootstrap.com/img/new/avatars/2.jpg" class="rounded-full"
-                                 style="height: 44px; width: 44px" alt="" loading="lazy" />
-                        </a>
-                        <ul class="divide-y-2 dropdown-menu min-w-max absolute overflow-hidden bg-[#2f2fcc] text-base z-50 float-left py-0 list-none text-left rounded-lg shadow-lg mt-1 hidden m-0 bg-clip-padding border-none left-auto right-0" aria-labelledby="dropdownMenuButton2">
-                            <li>
-                                <a class="w-32 dropdown-item font-semibold py-2 px-4 block whitespace-nowrap bg-transparent text-white hover:bg-blue-500" href="">Profile</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('merchant.logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();"  class="dropdown-item w-32 py-2 px-4 font-semibold block whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-200">
-                                    Logout
-                                </a>
+
+
+
+                        <button id="dropdownAvatarNameButton" data-dropdown-toggle="dropdownAvatarName" class="flex text-white items-center text-sm font-medium text-gray-900 rounded-full hover:text-blue-600 dark:hover:text-blue-500 md:mr-0 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-white" type="button">
+                            <span class="sr-only">Open user menu</span>
+                            <img class="w-8 h-8 mr-2 rounded-full" src="https://static.toiimg.com/thumb/msid-94864313,imgsize-37446,width-400,resizemode-4/94864313.jpg" alt="user photo">
+                            {{auth()->guard('merchant')->user()->name}}
+                            <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown menu -->
+                        <div id="dropdownAvatarName" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                            <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                                <div class="font-medium ">{{auth()->guard('merchant')->user()->name}}</div>
+                                <div class="truncate">{{auth()->guard('merchant')->user()->email}}</div>
+                            </div>
+                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownInformdropdownAvatarNameButtonationButton">
+                                <li>
+                                    <a href="{{route('merchant.dashboard')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('merchant.profile')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
+                                </li>
+                            </ul>
+                            <div class="py-2">
+                                <a href="{{ route('merchant.logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();"  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
+
                                 <form id="frm-logout" action="{{ route('merchant.logout') }}" method="POST" style="display: none;">
                                     {{ csrf_field() }}
                                 </form>
-                            </li>
-                        </ul>
+                            </div>
+                        </div>
+
                     </div>
+
+
                 </div>
             </div>
             <!-- Right elements -->
