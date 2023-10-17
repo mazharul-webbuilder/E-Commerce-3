@@ -469,6 +469,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     // Product route
     Route::group(['prefix' => 'product'], function () {
         Route::get('/', [ProductController::class, 'index'])->name('product.index');
+        Route::get('/of/merchants', [ProductController::class, 'merchantsProduct'])->name('product.merchant');
         Route::get('/create', [ProductController::class, 'create'])->name('product.create');
         Route::post('/store', [ProductController::class, 'store'])->name('product.store');
         Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
@@ -545,6 +546,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
         Route::get('/order_invoice/{id}', [OrderController::class, 'order_invoice'])->name('order.order_invoice');
         Route::post('/search_by_date', [OrderController::class, 'search_by_date'])->name('order.search_by_date');
     });
+    /*Admin Own Order*/
+    Route::get('/admin/own/order', [OrderController::class, 'admin_order'])->name('admin.order');
+
 
     Route::group(['prefix' => 'currency'], function () {
         Route::get('/', [CurrencyController::class, 'index'])->name('currency.index');

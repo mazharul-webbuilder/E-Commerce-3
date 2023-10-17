@@ -22,11 +22,24 @@ use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(): View
     {
-        $products=Product::latest()->get();
-        $count_deal=Product::where(['status'=>1,'flash_deal'=>1])->count();
+        $products = Product::where('admin_id', '!=' , null)->latest()->get();
+
+        $count_deal = Product::where(['status'=>1,'flash_deal'=>1])->count();
+
         return view('webend.ecommerce.product.index',compact('products','count_deal'));
+    }
+
+    /**
+     * Display Merchant Product Page
+     */
+    public function merchantsProduct(): View
+    {
+        $products = Product::where('admin_id', '=', null)->latest()->get();
+
+        return view('webend.ecommerce.merchant.product.index',compact('products'));
+
     }
 
     public function create()
