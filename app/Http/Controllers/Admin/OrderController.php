@@ -50,8 +50,8 @@ class OrderController extends Controller
     */
     public function admin_order()
     {
-        $orders = Order::whereHas('order_detail.product', function ($query) { // here order_details is relation with Order table product has relation in orderDetails model
-            $query->where('admin_id', '!=', null);
+        $orders = Order::whereHas('order_detail', function ($query) { // here order_details is relation with Order table product has relation in orderDetails model
+            $query->where('merchant_id', null);
         })->get();
 
 

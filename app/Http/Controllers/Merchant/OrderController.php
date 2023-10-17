@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Ecommerce\Order;
 use App\Models\Ecommerce\Order_detail;
 use App\Models\Ecommerce\Product;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
@@ -51,7 +52,7 @@ class OrderController extends Controller
                 return date("d-m-Y",strtotime($orders['created_at']));
             })
             ->editColumn('action',function($orders){
-                return '<a href="" class="btn btn-dark btn-sm">View</a>';
+                return '<a href="'.route('merchant.order.details', $orders['id']).'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">View</a>';
             })
             ->rawColumns(['grand_total','order_quantity','action'])
             ->make(true);
@@ -59,5 +60,17 @@ class OrderController extends Controller
     public function index(){
 
         return view('merchant.order.index');
+    }
+
+    /**
+     * Show Order Details Page
+    */
+    public function details($id): View
+    {
+        $order = Order_detail::where('order_id', $id)->where('merchant_id', Auth::guard('merchant')->id())->get();
+
+        dd($order);
+
+        return view('merchant.order.details', compact('order'));
     }
 }

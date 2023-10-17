@@ -11,9 +11,14 @@ use App\Http\Controllers\Merchant\OrderController;
 
 Route::get('login',[LoginController::class,'show_form'])->name('merchant.login.show');
 Route::post('show_form_submit',[LoginController::class,'show_form_submit'])->name('merchant.show_form_submit');
-Route::post('logout',[LoginController::class,'logout'])->name('merchant.logout');
-Route::get('dashboard',[DashboardController::class,'index'])->name('merchant.dashboard');
+/*Merchant Authenticate Routes*/
+Route::middleware('merchant')->group(function (){
+    Route::post('logout',[LoginController::class,'logout'])->name('merchant.logout');
+    Route::get('dashboard',[DashboardController::class,'index'])->name('merchant.dashboard');
+    Route::get('profile',[DashboardController::class,'profile'])->name('merchant.profile');
+    Route::post('update_profile',[DashboardController::class,'update_profile'])->name('merchant.update_profile');
 
+});
 //manage product
 Route::group(['prefix'=>'product', 'as'=>'merchant.'],function(){
     Route::get('product_load',[ProductController::class,'datatable'])->name('product.load');
@@ -53,6 +58,7 @@ Route::group(['prefix' => 'gallery', 'as' => 'merchant.'], function () {
 Route::group(['prefix' => 'order', 'as' => 'merchant.'], function () {
     Route::get('order_load',[OrderController::class,'datatable'])->name('order.load');
     Route::get('/',[OrderController::class,'index'])->name('order.index');
+    Route::get('/details/{id}',[OrderController::class,'details'])->name('order.details');
 });
 
 
