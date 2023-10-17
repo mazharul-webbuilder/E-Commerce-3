@@ -41,6 +41,7 @@ class Cart extends Model
     public static function subtotal()
     {
         $carts = self::carts();
+
         $subtotal = 0;
         foreach ($carts as $cart)
         {
@@ -49,6 +50,7 @@ class Cart extends Model
 
             }else{
                 $subtotal += seller_price($cart->seller_id,$cart->product_id)->seller_price * $cart->quantity;
+
             }
         }
         return $subtotal;

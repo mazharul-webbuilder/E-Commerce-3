@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\DB;
 
 class StockController extends Controller
 {
-    /**
-     * Merchant Product Stock Page
-    */
+    public function __construct(){
+        $this->middleware('merchant');
+    }
     public function index($product_id): View
     {
         $product = Product::find($product_id);

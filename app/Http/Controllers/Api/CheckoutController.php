@@ -9,6 +9,7 @@ use App\Models\Ecommerce\Cart;
 use App\Models\Ecommerce\Order;
 use App\Models\Ecommerce\Order_detail;
 use App\Models\Ecommerce\Payment;
+use App\Models\Ecommerce\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -100,6 +101,7 @@ public function shipping_charge(Request $request){
                 $order_details->size_id = $data->size_id;
                 $order_details->product_quantity = $data->quantity;
                 $order_details->product_coin = $data->product->current_coin;
+                $order_details->merchant_id=Product::find($data->product_id)->merchant_id;
 
                 if ($data->seller_id !=null){
                     $order_details->seller_id=$data->seller_id;

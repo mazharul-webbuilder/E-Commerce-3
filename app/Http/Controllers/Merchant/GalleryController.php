@@ -18,9 +18,9 @@ use Intervention\Image\Facades\Image;
 class GalleryController extends Controller
 {
 
-    /**
-     * Get Product Gallery Page
-    */
+    public function __construct(){
+        $this->middleware('merchant');
+    }
     public function index($product_id): View
     {
         $product=Product::find($product_id);
