@@ -242,6 +242,13 @@
                                 <span class="ml-3 group-hover:text-white transition duration-150">Products</span>
                             </a>
                         </li>
+
+                        <li>
+                            <a href="{{route('merchant.order.index')}}" class="{{ Request::routeIs(['merchant.order.index']) ? 'bg-blue-500' : '' }} text-lg text-white font-normal rounded-lg  flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">
+                                <i class="fas fa-trophy text-white group-hover:text-white transition duration-75"></i>
+                                <span class="ml-3 group-hover:text-white transition duration-150">Orders</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

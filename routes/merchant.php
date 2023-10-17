@@ -5,6 +5,7 @@ use App\Http\Controllers\Merchant\LoginController;
 use App\Http\Controllers\Merchant\ProductController;
 use App\Http\Controllers\Merchant\StockController;
 use App\Http\Controllers\Merchant\GalleryController;
+use App\Http\Controllers\Merchant\OrderController;
 
 
 
@@ -46,6 +47,12 @@ Route::group(['prefix' => 'gallery', 'as' => 'merchant.'], function () {
     Route::get('/edit/{id}', [GalleryController::class, 'edit'])->name('gallery.edit');
     Route::post('/update', [GalleryController::class, 'update'])->name('gallery.update');
     Route::post('/delete', [GalleryController::class, 'delete'])->name('gallery.delete');
+});
+
+// order route
+Route::group(['prefix' => 'order', 'as' => 'merchant.'], function () {
+    Route::get('order_load',[OrderController::class,'datatable'])->name('order.load');
+    Route::get('/',[OrderController::class,'index'])->name('order.index');
 });
 
 

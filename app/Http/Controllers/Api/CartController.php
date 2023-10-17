@@ -51,6 +51,8 @@ class CartController extends Controller
                 }
             }
 
+
+
             if (is_null($cart)){
 
                 $data=new Cart();
@@ -67,6 +69,8 @@ class CartController extends Controller
             }else{
                 $cart->increment('quantity');
             }
+
+           // return Cart::carts();
 
             return response()->json([
                 'message'=>"successfully added to cart",
