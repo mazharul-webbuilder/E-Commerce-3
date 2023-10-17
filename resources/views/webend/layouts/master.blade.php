@@ -1238,11 +1238,15 @@
                                     class=" @if (
                                                 route('order.index', ORDER_TYPE[0]) ||
                                                 Request::routeIs('admin.order'))
-                                            @else hidden @endif  py-2 bg-blue-900 rounded p-1">
+                                            @else
+                                             hidden
+                                             @endif  py-2 bg-blue-900 rounded p-1">
                                     <li>
                                         <a href="{{ route('order.index', ORDER_TYPE[0]) }}"{{--Order type 0 = all order--}}
                                            class="block px-1.5 py-2 mt-2 font-semibold rounded-lg text-white md:mt-0 focus:text-gray-900 hover:bg-blue-500 group
-                                            @if (Request::routeIs('order.index') || Request::routeIs('product.product_detail')) bg-blue-500 @else @endif focus:outline-none focus:shadow-outline">
+                                            @if(Request::routeIs('order.index') || Request::routeIs('admin.order')) bg-blue-500
+                                            @else
+                                            @endif focus:outline-none focus:shadow-outline">
                                             <i
                                                 class="fas fa-th text-white group-hover:text-white transition duration-75"></i>
                                             <span
@@ -1252,7 +1256,7 @@
                                     <li>
                                         <a href="{{ route('admin.order') }}"
                                            class="block px-1.5 py-2 mt-2 font-semibold rounded-lg text-white md:mt-0 focus:text-gray-900 hover:bg-blue-500 group
-                                            @if (Request::routeIs('admin.order') || Request::routeIs('product.product_detail')) bg-blue-500
+                                            @if (Request::routeIs('admin.order') || Request::routeIs('admin.order')) bg-blue-500
                                              @else @endif active:bg-blue-500 focus:outline-none focus:shadow-outline">
                                             <i
                                                 class="fas fa-th text-white group-hover:text-white transition duration-75"></i>

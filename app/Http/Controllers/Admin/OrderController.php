@@ -50,7 +50,14 @@ class OrderController extends Controller
     */
     public function admin_order()
     {
-        
+        $orders = Order::whereHas('order_detail.product', function ($query) { // here order_details is relation with Order table product has relation in orderDetails model
+            $query->where('admin_id', '!=', null);
+        })->get();
+
+
+        $date_range = null;
+
+        return view('webend.ecommerce.order.admin_order.index', compact('orders', 'date_range'));
     }
 
     public function search_by_date(Request $request)
