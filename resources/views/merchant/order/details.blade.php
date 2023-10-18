@@ -33,94 +33,7 @@
                     </div>
                 </div>
             </section>
-            <div class="flex divide-x bg-white">
-                <div class="w-full p-4">
-                    <div class="bg-[#8e0789] overflow-hidden w-full px-0 flex items-center">
-                        <h2 class="text-2xl font-bold py-2 text-white pl-3">Order Detail</h2>
-                    </div>
-                    <div class="flex items-start gap-x-8 p-1 text-justify">
-                        <div class="font-medium">Order Number:</div>
-                        <div>#{{$order->order_number}}</div>
-                    </div>
-                    <div class="flex items-start gap-x-8 p-1 text-justify">
-                        <div class="font-medium">Order Date:</div>
-                        <div>{{date('d-m-Y',strtotime($order->created_at))}}</div>
-                    </div>
-                    <div class="flex items-start gap-x-8 p-1 text-justify">
-                        <div class="font-medium">Total Order Item:</div>
-                        <div>{{$order->quantity}}</div>
-                    </div>
-                    <div class="flex items-start gap-x-8 p-1 text-justify">
-                        <div class="font-medium">Tax/Vat:</div>
-                        <div>{{price_format($order->tax)}}</div>
-                    </div>
-                    <div class="flex items-start gap-x-8 p-1 ">
-                        <div class="font-medium">Shipping Charge:</div>
-                        <div>{{price_format($order->shipping_charge)}}</div>
-                    </div>
-                    <div class="flex items-center gap-x-8 p-1">
-                        <div class="font-medium">Order Note:</div>
-                        <div>{{$order->order_note}}</div>
-                    </div>
 
-                </div>
-                <div class="w-full p-4">
-                    <div class="bg-[#8e0789] overflow-hidden w-full px-0 flex items-center">
-                        <h2 class="text-2xl font-bold py-2 text-white pl-3">Payment Detail</h2>
-                    </div>
-                    <div class="flex items-center gap-x-8 p-1">
-                        <div class="font-medium">Payment Name:	</div>
-                        <div>{{$order->payment->payment_name ?? ''}}</div>
-                    </div>
-                    <div class="flex items-center gap-x-8 p-1">
-                        <div class="font-medium">Transaction Number:	</div>
-                        <div>{{$order->transaction_number}}</div>
-                    </div>
-                    <div class="flex items-center gap-x-8 p-1">
-                        <div class="font-medium">Account Type:	</div>
-                        <div>{{$order->payment->type ?? ''}}</div>
-                    </div>
-                    <div class="flex items-center gap-x-8 p-1">
-                        <div class="font-medium">Order Status:	</div>
-                        <div>{{ucwords($order->status)}}</div>
-                    </div>
-                    @if($order->image != null)
-                        <div class="flex items-center gap-x-8 p-1">
-                            <div class="font-medium">Payment Proof:</div>
-                            <div><a href="{{ asset($order->image) }}" target="_blank" ><img src="{{ asset($order->image) }}" height="50px" width="100px"></a></div>
-                        </div>
-                    @endif
-                </div>
-                <div class="w-full p-4">
-                    <div class="bg-[#8e0789] overflow-hidden w-full px-0 flex items-center">
-                        <h2 class="text-2xl font-bold py-2 text-white pl-3">Shipping Detail</h2>
-                    </div>
-                    <div class="flex items-center gap-x-8 p-1">
-                        <div class="font-medium">Name:	</div>
-                        <div>{{$order->billing ? $order->billing->name : ""}}</div>
-                    </div>
-                    <div class="flex items-center gap-x-8 p-1">
-                        <div class="font-medium">E-mail:	</div>
-                        <div>{{$order->billing ? $order->billing->email : ""}}</div>
-                    </div>
-                    <div class="flex items-center gap-x-8 p-1">
-                        <div class="font-medium">Phone:	</div>
-                        <div>{{$order->billing ? $order->billing->phone : ""}}</div>
-                    </div>
-                    <div class="flex items-center gap-x-8 p-1">
-                        <div class="font-medium">City:	</div>
-                        <div>{{$order->billing ? $order->billing->city : ""}}</div>
-                    </div>
-                    <div class="flex items-center gap-x-8 p-1">
-                        <div class="font-medium">Zip Code:	</div>
-                        <div>{{$order->billing ? $order->billing->zip_code : ""}}</div>
-                    </div>
-                    <div class="flex items-center gap-x-8 p-1">
-                        <div class="font-medium">Address:	</div>
-                        <div>{{$order->billing ? $order->billing->address : ""}}</div>
-                    </div>
-                </div>
-            </div>
             <div class="border border-[#8e0789] rounded-md mt-5">
                 <div class="bg-[#8e0789] overflow-hidden w-full px-0 flex items-center">
                     <h2 class="text-2xl font-bold py-2 text-white pl-3">Ordered Items Detail</h2>
@@ -150,18 +63,6 @@
                                     Size
                                 </div>
                             </th>
-
-                            <th scope="col" class="px-4 py-3">
-                                <div class="text-center">
-                                    Unit Coin
-                                </div>
-                            </th>
-                            <th scope="col" class="px-4 py-3">
-                                <div class="text-center">
-                                    Total Coin
-                                </div>
-                            </th>
-
                             <th scope="col" class="px-4 py-3">
                                 <div class="text-center">
                                     Quantity
@@ -181,9 +82,9 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($order->order_detail as $item)
-                            <tr class="bg-white  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="px-2 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r text-center">
+                        @foreach($orderDetails as $item)
+                            <tr class="bg-white  hover:bg-gray-50">
+                                <td class="px-2 py-4 font-medium whitespace-nowrap border-r text-center text-gray-900">
                                     {{ $loop->iteration }}
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
@@ -196,47 +97,23 @@
                                     {{$item->size ? $item->size->name : ""}}
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
-                                    {{$item->product->current_coin}}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{$item->product->current_coin*$item->product_quantity}}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
                                     {{$item->product_quantity}}
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
-                                    {{price_format($item->product->current_price)}}
+{{--                                    {{price_format($item->product->current_price)}}--}}
+                                    {{$item->product->current_price}}
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
-                                    {{price_format($item->product->current_price*$item->product_quantity)}}
+{{--                                    {{price_format($item->product->current_price*$item->product_quantity)}}--}}
+                                    {{$item->product->current_price*$item->product_quantity}}
                                 </td>
-
+                            </tr>
+                            <tr style="height: 50px" >
+                                <td colspan="7" class="text-gray-900 text-center text-green-500	font-bold">Total Order Amount: {{get_merchant_order_grand_total($orderDetails)}}</td>
                             </tr>
                         @endforeach
-
                         </tbody>
                     </table>
-                    <div class="flex justify-end ">
-                        <div class="bg-gray-100 justify-end">
-                            <p class="p-1">
-                                <span><strong>Sub Total:</strong></span>
-                                <span>{{price_format($order->sub_total)}}</span>
-                            </p>
-                            <p class="p-1">
-                                <span><strong>Shipping Charge:</strong></span>
-                                <span>{{price_format($order->shipping_charge)}}</span>
-                            </p>
-                            <p class="p-1">
-                                <span><strong>VAT:</strong></span>
-                                <span>{{price_format($order->tex)}}</span>
-                            </p>
-                            <p class="p-1">
-                                <span><strong>Grand Total:</strong></span>
-                                <span>{{price_format($order->grand_total)}}</span>
-                            </p>
-                        </div>
-
-                    </div>
                 </div>
             </div>
         </div>

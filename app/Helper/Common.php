@@ -96,6 +96,22 @@ function seller_due_product($product_id){
     }
 }
 
+/*Merchant Order Grand Total*/
+function get_merchant_order_grand_total($datas)
+{
+    $grand_total = 0;
+
+    foreach ($datas as $data){
+        if ($data->seller_id==null){
+            $product=Product::find($data->product_id);
+            $grand_total+=$product->current_price*$data->product_quantity;
+        }else{
+            $grand_total+=seller_price($data->seller_id,$data->product_id)->seller_price*$data->product_quantity;
+        }
+    }
+    return $grand_total;
+}
+
 
 
 

@@ -1236,7 +1236,7 @@
                                 </button>
                                 <ul id="dropdown-example-11"
                                     class=" @if (
-                                                route('order.index', ORDER_TYPE[0]) ||
+                                                Request::routeIs('order.index') ||
                                                 Request::routeIs('admin.order'))
                                             @else
                                              hidden
