@@ -3,10 +3,17 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Models\Ecommerce\Payment;
 use App\Models\Recharge;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 use Yajra\DataTables\DataTables;
 
 class RechargeController extends Controller
@@ -49,4 +56,51 @@ class RechargeController extends Controller
             ->make(true);
 
     }
+
+    /**
+     * Get Recharge request Page
+    */
+    public function recharge()
+    {
+        $payments = Payment::all();
+
+        return \view('seller.recharge.create', compact('payments'));
+    }
+
+    /**
+     * Store Seller Recharge Request
+    */
+    public function rechargePost(Request $request)
+    {
+        $request->validate([
+            'deposit_amount' => 'required|numeric',
+            'transaction_number' => 'required|string',
+            'payment_id' => 'required|integer',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg',
+        ]);
+        try {
+            DB::beginTransaction();
+            Recharge::create([
+                'seller_id' => Auth::guard('seller')->user()->id,
+                'deposit_amount' => $request->deposit_amount,
+                'transaction_number' => $request->transaction_number,
+                'payment_id' => $request->payment_id,
+                'image' => store_2_type_image_nd_get_image_name($request, 'recharge_proof', 256, 200),
+            ]);
+            DB::commit();
+            return response()->json([
+                'response' => Response::HTTP_OK,
+                'type' => 'success',
+                'message' => "Recharge Request Successfully Sent"
+            ]);
+        } catch (QueryException $exception) {
+            DB::rollBack();
+            return response()->json([
+                'response' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'type' => 'error',
+                'message' => $exception->getMessage()
+            ]);
+        }
+    }
+
 }

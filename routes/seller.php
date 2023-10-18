@@ -31,4 +31,6 @@ Route::group([ 'as'=>'seller.'],function(){
     /*Seller Balance Recharge*/
     Route::get('/recharge/history', [RechargeController::class, 'index'])->name('recharge.history');
     Route::get('/datatable', [RechargeController::class, 'datatable'])->name('recharge.history.load');
+    Route::get('/recharge/request', [RechargeController::class, 'recharge'])->name('recharge.page');
+    Route::post('/recharge/store', [RechargeController::class, 'rechargePost'])->name('recharge.post');
 });

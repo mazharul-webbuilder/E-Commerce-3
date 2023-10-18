@@ -40,7 +40,7 @@
             <!-- end menu -->
             <div class="flex justify-end">
 
-                <a href="{{route('share_owner.deposit_request')}}"
+                <a href="{{route('seller.recharge.page')}}"
                    class=" text-white bg-purple-700 hover:bg-blue-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center mr-2">
                     <i class="fas fa-plus mr-2"></i>
                     Send Recharge Request
