@@ -108,10 +108,11 @@
                                     {{$item->product->current_price*$item->product_quantity}}
                                 </td>
                             </tr>
-                            <tr style="height: 50px" >
-                                <td colspan="7" class="text-gray-900 text-center text-green-500	font-bold">Total Order Amount: {{get_merchant_order_grand_total($orderDetails)}}</td>
-                            </tr>
+
                         @endforeach
+                        <tr style="height: 50px" >
+                            <td colspan="7" class="text-gray-900 text-center text-green-500	font-bold">Total Order Amount: {{get_merchant_order_grand_total($orderDetails)}}</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
