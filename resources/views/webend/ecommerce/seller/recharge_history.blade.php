@@ -1,4 +1,4 @@
-@extends('seller.layout.app')
+@extends('webend.layouts.master')
 @section('content')
     <style>
         #dataTable tbody > tr {
@@ -19,7 +19,7 @@
                                 d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
                             </path>
                         </svg>
-                        <a href="#"
+                        <a href="{{route('dashboard')}}"
                            class="flex items-center font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:scale-105">
                             Home
                         </a>
@@ -38,15 +38,6 @@
                 </ol>
             </div>
             <!-- end menu -->
-            <div class="flex justify-end">
-
-                <a href="{{route('seller.recharge.page')}}"
-                   class=" text-white bg-purple-700 hover:bg-blue-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center mr-2">
-                    <i class="fas fa-plus mr-2"></i>
-                    Send Recharge Request
-                </a>
-
-            </div>
             <!-- table start -->
             <div class="border border-[#8e0789] rounded-md mt-10">
                 <div class="bg-[#8e0789] overflow-hidden w-full px-0 py-3 flex items-center">
@@ -77,6 +68,11 @@
                             <th scope="col" class="px-6 py-3 whitespace-nowrap">
                                 <div class="text-center">
                                     Payment Method
+                                </div>
+                            </th>
+                            <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                                <div class="text-center">
+                                    Seller Note
                                 </div>
                             </th>
 
@@ -113,27 +109,49 @@
 @endsection
 @section('extra_js')
     <script>
-        var table = $("#dataTable").DataTable({
-            processing: true,
-            responsive: true,
-            serverSide: true,
-            ordering: false,
-            pagingType: "full_numbers",
-            ajax: '{{ route('seller.recharge.history.load') }}',
-            columns: [
-                { data: 'DT_RowIndex',name:'DT_RowIndex' },
-                { data: 'deposit_amount',name:'deposit_amount'},
-                { data: 'transaction_number',name:'transaction_number'},
-                { data: 'payment_method',name:'payment_method'},
-                { data: 'created_at',name:'created_at'},
-                { data: 'image',name:'image'},
-                { data: 'status',name:'status'},
-            ],
+        $(document).ready(function (){
+            var table = $("#dataTable").DataTable({
+                processing: true,
+                responsive: true,
+                serverSide: true,
+                ordering: false,
+                pagingType: "full_numbers",
+                ajax: '{{ route('admin.seller.recharge.history.load') }}',
+                columns: [
+                    { data: 'DT_RowIndex',name:'DT_RowIndex' },
+                    { data: 'deposit_amount',name:'deposit_amount'},
+                    { data: 'transaction_number',name:'transaction_number'},
+                    { data: 'payment_method',name:'payment_method'},
+                    { data: 'note',name:'note'},
+                    { data: 'created_at',name:'created_at'},
+                    { data: 'image',name:'image'},
+                    { data: 'status',name:'status'},
+                ],
 
-            language : {
-                processing: 'Processing'
-            },
+                language : {
+                    processing: 'Processing'
+                },
 
-        });
+            });
+            /*Change status*/
+            $('body').on('change', '.seller-rechareg-request', function (){
+                const id = $(this).data('id');
+                const value = $(this).val();
+                $.ajax({
+                    url: '{{route('admin.seller.recharge.history.status update')}}',
+                    method: 'POST',
+                    data:  {
+                        id: id,
+                        value: value
+                    },
+                    success: function (data) {
+                        Toast.fire({
+                            icon: data.type,
+                            title: data.message
+                        });
+                    }
+                })
+            })
+        })
     </script>
 @endsection

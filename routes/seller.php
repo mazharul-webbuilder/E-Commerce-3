@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Seller\LoginController;
 use App\Http\Controllers\Seller\DashboardController;
 use App\Http\Controllers\Seller\ManageProductController;
+use App\Http\Controllers\Seller\RechargeController;
 
 
 Route::group([ 'as'=>'seller.'],function(){
@@ -27,4 +28,9 @@ Route::group([ 'as'=>'seller.'],function(){
         Route::get('/delete-product',[ManageProductController::class,'deleteProduct'])->name('product.delete');
         Route::get('/merchant/detail/{id}',[ManageProductController::class,'merchantProductDetail'])->name('merchant.product.details');
     });
+    /*Seller Balance Recharge*/
+    Route::get('/recharge/history', [RechargeController::class, 'index'])->name('recharge.history');
+    Route::get('/datatable', [RechargeController::class, 'datatable'])->name('recharge.history.load');
+    Route::get('/recharge/request', [RechargeController::class, 'recharge'])->name('recharge.page');
+    Route::post('/recharge/store', [RechargeController::class, 'rechargePost'])->name('recharge.post');
 });

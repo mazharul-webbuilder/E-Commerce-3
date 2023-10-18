@@ -9,6 +9,9 @@ use Carbon\Carbon;
 use App\Models\SellerProduct;
 use App\Models\Ecommerce\Review;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 function default_image()
 {
@@ -108,6 +111,50 @@ function get_merchant_order_grand_total($datas)
     return $grand_total;
 }
 
+/*store original and resize image*/
+function store_2_type_image_nd_get_image_name($request, $folderName, $resize_width = 256, $resize_height = 200)
+{
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $image_name = strtolower(Str::random(10)) . time() . "." . $image->getClientOriginalExtension();
+
+        $original_directory = "uploads/{$folderName}/original";
+        $resize_directory = "uploads/{$folderName}/resize";
+
+        if (!File::exists(public_path($original_directory))) {
+            File::makeDirectory(public_path($original_directory), 0777, true);
+            File::makeDirectory(public_path($resize_directory), 0777, true);
+        }
+        $original_image_path = public_path("{$original_directory}/{$image_name}");
+        $resize_large_path = public_path("{$resize_directory}/{$image_name}");
+
+        Image::make($image)->save($original_image_path);
+        Image::make($image)->resize($resize_width, $resize_height)->save($resize_large_path);
+
+        return $image_name;
+    }
+
+    return null;
+}
+
+/**
+ * Delete Origin and Resize Image If Exist
+*/
+function delete_2_type_image_if_exist($data, $folderName)
+{
+    $original_image_path = "uploads/{$folderName}/original/{$data->image}";
+    $resize_image_path = "uploads/{$folderName}/resize/{$data->image}";
+
+    if (File::exists(public_path($original_image_path))) {
+        // Set permissions before deleting (e.g., set to 0644)
+        File::chmod(public_path($original_image_path), 0644);
+        File::chmod(public_path($resize_image_path), 0644);
+
+        // Delete the files
+        File::delete(public_path($original_image_path));
+        File::delete(public_path($resize_image_path));
+    }
+}
 
 
 
