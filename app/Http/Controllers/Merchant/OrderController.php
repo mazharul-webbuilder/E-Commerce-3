@@ -29,16 +29,8 @@ class OrderController extends Controller
             ->addIndexColumn()
             ->editColumn('grand_total',function(Order $order) use($auth_user){
                 $datas=Order_detail::where(['order_id'=>$order->id,'merchant_id'=>$auth_user->id])->get();
-                $grand_total=0;
-               foreach ($datas as $data){
-                        if ($data->seller_id==null){
-                            $product=Product::find($data->product_id);
-                            $grand_total+=$product->current_price*$data->product_quantity;
-                       }else{
-                           $grand_total+=seller_price($data->seller_id,$data->product_id)->seller_price*$data->product_quantity;
-                        }
-               }
-               return $grand_total;
+
+               return get_merchant_order_grand_total($datas);
             })
             ->editColumn('order_quantity',function(Order $order) use($auth_user){
                 $datas=Order_detail::where(['order_id'=>$order->id,'merchant_id'=>$auth_user->id])->get();

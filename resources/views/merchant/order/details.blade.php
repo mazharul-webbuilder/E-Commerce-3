@@ -109,7 +109,7 @@
                                 </td>
                             </tr>
                             <tr style="height: 50px" >
-                                <td colspan="7" class="text-gray-900 text-center">Total Order Amount: 2545</td>
+                                <td colspan="7" class="text-gray-900 text-center text-green-500	font-bold">Total Order Amount: {{get_merchant_order_grand_total($orderDetails)}}</td>
                             </tr>
                         @endforeach
                         </tbody>
