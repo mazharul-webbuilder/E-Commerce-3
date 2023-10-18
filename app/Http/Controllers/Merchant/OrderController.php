@@ -67,10 +67,8 @@ class OrderController extends Controller
     */
     public function details($id): View
     {
-        $order = Order_detail::where('order_id', $id)->where('merchant_id', Auth::guard('merchant')->id())->get();
+        $orderDetails = Order_detail::where('order_id', $id)->where('merchant_id', Auth::guard('merchant')->id())->get();
 
-        dd($order);
-
-        return view('merchant.order.details', compact('order'));
+        return view('merchant.order.details', compact('orderDetails'));
     }
 }
