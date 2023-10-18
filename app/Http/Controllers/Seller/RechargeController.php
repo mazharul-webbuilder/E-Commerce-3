@@ -47,7 +47,7 @@ class RechargeController extends Controller
                 return date('d-m-Y', strtotime($data->created_at));
             })
             ->addColumn('image', function (Recharge $data) {
-                return '<img src="'.asset('uploads/recharge_proof/resize').'/'.$data->image .'" height="100" width="250" alt="payment proof" />';
+                return '<img src="'.asset('uploads/recharge_proof/resize').'/'.$data->image .'" height="50" width="80" alt="payment proof" />';
             })
             ->addColumn('status', function (Recharge $data) {
                 $status = null;

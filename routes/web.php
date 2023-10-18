@@ -32,6 +32,7 @@ use App\Http\Controllers\Admin\WithdrawPaymentController;
 use App\Http\Controllers\Ludo\CampaignController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\ManageSellerController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -555,6 +556,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
         Route::get('edit/{id}', [CurrencyController::class, 'edit'])->name('currency.edit');
         Route::post('update', [CurrencyController::class, 'update'])->name('currency.update');
     });
+
+    /*Seller Balance Rechare History*/
+    Route::group(['prefix' => 'seller/', 'as' => 'admin.seller.'], function (){
+        Route::get('recharge/history', [ManageSellerController::class, 'index'])->name('balance.history');
+        Route::get('load/datatable', [ManageSellerController::class, 'datatable'])->name('recharge.history.load');
+        Route::post('recharge/status/update', [ManageSellerController::class, 'statusUpdate'])->name('recharge.history.status update');
+    });
+
 });
 
 Route::get('privacy', [MetaController::class, 'privacy_policy'])->name('privacy_page');

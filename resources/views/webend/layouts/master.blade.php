@@ -1046,6 +1046,13 @@
                             <hr>
                             <!-- e-commerce section -->
                             <li>
+                                <a href="{{ route('admin.seller.balance.history') }}"
+                                   class="{{ Route::is('admin.seller.balance.history') ? 'bg-blue-500' : '' }} text-lg text-white font-normal rounded-lg flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">
+                                    <i class="fas fa-th text-white group-hover:text-white transition duration-75"></i>
+                                    <span class="ml-3 group-hover:text-white transition duration-150">Seller Recharge Req</span>
+                                </a>
+                            </li>
+                            <li>
                                 <button type="button"
                                     class="text-lg text-white font-normal rounded-lg flex items-center p-2 hover:bg-blue-500 group @if (Request::routeIs('category.all') ||
                                             Request::routeIs('sub-category.all') ||
