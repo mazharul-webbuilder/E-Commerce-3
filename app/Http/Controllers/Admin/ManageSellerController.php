@@ -68,6 +68,13 @@ class ManageSellerController extends Controller
     {
         try {
             $data = Recharge::find($request->id);
+            if ($data->status == 3) {
+                return response()->json([
+                    'response' => Response::HTTP_OK,
+                    'message' => "Invalid Action",
+                    'type' => 'warning'
+                ]);
+            }
             DB::beginTransaction();
             $data->status = $request->value;
             if ($data->status == 3) {
