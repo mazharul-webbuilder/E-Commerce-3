@@ -16,7 +16,7 @@ class Recharge extends Model
     protected $guarded=[];
 
     public function seller(){
-        return $this->belongsTo('seller_id',Seller::class);
+        return $this->belongsTo(Seller::class, 'seller_id', 'id');
     }
 
     public function payment()

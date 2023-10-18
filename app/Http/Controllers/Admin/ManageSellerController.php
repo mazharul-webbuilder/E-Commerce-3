@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Recharge;
+use App\Models\Seller\Seller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -69,7 +70,13 @@ class ManageSellerController extends Controller
             $data = Recharge::find($request->id);
             DB::beginTransaction();
             $data->status = $request->value;
+            if ($data->status == 3) {
+                $seller = Seller::find($data->seller_id);
+                $seller->balance += $data->deposit_amount;
+                $seller->save();
+            }
             $data->save();
+
             DB::commit();
             return response()->json([
                 'response' => Response::HTTP_OK,
