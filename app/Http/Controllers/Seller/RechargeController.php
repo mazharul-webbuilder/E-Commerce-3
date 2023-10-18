@@ -50,7 +50,22 @@ class RechargeController extends Controller
                 return '<img src="'.asset('uploads/recharge_proof/resize').'/'.$data->image .'" height="100" width="250" alt="payment proof" />';
             })
             ->addColumn('status', function (Recharge $data) {
-                return $data->status == 1 ? 'Approved' : 'Rejected';
+                $status = null;
+                switch ($data->status) {
+                    case 1:
+                        $status = "Pending";
+                        break;
+                    case 2:
+                        $status = "Processing";
+                        break;
+                    case 3:
+                        $status = "Approved";
+                        break;
+                    case 4:
+                        $status = "Rejected";
+                        break;
+                }
+                return $status;
             })
             ->rawColumns(['payment_method', 'created_at', 'image', 'status'])
             ->make(true);
@@ -74,10 +89,11 @@ class RechargeController extends Controller
     {
         $request->validate([
             'deposit_amount' => 'required|numeric',
-            'transaction_number' => 'required|string',
+            'transaction_number' => 'required|string|unique:recharges,transaction_number',
+            'note' => 'nullable|string',
             'payment_id' => 'required|integer',
             'image' => 'nullable|image|mimes:jpeg,png,jpg',
-        ]);
+        ], ['transaction_number.unique' => 'Already used before']);
         try {
             DB::beginTransaction();
             Recharge::create([
@@ -85,6 +101,7 @@ class RechargeController extends Controller
                 'deposit_amount' => $request->deposit_amount,
                 'transaction_number' => $request->transaction_number,
                 'payment_id' => $request->payment_id,
+                'note' => $request->note,
                 'image' => store_2_type_image_nd_get_image_name($request, 'recharge_proof', 256, 200),
             ]);
             DB::commit();

@@ -60,6 +60,11 @@
                                 <input name="transaction_number" class=" w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
                                        type="text" data-action="">
                             </div>
+                            <div class="w-full">
+                                <h4 class="mb-2 font-medium text-zinc-700">Note</h4>
+                                <input name="note" class=" w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                       type="text" data-action="">
+                            </div>
                         </div>
                         <div class="flex flex-col md:flex-row justify-between gap-3">
                             <div class="w-full">
