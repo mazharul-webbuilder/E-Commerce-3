@@ -7,6 +7,7 @@ use App\Models\Ecommerce\Payment;
 use App\Models\Recharge;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -80,6 +81,16 @@ class RechargeController extends Controller
         $payments = Payment::where('status', 1)->get();
 
         return \view('seller.recharge.create', compact('payments'));
+    }
+
+    /**
+     * Get Payment Details
+    */
+    public function paymentDetails(Request $request): JsonResponse
+    {
+        $payment = Payment::find($request->id);
+
+        return \response()->json($payment);
     }
 
     /**
