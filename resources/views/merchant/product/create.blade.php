@@ -150,7 +150,7 @@
                                     <h4 class="mb-2 font-medium text-zinc-700">Purchase Price</h4>
                                     <input placeholder="Purchase Price" name="purchase_price" min="0" step="0.01"
                                            class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
-                                           type="number" required>
+                                           type="number">
                                     <span class="purchase_price_error text-red-400"></span>
                                 </div>
                             </div>
@@ -196,6 +196,16 @@
                             </div>
                         </div>
                         <div class="flex flex-col md:flex-row justify-between gap-3">
+                            <div class="w-full">
+                                <div class="w-full">
+                                    <h4 class="mb-2 font-medium text-zinc-700">Company Commission*</h4>
+                                    <input min="0" placeholder="Enter Company Commission" step="0.01"
+                                           name="company_commission_m"
+                                           class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                           type="number">
+                                    <span class="company_commission_m_error text-red-400"></span>
+                                </div>
+                            </div>
                             <div class="w-full">
                                 <div class="w-full">
                                     <h4 class="mb-2 font-medium text-zinc-700">Delivery Charge Dhaka (In)</h4>

@@ -19,7 +19,7 @@
                 <ol class="flex items-center space-x-1 md:space-x-3 flex-wrap">
                     <li class="flex items-center">
                         <svg class="mr-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
-                        <a href="{{ route('dashboard') }}" class="flex items-center font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:scale-105">
+                        <a href="{{ route('merchant.dashboard') }}" class="flex items-center font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:scale-105">
                             Home
                         </a>
                     </li>
@@ -167,6 +167,15 @@
                             </div>
                         </div>
                         <div class="flex flex-col md:flex-row justify-between gap-3">
+                            <div class="w-full">
+                                <h4 class="mb-2 font-medium text-zinc-700">Company Commission*</h4>
+                                <input min="0" placeholder="Enter Company Commission" step="0.01"
+                                       name="company_commission_m"
+                                       value="{{$product->company_commission}}"
+                                       class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                       type="number">
+                                <span class="delivery_charge_in_dhaka_error text-red-400"></span>
+                            </div>
                             <div class="w-full">
                                 <div class="w-full">
                                     <h4 class="mb-2 font-medium text-zinc-700">Delivery Charge Dhaka (In)</h4>

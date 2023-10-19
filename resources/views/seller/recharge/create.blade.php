@@ -102,7 +102,6 @@
 
 @section('extra_js')
     <script src="{{ asset('/webend/style/js/dropify.js') }}"></script>
-
     <script>
        $(document).ready(function (){
            $('#RechargeForm').on('submit', function (e) {
@@ -144,6 +143,27 @@
                    }
                });
            });
+           /**
+            * Get Payment details
+            * */
+           $('.get_payment_detail').on('change', function (){
+               const paymentId = $(this).val()
+               $.ajax({
+                   url: '{{route('seller.payment.details')}}',
+                   method: "GET",
+                   data: {id: paymentId},
+                   success: function (data) {
+                    // Parse the "account_detail" JSON string to an object
+                       const accountDetail = JSON.parse(data.account_detail);
+
+                       let imagePath = '{{asset('/')}}' + 'uploads/payment/resize/' + data.image
+                       $('.set_payment_image').attr('src', imagePath)
+                       $('.set_account_number').text(accountDetail.bank_account_number)
+                       $('.set_account_type').text(data.type)
+                       $('.bank_detail_area').removeClass('hidden')
+                   }
+               })
+           })
 
            $('.dropify').dropify();
        })
