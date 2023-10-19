@@ -97,7 +97,7 @@
                                 <div class="w-full">
                                     <div class="w-full">
                                         <h4 class="mb-2 font-medium text-zinc-700">Mobile Account Number</h4>
-                                        <input value="{{$info->account_number}}" placeholder="Enter account number" name="account_number"
+                                        <input value="{{$info->account_number ?? '' }}" placeholder="Enter account number" name="account_number"
                                                class="account_number w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text">
 
                                     </div>
@@ -106,7 +106,7 @@
                                 <div class="w-full">
                                     <div class="w-full">
                                         <h4 class="mb-2 font-medium text-zinc-700">Reference Number</h4>
-                                        <input value="{{$info->ref_number}}" placeholder="Enter reference number " name="ref_number"
+                                        <input value="{{$info->ref_number ?? ''}}" placeholder="Enter reference number " name="ref_number"
                                                class="ref_number w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text">
 
                                     </div>
@@ -119,14 +119,14 @@
                                 <div class="w-full">
                                     <div class="w-full">
                                         <h4 class="mb-2 font-medium text-zinc-700">Bank Holder Name</h4>
-                                        <input value="{{$info->bank_holder_name}}" placeholder="Enter bank_holder_name" name="bank_holder_name"
+                                        <input value="{{$info->bank_holder_name ?? '' }}" placeholder="Enter bank_holder_name" name="bank_holder_name"
                                                class="bank_holder_name w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text">
                                     </div>
                                 </div>
                                 <div class="w-full">
                                     <div class="w-full">
                                         <h4 class="mb-2 font-medium text-zinc-700">Account Number</h4>
-                                        <input value="{{$info->bank_account_number}}" placeholder="Enter bank account number" name="bank_account_number"
+                                        <input value="{{$info->bank_account_number ?? ''}}" placeholder="Enter bank account number" name="bank_account_number"
                                                class="bank_account_number w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text">
                                     </div>
                                 </div>
@@ -134,21 +134,21 @@
                                 <div class="w-full">
                                     <div class="w-full">
                                         <h4 class="mb-2 font-medium text-zinc-700">Bank Name</h4>
-                                        <input value="{{$info->bank_name}}" placeholder="Enter bank name" name="bank_name"
+                                        <input value="{{$info->bank_name ?? '' }}" placeholder="Enter bank name" name="bank_name"
                                                class="bank_name w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text">
                                     </div>
                                 </div>
                                 <div class="w-full">
                                     <div class="w-full">
                                         <h4 class="mb-2 font-medium text-zinc-700">Branch Name</h4>
-                                        <input value="{{$info->bank_branch_name}}" placeholder="Enter bank branch name" name="bank_branch_name"
+                                        <input value="{{$info->bank_branch_name ?? '' }}" placeholder="Enter bank branch name" name="bank_branch_name"
                                                class="bank_branch_name w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text">
                                     </div>
                                 </div>
                                 <div class="w-full">
                                     <div class="w-full">
                                         <h4 class="mb-2 font-medium text-zinc-700">Route Number</h4>
-                                        <input value="{{$info->bank_route_number}}" placeholder="Enter route number" name="bank_route_number"
+                                        <input value="{{$info->bank_route_number ?? ''}}" placeholder="Enter route number" name="bank_route_number"
                                                class="bank_route_number w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text">
                                     </div>
                                 </div>
@@ -156,7 +156,7 @@
                                 <div class="w-full">
                                     <div class="w-full">
                                         <h4 class="mb-2 font-medium text-zinc-700">Swift Code</h4>
-                                        <input value="{{$info->bank_swift_code}}" placeholder="Enter bank swift code" name="bank_swift_code"
+                                        <input value="{{$info->bank_swift_code ?? '' }}" placeholder="Enter bank swift code" name="bank_swift_code"
                                                class="bank_swift_code w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text">
                                     </div>
                                 </div>
@@ -169,7 +169,7 @@
                                 <div class="w-full">
                                     <div class="w-full">
                                         <h4 class="mb-2 font-medium text-zinc-700">Paytm number or code</h4>
-                                        <input value="{{$info->code_or_number}}" placeholder="Enter code or Number" name="code_or_number"
+                                        <input value="{{$info->code_or_number ?? ''}}" placeholder="Enter code or Number" name="code_or_number"
                                                class="code_or_number w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text">
 
                                     </div>
@@ -182,7 +182,7 @@
                                 <div class="w-full">
                                     <div class="w-full">
                                         <h4 class="mb-2 font-medium text-zinc-700">E-mail</h4>
-                                        <input value="{{$info->online_email}}" placeholder="Enter email" name="online_email"
+                                        <input value="{{$info->online_email ?? ''}}" placeholder="Enter email" name="online_email"
                                                class="online_email w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text">
                                     </div>
                                 </div>
