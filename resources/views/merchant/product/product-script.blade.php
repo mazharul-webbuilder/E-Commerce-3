@@ -239,15 +239,4 @@
             }
         })
     })
-    /*Convert Date Format*/
-    // function convertDateFormat(inputDate) {
-    //     var parts = inputDate.split('-');
-    //     if (parts.length === 3) {
-    //         var day = parts[0];
-    //         var month = parts[1];
-    //         var year = parts[2];
-    //         return month + '/' + day + '/' + year;
-    //     }
-    //     return '';
-    // }
 </script>

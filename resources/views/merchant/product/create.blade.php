@@ -166,8 +166,9 @@
                             </div>
                             <div class="w-full">
                                 <div class="w-full">
-                                    <h4 class="mb-2 font-medium text-zinc-700">Current Price</h4>
+                                    <h4 class="mb-2 font-medium text-zinc-700">Current Price*</h4>
                                     <input min="1" placeholder="Discount Price" name="current_price"
+                                           id="currentPrice"
                                            step="0.01"
                                            class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
                                            type="number">
@@ -178,34 +179,25 @@
                         <div class="flex flex-col md:flex-row justify-between gap-3">
                             <div class="w-full">
                                 <div class="w-full">
-                                    <h4 class="mb-2 font-medium text-zinc-700">Previous Coin</h4>
-                                    <input min="1" placeholder="Previous Coin" name="previous_coin"
-                                           class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
-                                           type="number">
-                                    <span class="previous_coin_error text-red-400"></span>
-                                </div>
-                            </div>
-                            <div class="w-full">
-                                <div class="w-full">
-                                    <h4 class="mb-2 font-medium text-zinc-700">Purchase Coin</h4>
-                                    <input min="1" placeholder="Purchase Coin" name="current_coin"
-                                           class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
-                                           type="number">
-                                    <span class="current_coin_error text-red-400"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-col md:flex-row justify-between gap-3">
-                            <div class="w-full">
-                                <div class="w-full">
                                     <h4 class="mb-2 font-medium text-zinc-700">Company Commission*</h4>
                                     <input min="0" placeholder="Enter Company Commission" step="0.01"
+                                           id="MerchantCompanyCommission"
                                            name="company_commission_m"
                                            class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
                                            type="number">
                                     <span class="company_commission_m_error text-red-400"></span>
                                 </div>
                             </div>
+                            <div class="w-full">
+                                {{--Purchase coin start here--}}
+                                <div class="w-full">
+                                    <h4 class="mb-2 font-medium text-zinc-700">Purchase Coin</h4>
+                                    <input placeholder="Purchase Coin" name="current_coin" title="Enter Current Price and Company Commission." id="purchaseCoin" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="number" value="" readonly>
+                                    <span class="current_coin_error text-red-400"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col md:flex-row justify-between gap-3">
                             <div class="w-full">
                                 <div class="w-full">
                                     <h4 class="mb-2 font-medium text-zinc-700">Delivery Charge Dhaka (In)</h4>
@@ -344,6 +336,47 @@
     <script src="{{ asset('/webend/style/js/dropify.js') }}"></script>
     <script>
         $(document).ready(function() {
+            /**
+             * Calculate Current Coin for merchant product create
+             * */
+            $('#MerchantCompanyCommission').on('input', function (){
+                let commission = $(this).val()
+                let currentPrice = $('#currentPrice').val()
+                if (currentPrice === ''){
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Enter Current Price First'
+                    })
+                    $('#MerchantCompanyCommission').val('')
+                }
+                if (commission > 100) {
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Should Not Grater Than 100'
+                    })
+                    $('#MerchantCompanyCommission').val('')
+                    $('#purchaseCoin').attr('value', purchaseCoin)
+                } else {
+
+                    let purchaseCoin = ((commission * currentPrice) / 100)
+                    $('#purchaseCoin').attr('value', purchaseCoin)
+                }
+
+            })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             // get all sub category
             $('body').on('change', '.find_sub_category', function() {
                 let category_id = $(this).val();

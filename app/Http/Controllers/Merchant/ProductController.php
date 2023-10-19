@@ -140,7 +140,6 @@ class ProductController extends Controller
             'purchase_price'=>'required',
             'previous_price'=>'required',
             'current_price'=>'required',
-            'previous_coin'=>'required',
             'current_coin'=>'required',
             'company_commission_m'=>'required|numeric',
             'delivery_charge_in_dhaka'=>'required',
@@ -152,7 +151,7 @@ class ProductController extends Controller
             'company_commission_af'=>'required_if:is_affiliate,1',
             'affiliate_commission'=>'required_if:is_affiliate,1',
             'brand_id'=>'nullable|integer',
-        ]);
+        ],['current_coin.required' => 'Enter Current Price and Company Commission Must.']);
         if ($request->isMethod('post'))
         {
             DB::beginTransaction();
@@ -167,7 +166,6 @@ class ProductController extends Controller
                 $product->purchase_price    = $request->purchase_price;
                 $product->previous_price    = $request->previous_price;
                 $product->current_price     = $request->current_price;
-                $product->previous_coin    = $request->previous_coin;
                 $product->current_coin     = $request->current_coin;
                 $product->delivery_charge_in_dhaka= $request->delivery_charge_in_dhaka;
                 $product->delivery_charge_out_dhaka= $request->delivery_charge_out_dhaka;
@@ -285,7 +283,6 @@ class ProductController extends Controller
             'previous_price'=>'required',
             'company_commission_m'=>'required|numeric',
             'current_price'=>'required',
-            'previous_coin'=>'required',
             'delivery_charge_in_dhaka'=>'required',
             'delivery_charge_out_dhaka'=>'required',
             'current_coin'=>'required',
@@ -296,7 +293,7 @@ class ProductController extends Controller
             'company_commission_af'=>'required_if:is_affiliate,1',
             'affiliate_commission'=>'required_if:is_affiliate,1',
             'brand_id'=>'nullable|integer',
-        ]);
+        ], ['current_coin.required' => 'Enter Current Price and Company Commission Must.']);
 
         if ($request->isMethod('post'))
         {
@@ -314,7 +311,6 @@ class ProductController extends Controller
                 $product->purchase_price    = $request->purchase_price;
                 $product->previous_price    = $request->previous_price;
                 $product->current_price     = $request->current_price;
-                $product->previous_coin     = $request->previous_coin;
                 $product->current_coin      = $request->current_coin;
                 $product->weight            = $request->weight;
                 $product->description       = $request->description;
