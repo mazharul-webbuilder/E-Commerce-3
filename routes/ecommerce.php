@@ -27,7 +27,7 @@ Route::post('delete_wishlist', [EcommerceController::class, 'delete_wishlist']);
 Route::post('search_product', [EcommerceController::class, 'search_product']);
 
 //===Authenticate guard=====
-Route::group(['middleware'=>'api'],function (){
+Route::group(['middleware'=>'auth:api'],function (){
     Route::post('provide_review',[EcommerceController::class,'provide_review']);
     Route::post('checkout',[CheckoutController::class,'checkout']);
     Route::get('get_payment',[CheckoutController::class,'get_payment']);

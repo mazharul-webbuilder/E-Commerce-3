@@ -71,7 +71,7 @@ class LoginController extends Controller
                         ]);
                         DB::commit();
                         $text = "You have sent request to create new account on  Netelmart" . '' . " .  Your verification code " . $newuser->otp . ". Please dont share it with others.";
-                        send_sms($newuser->mobile, $text);
+                       /// send_sms($newuser->mobile, $text);
                         return response()->json(['type' => "phone-step-1", 'message' => "We send otp in your Phone. Please verify your account by OTP!"]);
                     }
                 } elseif (verify_status($request->device_token, $user->id)) {
@@ -109,7 +109,7 @@ class LoginController extends Controller
                     ]);
                     DB::commit();
                     $text = "You have sent request to create new account on  Netelmart" . '' . ".  Your verification code " . $user->otp . ". Please dont share it with others.";
-                    send_sms($user->mobile, $text);
+                  //  send_sms($user->mobile, $text);
                     return response()->json(['type' => "phone-step-2", 'message' => "You already have an account!. Please verify your account by OTP!"]);
 
                 }
