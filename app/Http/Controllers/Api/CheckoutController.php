@@ -28,7 +28,7 @@ public function get_payment(){
         'payments'=>$payments,
         'status'=>200,
         'type'=>'success'
-    ],Response::HTTP_INTERNAL_SERVER_ERROR);
+    ],Response::HTTP_OK);
 }
 
 public function shipping_charge(Request $request){
