@@ -148,6 +148,8 @@ class ProductController extends Controller
             'description'=>'nullable',
             'reseller_commission'=>'required_if:is_reseller,1',
             'company_commission'=>'required_if:is_reseller,1',
+            'provided_coin'=>'required_if:is_reseller,1',
+            'provided_coin_a'=>'required_if:is_affiliate,1',
             'company_commission_af'=>'required_if:is_affiliate,1',
             'affiliate_commission'=>'required_if:is_affiliate,1',
             'brand_id'=>'nullable|integer',
@@ -210,6 +212,7 @@ class ProductController extends Controller
                     $product_commission->product_id = $product->id;
                     $product_commission->reseller_commission = $request->reseller_commission;
                     $product_commission->company_commission = $request->company_commission;
+                    $product_commission->provided_coin = $request->provided_coin;
                     $product_commission->save();
                 }
                 /*Insert Data into Product Affiliate_Commissions Table*/
@@ -218,6 +221,7 @@ class ProductController extends Controller
                     $product_affiliate_com->product_id = $product->id;
                     $product_affiliate_com->affiliate_commission = $request->affiliate_commission;
                     $product_affiliate_com->company_commission = $request->company_commission_af;
+                    $product_affiliate_com->provided_coin = $request->provided_coin_a;
                     $product_affiliate_com->save();
                 }
 

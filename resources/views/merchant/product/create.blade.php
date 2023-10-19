@@ -247,9 +247,20 @@
                                         <div class="mt-3">
                                             <input min="0" placeholder="Company Commission" step="0.01"
                                                    name="company_commission"
+                                                   id="companyCommissionReseller"
                                                    class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
                                                    type="number">
                                             <span class="company_commission_error text-red-400"></span>
+                                        </div>
+                                        <div class="mt-3">
+                                            <input min="0" placeholder="Provided Coin" step="0.01"
+                                                   id="resellerProvideCoin"
+                                                   name="provided_coin"
+                                                   class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                                   type="number"
+                                                   readonly
+                                            >
+                                            <span class="provided_coin_error text-red-400"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -281,12 +292,22 @@
                                         </div>
                                         <div class="mt-3">
                                             <input min="0" placeholder="Company Commission" step="0.01"
+                                                   id="companyCommissionAffiliate"
                                                    name="company_commission_af"
                                                    class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
                                                    type="number"
                                             >
                                             <span class="company_commission_af_error text-red-400"></span>
-
+                                        </div>
+                                        <div class="mt-3">
+                                            <input min="0" placeholder="Provided Coin" step="0.01"
+                                                   id="affiliateProvideCoin"
+                                                   name="provided_coin_a"
+                                                   class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                                   type="number"
+                                                   readonly
+                                            >
+                                            <span class="company_commission_af_error text-red-400"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -363,14 +384,63 @@
                 }
 
             })
+            /**
+             * Calculate Current Coin for Reseller product create
+             * */
+            $('#companyCommissionReseller').on('input', function (){
+                let resellerCommission = $(this).val()
+                let currentPrice = $('#currentPrice').val()
+                if (currentPrice === ''){
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Enter Current Price First'
+                    })
+                    $('#companyCommissionReseller').val('')
+                }
+                if (resellerCommission > 100) {
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Should Not Grater Than 100'
+                    })
+                    $('#companyCommissionReseller').val('')
+                    $('#resellerProvideCoin').attr('value', purchaseCoin)
+                } else {
+
+                    let purchaseCoin = ((resellerCommission * currentPrice) / 100)
+                    $('#resellerProvideCoin').attr('value', purchaseCoin)
+                }
 
 
+            })
+
+            /**
+             * Calculate Current Coin for Affiliate product create
+             * */
+            $('#companyCommissionAffiliate').on('input', function (){
+                let resellerCommission = $(this).val()
+                let currentPrice = $('#currentPrice').val()
+                if (currentPrice === ''){
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Enter Current Price First'
+                    })
+                    $('#companyCommissionAffiliate').val('')
+                }
+                if (resellerCommission > 100) {
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Should Not Grater Than 100'
+                    })
+                    $('#companyCommissionAffiliate').val('')
+                    $('#affiliateProvideCoin').attr('value', purchaseCoin)
+                } else {
+
+                    let purchaseCoin = ((resellerCommission * currentPrice) / 100)
+                    $('#affiliateProvideCoin').attr('value', purchaseCoin)
+                }
 
 
-
-
-
-
+            })
 
 
 
