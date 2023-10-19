@@ -142,7 +142,7 @@ class ProductController extends Controller
             'current_price'=>'required',
             'previous_coin'=>'required',
             'current_coin'=>'required',
-            'company_commission_m'=>'required',
+            'company_commission_m'=>'required|numeric',
             'delivery_charge_in_dhaka'=>'required',
             'delivery_charge_out_dhaka'=>'required',
             'thumbnail'=>'required',
@@ -177,6 +177,7 @@ class ProductController extends Controller
                 $product->merchant_id=$auth_user->id;
                 $product->is_reseller = $request->is_reseller;
                 $product->is_affiliate = $request->is_affiliate;
+                $product->company_commission = $request->company_commission_m;
                 if ($request->brand_id){
                     $product->brand_id = $request->brand_id;
                 }
@@ -282,7 +283,7 @@ class ProductController extends Controller
             'unit_id'=>'nullable',
             'purchase_price'=>'required',
             'previous_price'=>'required',
-            'company_commission_m'=>'required',
+            'company_commission_m'=>'required|numeric',
             'current_price'=>'required',
             'previous_coin'=>'required',
             'delivery_charge_in_dhaka'=>'required',
@@ -321,6 +322,8 @@ class ProductController extends Controller
                 $product->delivery_charge_out_dhaka= $request->delivery_charge_out_dhaka;
                 $product->is_reseller = $request->is_reseller;
                 $product->is_affiliate = $request->is_affiliate;
+                $product->company_commission = $request->company_commission_m;
+
                 if ($request->sub_category_id)
                 {
                     $product->sub_category_id   = $request->sub_category_id;
