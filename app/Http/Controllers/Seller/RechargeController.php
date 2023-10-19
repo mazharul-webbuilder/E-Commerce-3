@@ -77,7 +77,7 @@ class RechargeController extends Controller
     */
     public function recharge()
     {
-        $payments = Payment::all();
+        $payments = Payment::where('status', 1)->get();
 
         return \view('seller.recharge.create', compact('payments'));
     }
