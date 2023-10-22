@@ -146,8 +146,10 @@ class ProductController extends Controller
             'delivery_charge_out_dhaka'=>'required',
             'thumbnail'=>'required',
             'description'=>'nullable',
-            'reseller_commission' => 'required_if:is_reseller,1|numeric|min:1|max:100',
-            'affiliate_commission' => 'required_if:is_affiliate,1|numeric|min:1|max:100',
+            'is_reseller' => 'required|in:0,1',
+            'reseller_commission' => 'nullable|required_if:is_reseller,1|numeric|min:1|max:100',
+            'is_affiliate' => 'required|in:0,1',
+            'affiliate_commission' => 'nullable|required_if:is_affiliate,1|numeric|min:1|max:100',
             'brand_id'=>'nullable|integer',
         ],['current_coin.required' => 'Enter Current Price and Company Commission Must.']);
         if ($request->isMethod('post'))
@@ -277,8 +279,10 @@ class ProductController extends Controller
             'current_coin'=>'required',
             'thumbnail'=>'nullable',
             'description'=>'nullable',
-            'reseller_commission' => 'required_if:is_reseller,1|numeric|min:1|max:100',
-            'affiliate_commission' => 'required_if:is_affiliate,1|numeric|min:1|max:100',
+            'is_reseller' => 'required|in:0,1',
+            'reseller_commission' => 'nullable|required_if:is_reseller,1|numeric|min:1|max:100',
+            'is_affiliate' => 'required|in:0,1',
+            'affiliate_commission' => 'nullable|required_if:is_affiliate,1|numeric|min:1|max:100',
             'brand_id'=>'nullable|integer',
         ], ['current_coin.required' => 'Enter Current Price and Company Commission Must.']);
 
@@ -533,16 +537,11 @@ class ProductController extends Controller
                 if (File::exists(public_path('/uploads/product/small/' . $data->thumbnail))) {
                     File::delete(public_path('/uploads/product/small/' . $data->thumbnail));
                 }
-                if ($data->is_reseller == 1) {
+                if ($data->is_reseller == 1 OR $data->is_affiliate) {
                     $product_commission = ProductCommission::where('product_id', $data->id)->first();
-                    $product_commission->delete;
-                }
-                if ($data->is_affiliate == 1) {
-                    $product_commission = ProductAffiliateCommission::where('product_id', $data->id)->first();
-                    $product_commission->delete;
+                    $product_commission->delete();
                 }
 
-                $data->delete;
 
                 DB::commit();
 

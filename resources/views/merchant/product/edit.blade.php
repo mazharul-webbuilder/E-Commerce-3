@@ -445,6 +445,18 @@
                             }else{
                                 $('.current_coin_error').html('')
                             }
+                            /*reseller error*/
+                            if (response.responseJSON.errors.hasOwnProperty('reseller_commission')) {
+                                $('.reseller_commission_error').html(response.responseJSON.errors.reseller_commission)
+                            }else{
+                                $('.reseller_commission_error').html('')
+                            }
+                            /*affiliate error*/
+                            if (response.responseJSON.errors.hasOwnProperty('affiliate_commission')) {
+                                $('.affiliate_commission_error').html(response.responseJSON.errors.affiliate_commission)
+                            }else{
+                                $('.affiliate_commission_error').html('')
+                            }
 
                             if (response.responseJSON.errors.hasOwnProperty('description')) {
                                 $('.description_error').html(response.responseJSON.errors.description)
