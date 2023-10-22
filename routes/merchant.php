@@ -6,6 +6,7 @@ use App\Http\Controllers\Merchant\ProductController;
 use App\Http\Controllers\Merchant\StockController;
 use App\Http\Controllers\Merchant\GalleryController;
 use App\Http\Controllers\Merchant\OrderController;
+use App\Http\Controllers\Merchant\WithdrawController;
 
 
 
@@ -59,6 +60,11 @@ Route::group(['prefix' => 'order', 'as' => 'merchant.'], function () {
     Route::get('order_load',[OrderController::class,'datatable'])->name('order.load');
     Route::get('/',[OrderController::class,'index'])->name('order.index');
     Route::get('/details/{id}',[OrderController::class,'details'])->name('order.details');
+});
+
+// Withdraw
+Route::group(['as' => 'merchant.'], function (){
+    Route::get('/withdraw/history', [WithdrawController::class, 'index'])->name('withdraw.history');
 });
 
 
