@@ -4,6 +4,7 @@ use App\Http\Controllers\Seller\LoginController;
 use App\Http\Controllers\Seller\DashboardController;
 use App\Http\Controllers\Seller\ManageProductController;
 use App\Http\Controllers\Seller\RechargeController;
+use App\Http\Controllers\Seller\WithdrawController;
 
 
 Route::group([ 'as'=>'seller.'],function(){
@@ -34,4 +35,7 @@ Route::group([ 'as'=>'seller.'],function(){
     Route::get('/recharge/request', [RechargeController::class, 'recharge'])->name('recharge.page');
     Route::get('/payment/details', [RechargeController::class, 'paymentDetails'])->name('payment.details');
     Route::post('/recharge/store', [RechargeController::class, 'rechargePost'])->name('recharge.post');
+
+    /*Seller Balance Withdraw*/
+    Route::get('/withdraw/history', [WithdrawController::class, 'index'])->name('withdraw.history');
 });
