@@ -1,5 +1,4 @@
 @extends('merchant.layout.app')
-
 @section('extra_css')
     <link href="{{ asset('webend/style/css/dropify.css') }}" rel="stylesheet">
     <style>
@@ -9,11 +8,9 @@
         .dropify-wrapper .dropify-preview .dropify-render img{
             width: 100%;
         }
-
     </style>
 @endsection
 @section('content')
-
     <section class="w-full bg-white p-3 mt-5" >
         <div class="container px-2 mx-auto xl:px-5">
             <!-- start menu -->
@@ -33,7 +30,6 @@
                     </li>
                 </ol>
             </div>
-
             <div class="border border-[#8e0789] rounded-md mt-10">
                 <div class="bg-[#8e0789] overflow-hidden w-full px-0">
                     <h2 class="text-2xl font-bold py-2 text-white pl-3">Profile Update</h2>
@@ -43,10 +39,7 @@
                     @csrf
                     <div class="flex flex-col gap-4 p-4 mt-3">
                         <div class="flex flex-col md:flex-row justify-between gap-3">
-
-
                             <div class="w-full">
-
                                 <div class="w-full">
                                     <h4 class="mb-2 font-medium text-zinc-700">Name</h4>
                                     <input name="name" class="deposit_amount w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
@@ -54,24 +47,21 @@
                                     <span class="deposit_amount_error text-red-400"></span>
                                 </div>
                             </div>
-
                             <div class="w-full">
                                 <h4 class="mb-2 font-medium text-zinc-700">E-mail</h4>
-                                <input name="transaction_number" class=" w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                <input name="email" class=" w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
                                        type="text" value="{{$data->email}}" readonly>
                                 <span class="transaction_number_error text-red-400"></span>
                             </div>
-
                         </div>
-
                         <div class="flex flex-col md:flex-row justify-between gap-3">
                             <div class="w-full">
                                 <div class="w-full">
                                     <h4 class="mb-2 font-medium text-zinc-700">Password</h4>
-                                    <input name="password" class=" w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                    <input name="password"
+                                           class=" w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
                                            type="text" >
                                 </div>
-
                             </div>
                             <div class="w-full">
                                 <div class="w-full">
@@ -79,16 +69,12 @@
                                     <input name="phone" class=" w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
                                            type="text" value="{{$data->phone}}">
                                 </div>
-
                             </div>
                             <div class="w-full">
                                 <h4 class="mb-2 font-medium text-zinc-700">Profile Image </h4>
-                                <input name="avatar" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="file">
+                                <input name="image" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="file">
                                 <span class="avatar_error text-red-400"></span>
                             </div>
-
-
-
                         </div>
 
                         <div class="w-full flex justify-start">
@@ -109,8 +95,8 @@
 
     <script !src="">
         $(function (){
-
             $('body').on('submit','#submit_form',function(e){
+                $('.error-message').hide()
                 e.preventDefault();
                 let formDta = new FormData(this);
                 $.ajax({
@@ -121,21 +107,25 @@
                     contentType: false,
                     processData: false,
                     data:formDta,
-                    success:function (response){
-
-                        swal({
-                            title: 'Good job!',
-                            text: response.message,
-                            icon: response.type,
-                            timer: 5000,
+                    success:function (data){
+                        Toast.fire({
+                            icon: data.type,
+                            title: data.message
                         })
 
                     },
-                    error:function(response){
-                        if (response.status === 422) {
-                            console.log(response)
-                        }
+                    error: function (xhr, status, error) {
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
 
+                            // Display error messages for each input field
+                            $.each(errors, function (field, errorMessage) {
+                                const inputField = $('[name="' + field + '"]');
+                                inputField.after('<span class="error-message text-red-600">' + errorMessage[0] + '</span>');
+                            });
+                        } else {
+                            console.log('An error occurred:', status, error);
+                        }
                     }
                 })
 
@@ -157,8 +147,6 @@
                             $('.set_account_number').text(response.data.account_number)
                             $('.set_account_type').text(response.data.type)
                             $('.set_payment_image').attr('src',image_path+"/"+response.data.image)
-
-
                         }
                     })
                 }else{

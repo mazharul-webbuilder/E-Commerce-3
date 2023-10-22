@@ -7,6 +7,7 @@ use App\Http\Controllers\Merchant\StockController;
 use App\Http\Controllers\Merchant\GalleryController;
 use App\Http\Controllers\Merchant\OrderController;
 use App\Http\Controllers\Merchant\WithdrawController;
+use App\Http\Controllers\Merchant\ShopController;
 
 
 
@@ -65,6 +66,11 @@ Route::group(['prefix' => 'order', 'as' => 'merchant.'], function () {
 // Withdraw
 Route::group(['as' => 'merchant.'], function (){
     Route::get('/withdraw/history', [WithdrawController::class, 'index'])->name('withdraw.history');
+});
+
+// Shop
+Route::group(['as' => 'merchant.'], function (){
+    Route::get('/shop/setting', [ShopController::class, 'setting'])->name('shop.setting');
 });
 
 
