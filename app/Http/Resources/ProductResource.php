@@ -14,6 +14,7 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
+
         return[
             'id'=>$this->id,
             'category_id'=>$this->category_id,
@@ -23,7 +24,9 @@ class ProductResource extends JsonResource
             'previous_coin'=>$this->previous_coin,
             'current_coin'=>$this->current_coin,
             'thumbnail'=>$this->thumbnail,
-            'average_review'=>average_review($this->id)
+            'average_review'=>average_review($this->id),
+
+
         ];
     }
 }

@@ -15,6 +15,7 @@ use App\Models\Ecommerce\Product;
 use App\Models\Ecommerce\Review;
 use App\Models\Ecommerce\Slider;
 use App\Models\Ecommerce\Wishlist;
+use App\Models\Merchant\Merchant;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -302,5 +303,26 @@ class EcommerceController extends Controller
                 }
             }
         }
+    }
+
+
+    public function merchant_product($merchant_id){
+        $datas=Product::where('merchant_id',$merchant_id)->where('status',1)->latest()->paginate(8);
+        $products=ProductResource::collection($datas);
+        $merchant=Merchant::find($merchant_id);
+        $merchant_data=[
+                'merchant_id'=>$merchant->id,
+                'merchant_name'=>$merchant->na,
+                'logo'=>'nai',
+                'total_product'=>count($merchant->publish_products),
+                 'review_detail'=>merchant_ratting($merchant_id)
+               ];
+
+        return \response()->json([
+            'products'=>$datas,
+            'type'=>'success',
+            'merchant_data'=>$merchant_data,
+            'status'=>Response::HTTP_OK
+        ],Response::HTTP_OK);
     }
 }
