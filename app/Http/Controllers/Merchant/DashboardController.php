@@ -79,13 +79,13 @@ class DashboardController extends Controller
 
                 DB::commit();
                 return response()->json([
-                    'data' => "Profile Updated Successfully",
+                    'message' => "Profile Updated Successfully",
                     'type' => 'success',
                     'status'=> Response::HTTP_OK
                 ]);
             }catch (QueryException $exception){
                 return response()->json([
-                    'data'=> $exception->getMessage(),
+                    'message'=> $exception->getMessage(),
                     'type'=> 'error',
                     'status'=> Response::HTTP_INTERNAL_SERVER_ERROR
                 ]);
