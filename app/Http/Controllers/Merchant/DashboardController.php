@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -40,8 +41,10 @@ class DashboardController extends Controller
     public function update_profile(Request $request){
         $request->validate([
            'name' => 'required|string',
-           'phone' => 'nullable|number',
-           'avatar' => 'nullable|image',
+           'email' => 'required|email|exists:merchants,email',
+           'password' => 'nullable',
+            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:11',
+           'image' => 'nullable|image',
         ]);
         if ($request->isMethod("post")){
             try {
@@ -54,37 +57,37 @@ class DashboardController extends Controller
                     $merchant->password = Hash::make($request->password);
                 }
 
-                if($request->hasFile('avatar')){
+                if($request->hasFile('image')){
+                    /*Delete Existing*/
+                    $original_image_path = "uploads/merchant/original/{$merchant->avatar}";
+                    $resize_image_path = "uploads/merchant/resize/{$merchant->avatar}";
 
-                    if (File::exists(public_path('/uploads/merchant/'.$merchant->avatar)))
-                    {
-                        File::delete(public_path('/uploads/merchant/'.$merchant->avatar));
+                    if (File::exists(public_path($original_image_path))) {
+                        // Set permissions before deleting (e.g., set to 0644)
+                        File::chmod(public_path($original_image_path), 0644);
+                        File::chmod(public_path($resize_image_path), 0644);
+
+                        // Delete the files
+                        File::delete(public_path($original_image_path));
+                        File::delete(public_path($resize_image_path));
                     }
-                    $image=$request->avatar;
-                    $image_name=strtolower(Str::random(10)).time().".".$image->getClientOriginalExtension();
 
-                    $image_path = public_path().'/uploads/merchant/'.$image_name;
-
-                    Image::make($image)->save($image_path);
-
-                    $merchant->avatar=$image_name;
-
+                    /*Store and get image name*/
+                    $merchant->avatar = store_2_type_image_nd_get_image_name($request, 'merchant', 200, 200);
                 }
-
                 $merchant->save();
-
 
                 DB::commit();
                 return response()->json([
-                    'data'=>"Successfully Deposit",
-                    'type'=>'success',
-                    'status'=>200
+                    'data' => "Profile Updated Successfully",
+                    'type' => 'success',
+                    'status'=> Response::HTTP_OK
                 ]);
             }catch (QueryException $exception){
                 return response()->json([
-                    'data'=>$exception->getMessage(),
-                    'type'=>'error',
-                    'status'=>500
+                    'data'=> $exception->getMessage(),
+                    'type'=> 'error',
+                    'status'=> Response::HTTP_INTERNAL_SERVER_ERROR
                 ]);
             }
         }
