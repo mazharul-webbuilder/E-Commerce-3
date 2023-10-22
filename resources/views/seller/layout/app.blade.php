@@ -253,6 +253,12 @@
                                 <span class="ml-3 group-hover:text-white transition duration-150">Recharges</span>
                             </a>
                         </li>
+                        <li>
+                            <a href="{{route('seller.withdraw.history')}}" class="text-lg text-white font-normal rounded-lg  flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">
+                                <i class="fas fa-trophy text-white group-hover:text-white transition duration-75"></i>
+                                <span class="ml-3 group-hover:text-white transition duration-150">Withdraw</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

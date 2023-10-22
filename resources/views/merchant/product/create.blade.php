@@ -244,24 +244,6 @@
                                                    type="number">
                                             <span class="reseller_commission_error text-red-400"></span>
                                         </div>
-                                        <div class="mt-3">
-                                            <input min="0" placeholder="Company Commission" step="0.01"
-                                                   name="company_commission"
-                                                   id="companyCommissionReseller"
-                                                   class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
-                                                   type="number">
-                                            <span class="company_commission_error text-red-400"></span>
-                                        </div>
-                                        <div class="mt-3">
-                                            <input min="0" placeholder="Provided Coin" step="0.01"
-                                                   id="resellerProvideCoin"
-                                                   name="provided_coin"
-                                                   class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
-                                                   type="number"
-                                                   readonly
-                                            >
-                                            <span class="provided_coin_error text-red-400"></span>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -289,25 +271,6 @@
                                                    class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
                                                    type="number">
                                             <span class="affiliate_commission_error text-red-400"></span>
-                                        </div>
-                                        <div class="mt-3">
-                                            <input min="0" placeholder="Company Commission" step="0.01"
-                                                   id="companyCommissionAffiliate"
-                                                   name="company_commission_af"
-                                                   class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
-                                                   type="number"
-                                            >
-                                            <span class="company_commission_af_error text-red-400"></span>
-                                        </div>
-                                        <div class="mt-3">
-                                            <input min="0" placeholder="Provided Coin" step="0.01"
-                                                   id="affiliateProvideCoin"
-                                                   name="provided_coin_a"
-                                                   class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
-                                                   type="number"
-                                                   readonly
-                                            >
-                                            <span class="company_commission_af_error text-red-400"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -569,13 +532,17 @@
                             } else {
                                 $('.current_coin_error').html('')
                             }
-
-                            if (response.responseJSON.errors.hasOwnProperty(
-                                'delivery_charge_in_dhaka')) {
-                                $('.delivery_charge_in_dhaka_error').html(response.responseJSON
-                                    .errors.delivery_charge_in_dhaka)
+                            if (response.responseJSON.errors.hasOwnProperty('delivery_charge_in_dhaka')) {
+                                $('.delivery_charge_in_dhaka_error').html(response.responseJSON.errors
+                                    .delivery_charge_in_dhaka)
                             } else {
                                 $('.delivery_charge_in_dhaka_error').html('')
+                            }
+                            if (response.responseJSON.errors.hasOwnProperty('delivery_charge_out_dhaka')) {
+                                $('.delivery_charge_out_dhaka_error').html(response.responseJSON.errors
+                                    .delivery_charge_out_dhaka)
+                            } else {
+                                $('.delivery_charge_out_dhaka_error').html('')
                             }
                             /*Affiliate*/
                             if (response.responseJSON.errors.hasOwnProperty(
@@ -583,7 +550,7 @@
                                 $('.company_commission_af_error').html(response.responseJSON
                                     .errors.company_commission_af)
                             } else {
-                                $('.delivery_charge_in_dhaka_error').html('')
+                                $('.company_commission_af_error').html('')
                             }
                             if (response.responseJSON.errors.hasOwnProperty(
                                 'affiliate_commission')) {
@@ -620,6 +587,12 @@
                                     .thumbnail)
                             } else {
                                 $('.thumbnail_error').html('')
+                            }
+                            if (response.responseJSON.errors.hasOwnProperty('company_commission_m')) {
+                                $('.company_commission_m_error').html(response.responseJSON.errors
+                                    .company_commission_m)
+                            } else {
+                                $('.company_commission_m_error').html('')
                             }
                         }
                         $(".submit_button").text("Add Product").prop('disabled', false)

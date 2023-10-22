@@ -201,7 +201,7 @@
 
                         <button id="dropdownAvatarNameButton" data-dropdown-toggle="dropdownAvatarName" class="flex text-white items-center text-sm font-medium text-gray-900 rounded-full hover:text-blue-600 dark:hover:text-blue-500 md:mr-0 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-white" type="button">
                             <span class="sr-only">Open user menu</span>
-                            <img class="w-8 h-8 mr-2 rounded-full" src="https://static.toiimg.com/thumb/msid-94864313,imgsize-37446,width-400,resizemode-4/94864313.jpg" alt="user photo">
+                            <img class="w-8 h-8 mr-2 rounded-full" src="http://surl.li/mkelh" alt="user photo">
                             {{auth()->guard('merchant')->user()->name}}
                             <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
@@ -266,6 +266,12 @@
                             <a href="{{route('merchant.order.index')}}" class="{{ Request::routeIs(['merchant.order.index']) ? 'bg-blue-500' : '' }} text-lg text-white font-normal rounded-lg  flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">
                                 <i class="fas fa-trophy text-white group-hover:text-white transition duration-75"></i>
                                 <span class="ml-3 group-hover:text-white transition duration-150">Orders</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{route('merchant.withdraw.history')}}" class="{{ Request::routeIs(['merchant.withdraw.history']) ? 'bg-blue-500' : '' }} text-lg text-white font-normal rounded-lg  flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">
+                                <i class="fas fa-trophy text-white group-hover:text-white transition duration-75"></i>
+                                <span class="ml-3 group-hover:text-white transition duration-150">Withdraw</span>
                             </a>
                         </li>
                     </ul>
