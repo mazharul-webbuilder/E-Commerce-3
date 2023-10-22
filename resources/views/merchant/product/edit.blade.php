@@ -142,35 +142,22 @@
                                     <span class="previous_price_error text-red-400"></span>
                                 </div>
                             </div>
+
+                        </div>
+
+                        <div class="flex flex-col md:flex-row justify-between gap-3">
                             <div class="w-full">
                                 <div class="w-full">
                                     <h4 class="mb-2 font-medium text-zinc-700">Current Price</h4>
-                                    <input min="1" placeholder="Discount Price" value="{{$product->current_price}}" name="current_price" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="number" >
+                                    <input  id="currentPrice" min="1" placeholder="Discount Price" value="{{$product->current_price}}" name="current_price" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="number" >
                                     <span class="current_price_error text-red-400"></span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="flex flex-col md:flex-row justify-between gap-3">
-                            <div class="w-full">
-                                <div class="w-full">
-                                    <h4 class="mb-2 font-medium text-zinc-700">Previous Coin</h4>
-                                    <input min="1" placeholder="Previous Coin" value="{{$product->previous_coin}}" name="previous_coin" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="number" >
-                                    <span class="previous_coin_error text-red-400"></span>
-                                </div>
-                            </div>
-                            <div class="w-full">
-                                <div class="w-full">
-                                    <h4 class="mb-2 font-medium text-zinc-700">Purchase Coin</h4>
-                                    <input min="1" placeholder="Purchase Coin" value="{{$product->current_coin}}" name="current_coin" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="number" >
-                                    <span class="current_coin_error text-red-400"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-col md:flex-row justify-between gap-3">
                             <div class="w-full">
                                 <h4 class="mb-2 font-medium text-zinc-700">Company Commission*</h4>
                                 <input min="0" placeholder="Enter Company Commission" step="0.01"
                                        name="company_commission_m"
+                                       id="MerchantCompanyCommission"
                                        value="{{$product->company_commission}}"
                                        class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
                                        type="number">
@@ -188,6 +175,23 @@
                                     <h4 class="mb-2 font-medium text-zinc-700">Delivery Charge Dhaka (Out)</h4>
                                     <input min="0" value="{{$product->delivery_charge_out_dhaka}}" placeholder="Delivery Charge out dhaka" name="delivery_charge_out_dhaka" class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="number" >
                                     <span class="delivery_charge_out_dhaka_error text-red-400"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col md:flex-row justify-between gap-3">
+                            <div class="w-full">
+                                <div class="w-full">
+                                    <h4 class="mb-2 font-medium text-zinc-700">Purchase Coin</h4>
+                                    <input
+                                        placeholder="Purchase
+                                        Coin" name="current_coin"
+                                        value="{{$product->current_coin}}"
+                                        title="Enter Current Price and Company Commission."
+                                        id="purchaseCoin"
+                                        class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                        type="number"
+                                        readonly>
+                                    <span class="current_coin_error text-red-400"></span>
                                 </div>
                             </div>
                         </div>
@@ -220,15 +224,6 @@
                                             >
                                             <span class="reseller_commission_error text-red-400"></span>
                                         </div>
-                                        <div class="mt-3">
-                                            <input min="0" placeholder="Company Commission" step="0.01"
-                                                   name="company_commission"
-                                                   class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
-                                                   type="number"
-                                                   value="{{$product->is_reseller == 1 ? $product->product_commission->company_commission: ''}}"
-                                            >
-                                            <span class="company_commission_error text-red-400"></span>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -255,19 +250,9 @@
                                                    name="affiliate_commission"
                                                    class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
                                                    type="number"
-                                                   value="{{$product->is_affiliate == 1 ?  $product->product_affiliate_commission->affiliate_commission : ''}}"
+                                                   value="{{$product->is_affiliate == 1 ?  $product->product_commission->affiliate_commission : ''}}"
                                             >
                                             <span class="affiliate_commission_error text-red-400"></span>
-                                        </div>
-                                        <div class="mt-3">
-                                            <input min="0" placeholder="Company Commission" step="0.01"
-                                                   name="company_commission_af"
-                                                   class="w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
-                                                   type="number"
-                                                   value="{{$product->is_affiliate == 1 ? $product->product_affiliate_commission->company_commission : ''}}"
-                                            >
-                                            <span class="company_commission_af_error text-red-400"></span>
-
                                         </div>
                                     </div>
                                 </div>
@@ -282,7 +267,7 @@
                                         <div class="upload__btn-box">
                                             <label class="upload__btn">
                                                 <p>Upload images</p>
-                                                <input type="file" name="thumbnail" class="upload__inputfile dropify" data-default-file="{{asset('uploads/product/resize/'.$product->thumbnail)}}">
+                                                <input type="file" name="thumbnail" class="upload__inputfile dropify" data-default-file="{{asset('uploads/product/medium/'.$product->thumbnail)}}">
                                             </label>
                                         </div>
                                         <span class="thumbnail_error text-red-400"></span>
@@ -315,6 +300,33 @@
     <script src="{{ asset('/webend/style/js/dropify.js') }}"></script>
     <script>
         $(document).ready(function (){
+            /**
+             * Calculate Current Coin for merchant product create
+             * */
+            $('#MerchantCompanyCommission').on('input', function (){
+                let commission = $(this).val()
+                let currentPrice = $('#currentPrice').val()
+                if (currentPrice === ''){
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Enter Current Price First'
+                    })
+                    $('#MerchantCompanyCommission').val('')
+                }
+                if (commission > 100) {
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Should Not Grater Than 100'
+                    })
+                    $('#MerchantCompanyCommission').val('')
+                    $('#purchaseCoin').attr('value', purchaseCoin)
+                } else {
+
+                    let purchaseCoin = ((commission * currentPrice) / 100)
+                    $('#purchaseCoin').attr('value', purchaseCoin)
+                }
+
+            })
             // get all sub category
             $('body').on('change','.find_sub_category',function(){
                 let category_id=$(this).val();

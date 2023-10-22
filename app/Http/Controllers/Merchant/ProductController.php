@@ -277,8 +277,8 @@ class ProductController extends Controller
             'current_coin'=>'required',
             'thumbnail'=>'nullable',
             'description'=>'nullable',
-            'reseller_commission'=>'required_if:is_reseller,1',
-            'affiliate_commission'=>'required_if:is_affiliate,1',
+            'reseller_commission' => 'required_if:is_reseller,1|numeric|min:1|max:100',
+            'affiliate_commission' => 'required_if:is_affiliate,1|numeric|min:1|max:100',
             'brand_id'=>'nullable|integer',
         ], ['current_coin.required' => 'Enter Current Price and Company Commission Must.']);
 
@@ -350,10 +350,11 @@ class ProductController extends Controller
                 $product->save();
 
                 /*Insert Data into Product_Commissions Table*/
-                if ($request->is_reseller == 1) {
+                if ($request->is_reseller == 1 OR $request->is_affiliate) {
                     $product_commission = ProductCommission::where('product_id', $product->id)->first();
                     $product_commission->product_id = $product->id;
                     $product_commission->reseller_commission = $request->reseller_commission;
+                    $product_commission->affiliate_commission = $request->affiliate_commission;
                     $product_commission->save();
                 }
 
