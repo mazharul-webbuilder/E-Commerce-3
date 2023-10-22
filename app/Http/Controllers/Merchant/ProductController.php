@@ -146,12 +146,8 @@ class ProductController extends Controller
             'delivery_charge_out_dhaka'=>'required',
             'thumbnail'=>'required',
             'description'=>'nullable',
-            'reseller_commission'=>'required_if:is_reseller,1',
-            'company_commission'=>'required_if:is_reseller,1',
-            'provided_coin'=>'required_if:is_reseller,1',
-            'provided_coin_a'=>'required_if:is_affiliate,1',
-            'company_commission_af'=>'required_if:is_affiliate,1',
-            'affiliate_commission'=>'required_if:is_affiliate,1',
+            'reseller_commission' => 'required_if:is_reseller,1|numeric|min:1|max:100',
+            'affiliate_commission' => 'required_if:is_affiliate,1|numeric|min:1|max:100',
             'brand_id'=>'nullable|integer',
         ],['current_coin.required' => 'Enter Current Price and Company Commission Must.']);
         if ($request->isMethod('post'))
@@ -207,24 +203,13 @@ class ProductController extends Controller
                 $product->save();
 
                 /*Insert Data into Product_Commissions Table*/
-                if ($request->is_reseller == 1) {
+                if ($request->is_reseller == 1 OR $request->is_affiliate) {
                     $product_commission = new ProductCommission();
                     $product_commission->product_id = $product->id;
                     $product_commission->reseller_commission = $request->reseller_commission;
-                    $product_commission->company_commission = $request->company_commission;
-                    $product_commission->provided_coin = $request->provided_coin;
+                    $product_commission->affiliate_commission = $request->affiliate_commission;
                     $product_commission->save();
                 }
-                /*Insert Data into Product Affiliate_Commissions Table*/
-                if ($request->is_affiliate == 1) {
-                    $product_affiliate_com = new ProductAffiliateCommission();
-                    $product_affiliate_com->product_id = $product->id;
-                    $product_affiliate_com->affiliate_commission = $request->affiliate_commission;
-                    $product_affiliate_com->company_commission = $request->company_commission_af;
-                    $product_affiliate_com->provided_coin = $request->provided_coin_a;
-                    $product_affiliate_com->save();
-                }
-
 
                 $data=Product::findOrFail($product->id);
                 $data->slug = Str::slug($request->title,'-').'-'.strtolower(Str::random(3).$data->id.Str::random(3));
@@ -293,8 +278,6 @@ class ProductController extends Controller
             'thumbnail'=>'nullable',
             'description'=>'nullable',
             'reseller_commission'=>'required_if:is_reseller,1',
-            'company_commission'=>'required_if:is_reseller,1',
-            'company_commission_af'=>'required_if:is_affiliate,1',
             'affiliate_commission'=>'required_if:is_affiliate,1',
             'brand_id'=>'nullable|integer',
         ], ['current_coin.required' => 'Enter Current Price and Company Commission Must.']);
@@ -371,17 +354,9 @@ class ProductController extends Controller
                     $product_commission = ProductCommission::where('product_id', $product->id)->first();
                     $product_commission->product_id = $product->id;
                     $product_commission->reseller_commission = $request->reseller_commission;
-                    $product_commission->company_commission = $request->company_commission;
                     $product_commission->save();
                 }
-                /*Insert Data into Product Affiliate_Commissions Table*/
-                if ($request->is_affiliate == 1) {
-                    $product_affiliate_com = ProductAffiliateCommission::where('product_id', $product->id)->first();
-                    $product_affiliate_com->product_id = $product->id;
-                    $product_affiliate_com->affiliate_commission = $request->affiliate_commission;
-                    $product_affiliate_com->company_commission = $request->company_commission_af;
-                    $product_affiliate_com->save();
-                }
+
 
                 DB::commit();
                 return \response()->json([
