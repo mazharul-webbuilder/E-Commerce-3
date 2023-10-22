@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
+use App\Models\Ecommerce\Order_detail;
+
+const MERCHANT_RANK=['vim'=>"VIM",'mim'=>"MIM",'sim'=>"SIM"];
 
 function default_image()
 {
@@ -155,6 +158,41 @@ function delete_2_type_image_if_exist($data, $folderName)
         File::delete(public_path($resize_image_path));
     }
 }
+ function merchant_ratting($merchant_id){
+
+    $reviews=Review::where(['merchant_id'=>$merchant_id,'status'=>1])->get();
+
+    if (count($reviews)>0){
+        $total_ratting=$reviews->sum('ratting');
+        $average_ratting=$total_ratting/count($reviews);
+        $review_detail=['average_ratting'=>$average_ratting,'total_ratting'=>$total_ratting,'ranking'=>merchant_ranking($merchant_id)];
+    }else{
+        $review_detail=['average_ratting'=>0,'total_ratting'=>0, 'ranking'=>null];
+    }
+    return $review_detail;
+
+ }
+ function merchant_ranking($merchant_id){
+        $merchant_sold=Order_detail::where('merchant_id',$merchant_id)->whereHas('order',function ($data){
+            $data->where('status','delivered');
+        })->count();
+//     $merchant_sell=DB::table('order_details')->join('orders','order_details.order_id','=','orders.id')
+//         ->where('orders.status','=','delivered')
+//         ->where('merchant_id',$merchant_id)
+//         ->select(DB::raw('count(order_details.id) as total_sold'))
+//         ->get();
+
+    if ($merchant_sold<=0){
+        return "New Comer";
+    }elseif ($merchant_sold >=1 && $merchant_sold<=10){
+         return "VIP";
+    }elseif ($merchant_sold >=11 && $merchant_sold<=20){
+        return "MIP";
+    }elseif ($merchant_sold >=21 && $merchant_sold<=30){
+        return "SIP";
+    }
+ }
+
 
 
 

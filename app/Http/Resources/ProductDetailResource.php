@@ -33,6 +33,7 @@ class ProductDetailResource extends JsonResource
         return[
             'id'=>$this->id,
             'title'=>$this->title,
+            'category_id'=>$this->category_id,
             'product_code'=>$this->product_code,
             'previous_price'=>$this->previous_price($this->id),
             'current_price'=>$this->get_seller_price($this->id),
@@ -41,16 +42,28 @@ class ProductDetailResource extends JsonResource
             'thumbnail'=>$this->thumbnail,
             'short_description'=>$this->short_description,
             'description'=>$this->description,
+            'merchant_info'=>$this->merchant ? [
+                    'merchant_id'=>$this->merchant_id,
+                    'merchant_name'=>$this->merchant->name,
+                    'logo'=>"nai",
+                    'follower'=>200,
+                    'total_product'=>count($this->merchant->publish_products),
+                    'review_detail'=>merchant_ratting($this->merchant_id),
+
+                ] : '',
+
             'galleries'=>$this->galleries->map(function ($data){
                 return [
                     "id"  => $data->id,
                     'image'=>$data->image
                 ];
             }),
-            'sizes'=>$this->stocks->map(function ($data){
+            'stocks'=>$this->stocks->map(function ($data){
                 return [
-                    "id"  => $data->size_id,
-                    "size_name"  => $data->size->name,
+                    'id'=>$data->id,
+                    "stock_quantity"  => $data->quantity,
+                    "size_id"  => $data->size_id,
+                    "size_name" => $data->size ? $data->size->name : '' ,
                 ];
             }),
             'public_reviews'=>$this->public_reviews->map(function ($data){
