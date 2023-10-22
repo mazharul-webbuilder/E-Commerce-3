@@ -518,7 +518,6 @@ class ProductController extends Controller
         if ($request->ajax()) {
             try {
                 $data = Product::find($request->item_id);
-
                 DB::beginTransaction();
                 /*Check is Merchant Delete Product*/
                 if (\auth()->guard('merchant')->check()) {
@@ -537,11 +536,11 @@ class ProductController extends Controller
                 if (File::exists(public_path('/uploads/product/small/' . $data->thumbnail))) {
                     File::delete(public_path('/uploads/product/small/' . $data->thumbnail));
                 }
-                if ($data->is_reseller == 1 OR $data->is_affiliate) {
+                if ($data->is_reseller == 1 OR $data->is_affiliate == 1) {
                     $product_commission = ProductCommission::where('product_id', $data->id)->first();
-                    $product_commission->delete();
+                    $product_commission?->delete();
                 }
-
+                $data->delete();
 
                 DB::commit();
 
