@@ -12,7 +12,7 @@
                     /*Set Existing Values*/
                     $('#sellerProductId').val(data.id)
                     $('#seller_price').val(data.seller_price)
-                    $('#seller_price').attr('min',data.seller_price)
+                    $('#seller_price').attr('min',data.min_price)
                     $('#seller_company_commission').val(data.seller_company_commission)
 
                     /*show Modal*/
