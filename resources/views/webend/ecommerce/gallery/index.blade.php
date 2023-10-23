@@ -111,7 +111,7 @@
                                     {{ $loop->iteration }}
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
-                                    <img style="width: 200px;height: 100px" src=" {{asset('uploads/gallery/resize/'.$gallery->image) }}">
+                                    <img style="width: 200px;height: 100px" src=" {{asset('uploads/gallery/small/'.$gallery->image) }}">
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
                                     {{ $gallery->product->title }}
