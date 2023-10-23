@@ -2,15 +2,18 @@
 
 namespace App\Models\Ecommerce;
 
+use App\Models\AffiliatorProduct;
 use App\Models\Brand;
 use App\Models\Merchant\Merchant;
 use App\Models\ProductAffiliateCommission;
 use App\Models\ProductCommission;
+use App\Models\SellerProduct;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Ecommerce\Unit;
 use App\Models\Ecommerce\Category;
 use  App\Models\Ecommerce\SubCategory;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -85,6 +88,25 @@ class Product extends Model
     public function brand()
     {
         return $this->belongsTo(Brand::class);
+    }
+
+    /**
+     * Perform Action If updated product
+    */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::updated(function ($product) {
+            SellerProduct::where('product_id', $product->id)->update([
+                'coin_from_merchant' => $product->current_coin,
+                'seller_price' => DB::raw('IF(seller_price < ' . $product->current_price . ', ' . $product->current_price . ', seller_price)'),
+            ]);
+
+            AffiliatorProduct::where('product_id', $product->id)->update([
+                'coin_from_merchant' => $product->current_coin,
+            ]);
+        });
     }
 
 
