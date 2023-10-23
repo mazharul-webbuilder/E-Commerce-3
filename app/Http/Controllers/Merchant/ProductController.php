@@ -354,7 +354,7 @@ class ProductController extends Controller
                 $product->save();
 
                 /*Insert Data into Product_Commissions Table*/
-                if ($request->is_reseller == 1 OR $request->is_affiliate) {
+                if ($request->is_reseller == 1 || $request->is_affiliate == 1) {
                     $product_commission = ProductCommission::where('product_id', $product->id)->first();
                     $product_commission->product_id = $product->id;
                     $product_commission->reseller_commission = $request->reseller_commission;

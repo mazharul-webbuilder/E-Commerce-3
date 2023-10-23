@@ -24,4 +24,10 @@ class ShopController extends Controller
 
         return \view('merchant.shop.index', compact('data'));
     }
+
+    /**/
+    public function settingPost()
+    {
+
+    }
 }

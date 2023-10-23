@@ -130,8 +130,9 @@
                             <div class="w-full">
                                 <div class="w-full">
                                     <h4 class="mb-2 font-medium text-zinc-700">Shop Detail</h4>
-                                    <textarea rows="8" cols="3" placeholder="Description" name="detail" class="summernote w-full px-4 py-2 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text">{{$data?->detail}}</textarea>
-                                    <span class="description_error text-red-400"></span>
+                                    <textarea rows="8" cols="3" placeholder="Description" name="detail" class="summernote w-full px-4 py-2 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text">
+                                        {{$data?->detail}}
+                                    </textarea>
                                 </div>
                             </div>
                             <div class="w-full">
@@ -140,10 +141,10 @@
                                         <div class="upload__btn-box">
                                             <label class="upload__btn">
                                                 <p>Upload images</p>
-                                                <input type="file" name="image" class="upload__inputfile dropify" @if($data) data-default-file="{{asset('uploads/shop/resize/'. $data->logo )}} @endif">
+                                                <input type="file" name="image" class="upload__inputfile dropify"
+                                                       @if($data) data-default-file="{{asset('uploads/shop/resize/'. $data->logo )}} @endif">
                                             </label>
                                         </div>
-                                        <span class="thumbnail_error text-red-400"></span>
                                     </div>
                                 </div>
                             </div>
@@ -173,9 +174,8 @@
                 e.preventDefault();
                 let formDta = new FormData(this);
                 $.ajax({
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    method:$(this).attr('method'),
-                    url:$(this).attr('data-action'),
+                    url: '{{route('merchant.shop.setting')}}',
+                    method: 'POST',
                     cache: false,
                     contentType: false,
                     processData: false,

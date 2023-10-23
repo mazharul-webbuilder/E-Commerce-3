@@ -71,6 +71,7 @@ Route::group(['as' => 'merchant.'], function (){
 // Shop
 Route::group(['as' => 'merchant.'], function (){
     Route::get('/shop/setting', [ShopController::class, 'setting'])->name('shop.setting');
+    Route::post('/shop/setting', [ShopController::class, 'settingPost'])->name('shop.setting');
 });
 
 
