@@ -39,7 +39,6 @@ class ShopController extends Controller
     public function settingPost(ShopSettingRequest $request): JsonResponse
     {
         $merchant = Auth::guard('merchant')->user();
-
         try {
             DB::beginTransaction();
             DB::table('shop_details')->updateOrInsert(
@@ -50,8 +49,8 @@ class ShopController extends Controller
                     'detail' => $request->detail,
                     'address' => $request->address,
                     'trade_licence' => $request->trade_licence,
-                    'trade_licence_issued' => $request->trade_licence_issued,
-                    'trade_licence_expired' => $request->trade_licence_expired,
+                    'trade_licence_issued' => date("d-m-Y",strtotime($request->trade_licence_issued)),
+                    'trade_licence_expired' => date("d-m-Y",strtotime($request->trade_licence_expired)),
                     'help_line' => $request->help_line,
                     'available_time' => $request->available_time,
                 ]

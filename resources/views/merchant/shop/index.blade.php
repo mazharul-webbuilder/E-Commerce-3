@@ -73,7 +73,7 @@
                                            id="licenseIssuedDate"
                                            class=" w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
                                            type="text"
-                                           value="{{$data?->trade_licence_issued}}"
+                                           value="{{$data->trade_licence_issued ? date("d-m-Y",strtotime($data->trade_licence_issued)) : ''}}"
                                     >
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
                                            class=" w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
                                            type="text"
                                            id="licenseExpiredDate"
-                                           value="{{$data?->trade_licence_expired}}"
+                                           value="{{$data->trade_licence_expired ? date("d-m-Y",strtotime($data->trade_licence_expired)) : ''}}"
                                     >
                                 </div>
                             </div>
