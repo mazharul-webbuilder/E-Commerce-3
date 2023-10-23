@@ -300,11 +300,19 @@
     <script src="{{ asset('/webend/style/js/dropify.js') }}"></script>
     <script>
         $(document).ready(function (){
+            /*---------------------------------------------------------------*/
             /**
-             * Calculate Current Coin for merchant product create
+             * Calculate Current Coin for merchant product update
              * */
             $('#MerchantCompanyCommission').on('input', function (){
-                let commission = $(this).val()
+                setProductCurrentCoin();
+            })
+            $('#currentPrice').on('input', function (){
+                setProductCurrentCoin();
+            })
+            function setProductCurrentCoin()
+            {
+                let commission = $('#MerchantCompanyCommission').val()
                 let currentPrice = $('#currentPrice').val()
                 if (currentPrice === ''){
                     Toast.fire({
@@ -325,8 +333,8 @@
                     let purchaseCoin = ((commission * currentPrice) / 100)
                     $('#purchaseCoin').attr('value', purchaseCoin)
                 }
-
-            })
+            }
+            /*---------------------------------------------------------------*/
             // get all sub category
             $('body').on('change','.find_sub_category',function(){
                 let category_id=$(this).val();

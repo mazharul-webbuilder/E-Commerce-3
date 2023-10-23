@@ -140,7 +140,7 @@
                                     <div class="upload__box mt-5">
                                         <div class="upload__btn-box">
                                             <label class="upload__btn">
-                                                <p>Upload images</p>
+                                                <p>Upload Shop Logo</p>
                                                 <input type="file" name="image" class="upload__inputfile dropify"
                                                        @if($data) data-default-file="{{asset('uploads/shop/resize/'. $data->logo )}} @endif">
                                             </label>

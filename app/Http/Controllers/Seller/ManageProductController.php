@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Collection;
+
 
 class ManageProductController extends Controller
 {
@@ -97,7 +99,8 @@ class ManageProductController extends Controller
                     $data=new SellerProduct();
                     $data->seller_id=$auth_user->id;
                     $data->product_id=$request->item_id;
-                    $data->seller_price = Product::find($request->item_id)->current_price; // Set Default Price
+                    $data->seller_price = $product->current_price; // Set Default Price
+                    $data->coin_from_merchant = $product->current_coin; // Set merchant product current coin
                     $data->save();
                     return response()->json([
                         'data'=>'Successfully added',
@@ -177,7 +180,10 @@ class ManageProductController extends Controller
     */
     public function details(Request $request): JsonResponse
     {
-        $seller_product = SellerProduct::select('id', 'seller_price', 'seller_company_commission')->find($request->sellerProductId);
+        $seller_product = SellerProduct::select('id', 'seller_price', 'seller_company_commission', 'product_id')->find($request->sellerProductId);
+
+        /*Add Min Price*/
+        $seller_product->min_price = $seller_product->product->current_price;
 
         return \response()->json($seller_product);
     }
@@ -190,13 +196,18 @@ class ManageProductController extends Controller
         $request->validate([
             'sellerProductId' => 'required|integer',
             'seller_price' => 'required|numeric|min:1',
-            'seller_company_commission' => 'required|numeric|min:0',
+            'seller_company_commission' => 'required|numeric|min:0|max:100',
         ]);
         try {
             DB::beginTransaction();
             $seller_product = SellerProduct::find($request->sellerProductId);
             $seller_product->seller_price = $request->seller_price;
             $seller_product->seller_company_commission = $request->seller_company_commission;
+
+            /*Calculate Coin from seller*/
+            $price_diff = $request->seller_price -  $seller_product->product->current_price;
+            $seller_product->coin_from_seller = (($price_diff * $request->seller_company_commission) / 100);
+
             $seller_product->save();
             DB::commit();
             return \response()->json([
