@@ -73,7 +73,7 @@
                                            id="licenseIssuedDate"
                                            class=" w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
                                            type="text"
-                                           value="{{$data?->trade_licence_issued}}"
+                                           value="{{$data->trade_licence_issued ? date("d-m-Y",strtotime($data->trade_licence_issued)) : ''}}"
                                     >
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
                                            class=" w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
                                            type="text"
                                            id="licenseExpiredDate"
-                                           value="{{$data?->trade_licence_expired}}"
+                                           value="{{$data->trade_licence_expired ? date("d-m-Y",strtotime($data->trade_licence_expired)) : ''}}"
                                     >
                                 </div>
                             </div>
@@ -142,7 +142,7 @@
                                             <label class="upload__btn">
                                                 <p>Upload Shop Logo</p>
                                                 <input type="file" name="image" class="upload__inputfile dropify"
-                                                       @if($data) data-default-file="{{asset('uploads/shop/resize/'. $data->logo )}} @endif">
+                                                       @if($data) data-default-file="{{asset('uploads/shop/original/'.$data->logo)}}@endif">
                                             </label>
                                         </div>
                                     </div>
@@ -181,11 +181,13 @@
                     processData: false,
                     data:formDta,
                     success:function (data){
-                        Toast.fire({
-                            icon: data.type,
-                            title: data.message
-                        })
-
+                        if (data.response === 200)
+                        {
+                            Toast.fire({
+                                icon: data.type,
+                                title: data.message
+                            })
+                        }
                     },
                     error: function (xhr, status, error) {
                         if (xhr.status === 422) {
