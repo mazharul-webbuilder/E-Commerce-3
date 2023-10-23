@@ -88,7 +88,7 @@
                                        <img style="width: 150px;height: 60px" src="{{asset('uploads/product/small/'.$product->thumbnail) }}">
                                    </td>
                                    <td class="px-2 py-4 text-black border-r text-center">
-                                       {{$product->merchant->name}}
+                                       {{$product->merchant?->name}}
                                    </td>
                                    <td class="px-2 py-4 text-black border-r text-center">
                                        {{$product->title}}
