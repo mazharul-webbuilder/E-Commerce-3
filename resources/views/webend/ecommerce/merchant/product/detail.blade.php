@@ -74,13 +74,13 @@
                                 <div class="w-full p-4">
                                     <div class="flex items-center gap-x-8">
                                         <div class="font-medium">Category :</div>
-                                        <div>{{$product->category->name}}</div>
+                                        <div>{{$product->category?->name}}</div>
                                     </div>
                                 </div>
                                 <div class="w-full p-4">
                                     <div class="flex items-center gap-x-8">
                                         <div class="font-medium">Sub-Category :</div>
-                                        <div>{{$product->sub_category ? $product->sub_category->name : ""}}</div>
+                                        <div>{{$product->sub_category ? $product->sub_category?->name : ""}}</div>
                                     </div>
                                 </div>
                             </div>
