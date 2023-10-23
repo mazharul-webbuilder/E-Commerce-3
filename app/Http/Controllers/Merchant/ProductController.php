@@ -351,17 +351,28 @@ class ProductController extends Controller
                     Image::make($image)->resize(256,200)->save($small_image_path);
                     $product->thumbnail = $image_name;
                 }
-                $product->save();
+
 
                 /*Insert Data into Product_Commissions Table*/
                 if ($request->is_reseller == 1 || $request->is_affiliate == 1) {
                     $product_commission = ProductCommission::where('product_id', $product->id)->first();
-                    $product_commission->product_id = $product->id;
-                    $product_commission->reseller_commission = $request->reseller_commission;
-                    $product_commission->affiliate_commission = $request->affiliate_commission;
-                    $product_commission->save();
-                }
+                    if (is_null($product_commission)){
 
+                        $product_commission=new ProductCommission();
+                        $product_commission->product_id = $product->id;
+                        $product_commission->reseller_commission = $request->reseller_commission;
+                        $product_commission->affiliate_commission = $request->affiliate_commission;
+                        $product_commission->save();
+                    }else{
+
+                        $product_commission->product_id = $product->id;
+                        $product_commission->reseller_commission = $request->reseller_commission;
+                        $product_commission->affiliate_commission = $request->affiliate_commission;
+                        $product_commission->save();
+                    }
+
+                }
+                $product->save();
 
                 DB::commit();
                 return \response()->json([
