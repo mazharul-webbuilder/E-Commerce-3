@@ -39,6 +39,7 @@ class RegisterController extends Controller
                     $data                 =new Merchant();
                     $data->name           =$request->name;
                     $data->email          =$request->email;
+                    $data->phone          =$request->phone;
                     $data->password       =Hash::make($request->password);
                     $data->merchant_number="M".rand(100000,999990);
                     $data->verification_code=$verification_code;
@@ -150,6 +151,7 @@ class RegisterController extends Controller
                     $verification_code=rand(10000,99999);
                     $data                 =new Seller();
                     $data->name           =$request->name;
+                    $data->phone          =$request->phone;
                     $data->email          =$request->email;
                     $data->password       =Hash::make($request->password);
                     $data->seller_number="S".rand(100000,999999);
@@ -211,6 +213,7 @@ class RegisterController extends Controller
                     $data                 =new Affiliator();
                     $data->name           =$request->name;
                     $data->email          =$request->email;
+                    $data->phone          =$request->phone;
                     $data->password       =Hash::make($request->password);
                     $data->affiliate_number="A".rand(100000,999990);
                     $data->verification_code=$verification_code;
