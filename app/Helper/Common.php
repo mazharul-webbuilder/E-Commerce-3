@@ -1,5 +1,6 @@
 <?php
 
+use App\Mail\VerifyAccount;
 use App\Models\DueProduct;
 use App\Models\Ecommerce\Product;
 use App\Models\Seller\Seller;
@@ -10,6 +11,7 @@ use App\Models\SellerProduct;
 use App\Models\Ecommerce\Review;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use App\Models\Ecommerce\Order_detail;
@@ -191,6 +193,11 @@ function delete_2_type_image_if_exist($data, $folderName)
     }elseif ($merchant_sold >=21 && $merchant_sold<=30){
         return "SIP";
     }
+ }
+
+
+ function send_mail($data,$to_mail){
+     Mail::to($to_mail)->send(new VerifyAccount($data));
  }
 
 
