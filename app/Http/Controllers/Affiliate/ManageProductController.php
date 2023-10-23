@@ -122,6 +122,7 @@ class ManageProductController extends Controller
                     $data=new AffiliatorProduct();
                     $data->affiliator_id=$auth_user->id;
                     $data->product_id=$request->item_id;
+                    $data->coin_from_merchant = Product::find($request->item_id)->current_coin; // Set merchant product current coin as coin from merchant
                     $data->save();
 
                     return response()->json([

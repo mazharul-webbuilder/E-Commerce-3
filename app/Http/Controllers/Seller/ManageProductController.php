@@ -97,7 +97,8 @@ class ManageProductController extends Controller
                     $data=new SellerProduct();
                     $data->seller_id=$auth_user->id;
                     $data->product_id=$request->item_id;
-                    $data->seller_price = Product::find($request->item_id)->current_price; // Set Default Price
+                    $data->seller_price = $product->current_price; // Set Default Price
+                    $data->coin_from_merchant = $product->current_coin; // Set merchant product current coin
                     $data->save();
                     return response()->json([
                         'data'=>'Successfully added',
