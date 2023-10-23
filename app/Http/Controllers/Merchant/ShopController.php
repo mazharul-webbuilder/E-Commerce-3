@@ -80,29 +80,6 @@ class ShopController extends Controller
         }
     }
 
-//    /**
-//     * Delete Existing Shop Logo
-//    */
-//    private function shopLogoDeleteAndStore($request): mixed
-//    {
-//        $data = ShopDetail::where('merchant_id', Auth::guard('merchant')->user()->id)->first();
-//
-//        if ($data) {
-//            $original_image_path = "uploads/shop/original/{$data->logo}";
-//            $resize_image_path = "uploads/shop/resize/{$data->logo}";
-//
-//            if (File::exists(public_path($original_image_path))) {
-//                // Set permissions before deleting (e.g., set to 0644)
-//                File::chmod(public_path($original_image_path), 0644);
-//                File::chmod(public_path($resize_image_path), 0644);
-//
-//                // Delete the files
-//                File::delete(public_path($original_image_path));
-//                File::delete(public_path($resize_image_path));
-//            }
-//        }
-//        return store_2_type_image_nd_get_image_name($request, 'shop', 200, 200);
-//    }
 }
 
 

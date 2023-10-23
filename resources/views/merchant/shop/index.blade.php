@@ -181,11 +181,13 @@
                     processData: false,
                     data:formDta,
                     success:function (data){
-                        Toast.fire({
-                            icon: data.type,
-                            title: data.message
-                        })
-
+                        if (data.response === 200)
+                        {
+                            Toast.fire({
+                                icon: data.type,
+                                title: data.message
+                            })
+                        }
                     },
                     error: function (xhr, status, error) {
                         if (xhr.status === 422) {
