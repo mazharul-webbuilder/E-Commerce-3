@@ -32,7 +32,7 @@
                                   clip-rule="evenodd"></path>
                         </svg>
                         <a href="#" class="flex items-center hover:scale-105">
-                            <span class="ml-1 font-medium text-gray-500 md:ml-2 dark:text-gray-400">Recharge History</span>
+                            <span class="ml-1 font-medium text-gray-500 md:ml-2 dark:text-gray-400">Withdraw History</span>
                         </a>
                     </li>
                 </ol>
@@ -40,17 +40,17 @@
             <!-- end menu -->
             <div class="flex justify-end">
 
-                <a href="{{route('seller.recharge.page')}}"
+                <a href="{{route('seller.withdraw.request')}}"
                    class=" text-white bg-purple-700 hover:bg-blue-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center mr-2">
                     <i class="fas fa-plus mr-2"></i>
-                    Send Recharge Request
+                    Send Withdraw Request
                 </a>
 
             </div>
             <!-- table start -->
             <div class="border border-[#8e0789] rounded-md mt-10">
                 <div class="bg-[#8e0789] overflow-hidden w-full px-0 py-3 flex items-center">
-                    <h2 class="text-2xl font-bold py-2 text-white pl-3">Deposit History</h2>
+                    <h2 class="text-2xl font-bold py-2 text-white pl-3">Withdraw History</h2>
                 </div>
                 <br>
                 <div class="py-2 px-1 mt-3" style="overflow-x: auto;">
@@ -65,12 +65,12 @@
                             </th>
                             <th scope="col" class="px-6 py-3 whitespace-nowrap">
                                 <div class="text-center">
-                                    Recharge Amount
+                                    Withdraw Amount
                                 </div>
                             </th>
                             <th scope="col" class="px-6 py-3 whitespace-nowrap">
                                 <div class="text-center">
-                                    Transaction Number
+                                    Charge
                                 </div>
                             </th>
 
@@ -80,15 +80,14 @@
                                 </div>
                             </th>
 
-
                             <th scope="col" class="px-4 py-3">
                                 <div class="text-center">
-                                    Created At
+                                    Mobile Banking Details
                                 </div>
                             </th>
                             <th scope="col" class="px-6 py-3 whitespace-nowrap">
                                 <div class="text-center">
-                                    Image
+                                    Banking Details
                                 </div>
                             </th>
 
@@ -98,7 +97,11 @@
                                     Status
                                 </div>
                             </th>
-
+                            <th scope="col" class="px-4 py-3">
+                                <div class="text-center">
+                                    Process Time
+                                </div>
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -119,15 +122,16 @@
             serverSide: true,
             ordering: false,
             pagingType: "full_numbers",
-            ajax: '{{ route('seller.recharge.history.load') }}',
+            ajax: '{{ route('seller.withdraw.history.load') }}',
             columns: [
                 { data: 'DT_RowIndex',name:'DT_RowIndex' },
-                { data: 'deposit_amount',name:'deposit_amount'},
-                { data: 'transaction_number',name:'transaction_number'},
-                { data: 'payment_method',name:'payment_method'},
-                { data: 'created_at',name:'created_at'},
-                { data: 'image',name:'image'},
+                { data: 'withdraw_balance',name:'withdraw_balance'},
+                { data: 'charge',name:'charge'},
+                { data: 'balance_send_type',name:'balance_send_type'},
+                { data: 'mobile_account_detail',name:'mobile_account_detail'},
+                { data: 'bank_detail',name:'bank_detail'},
                 { data: 'status',name:'status'},
+                { data: 'processing_time',name:'processing_time'},
             ],
 
             language : {

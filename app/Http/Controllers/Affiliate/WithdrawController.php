@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Seller;
+namespace App\Http\Controllers\Affiliate;
 
 use App\Http\Controllers\Controller;
 use App\Models\WithdrawHistory;
@@ -18,45 +18,43 @@ class WithdrawController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('seller');
+        $this->middleware('affiliate');
+    }
+
+    public function index(): View
+    {
+        return \view('affiliate.withdraw.index');
     }
 
     /**
-     * Show Seller Withdraw History
-    */
-    public function index(): View
-    {
-        return  \view('seller.withdraw.index');
-    }
-    /**
-     * Load Seller Withdraw History
-    */
+     * Load affiliate Withdraw History
+     */
     public function datatable(): JsonResponse
     {
-        $withdraw_histories = DB::table('withdraw_histories')->where('seller_id', Auth::guard('seller')->user()->id)->latest()->get();
+        $withdraw_histories = DB::table('withdraw_histories')->where('affiliator_id', Auth::guard('affiliate')->user()->id)->latest()->get();
 
         return DataTables::of($withdraw_histories)->addIndexColumn()->rawColumns([''])->make(true);
     }
 
     /**
-     * Show Seller Withdraw Request Form
-    */
+     * Show affiliate Withdraw Request Form
+     */
     public function withdrawRequest(): View
     {
         $payments = WithdrawPayment::all();
 
-        return \view('seller.withdraw.request_form', compact('payments'));
+        return \view('affiliate.withdraw.request_form', compact('payments'));
     }
 
     /**
-     * Store Seller Withdraw Request
-    */
+     * Store affiliate Withdraw Request
+     */
     public function withdrawRequestPost(Request $request): JsonResponse
     {
         if ($request->isMethod("post")){
             try {
                 DB::beginTransaction();
-                $auth_user = Auth::guard('seller')->user();
+                $auth_user = Auth::guard('affiliate')->user();
 
                 if ($request->withdraw_balance <= setting()->max_withdraw_limit && $request->withdraw_balance >= setting()->min_withdraw_amount) {
                     if ($auth_user->balance >= $request->withdraw_balance) {
@@ -67,7 +65,7 @@ class WithdrawController extends Controller
                         $withdraw->user_received_balance = $request->withdraw_balance - $total_charge;
                         $withdraw->charge = $total_charge;
                         $withdraw->balance_send_type = $request->balance_send_type;
-                        $withdraw->seller_id = $auth_user->id;
+                        $withdraw->affiliator_id = $auth_user->id;
                         $withdraw->withdraw_payment_id = $request->payment_id ;
                         $withdraw->bank_detail = $request->account_number;
 

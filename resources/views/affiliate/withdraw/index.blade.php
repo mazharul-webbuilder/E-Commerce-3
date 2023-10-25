@@ -1,4 +1,4 @@
-@extends('merchant.layout.app')
+@extends('affiliate.layout.app')
 @section('content')
     <style>
         #dataTable tbody > tr {
@@ -40,7 +40,7 @@
             <!-- end menu -->
             <div class="flex justify-end">
 
-                <a href="{{route('merchant.withdraw.request')}}"
+                <a href="{{route('affiliate.withdraw.request')}}"
                    class=" text-white bg-purple-700 hover:bg-blue-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center mr-2">
                     <i class="fas fa-plus mr-2"></i>
                     Send Withdraw Request
@@ -122,7 +122,7 @@
             serverSide: true,
             ordering: false,
             pagingType: "full_numbers",
-            ajax: '{{ route('merchant.withdraw.history.load') }}',
+            ajax: '{{ route('affiliate.withdraw.history.load') }}',
             columns: [
                 { data: 'DT_RowIndex',name:'DT_RowIndex' },
                 { data: 'withdraw_balance',name:'withdraw_balance'},
