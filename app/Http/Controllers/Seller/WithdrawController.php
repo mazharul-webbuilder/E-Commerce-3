@@ -33,7 +33,7 @@ class WithdrawController extends Controller
     */
     public function datatable(): JsonResponse
     {
-        $withdraw_histories = DB::table('withdraw_histories')->latest()->get();
+        $withdraw_histories = DB::table('withdraw_histories')->where('seller_id', Auth::guard('seller')->user()->id)->latest()->get();
 
         return DataTables::of($withdraw_histories)->addIndexColumn()->rawColumns([''])->make(true);
     }
@@ -121,10 +121,10 @@ class WithdrawController extends Controller
                         ], Response::HTTP_OK);
                     } else {
                         return response()->json([
-                            'message' => "You have insufficient win balance",
+                            'message' => "You have insufficient balance",
                             'type' => "error",
-                            'status' => Response::HTTP_BAD_REQUEST
-                        ], Response::HTTP_BAD_REQUEST);
+                            'status' => Response::HTTP_OK
+                        ]);
                     }
                 } else {
                     return response()->json([
