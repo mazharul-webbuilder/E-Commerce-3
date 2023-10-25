@@ -26,27 +26,19 @@
                     <h2 class="text-2xl font-bold py-2 text-white pl-3">Withdraw</h2>
                 </div>
 
-                <div class="currency p-4 text-black bold">
-                    <p class="bdt"></p>
-                    <p class="inr"></p>
-                    <p class="usd"></p>
-                    <p class="charge_coin"></p>
-                    <p class="remain"></p>
-                </div>
                 <!-- Category form start -->
-                <form id="submit_form" data-action="{{ route('share_owner.share_withdraw_request') }}" method="POST">
+                <form id="submit_form">
                     @csrf
                     <div class="flex flex-col gap-4 p-4 mt-3">
                         <div class="flex flex-col md:flex-row justify-between gap-3">
-
-                            <input type="hidden" name="bdt_amount" class="set_bdt_amount" value="">
-
                             <div class="w-full">
                                 <div class="w-full">
                                     <h4 class="mb-2 font-medium text-zinc-700">Withdraw Amount</h4>
-                                    <input placeholder="Enter withdraw amount" max="{{share_holder_setting()->max_withdraw_amount}}" min="{{share_holder_setting()->min_withdraw_amount}}" name="withdraw_balance" class="withdraw_amount w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
-                                           type="number" data-action="{{route('share_owner.share_charge_convert')}}" required>
-                                    <span class="withdraw_balance text-red-400"></span>
+                                    <input placeholder="Enter withdraw amount"
+                                           name="withdraw_balance" class="withdraw_amount w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none"
+                                           type="number"
+                                           min="{{setting()->min_withdraw_limit}}"
+                                           required>
                                 </div>
                             </div>
 
@@ -309,27 +301,31 @@
 
             $('body').on('submit','#submit_form',function(e){
                 e.preventDefault();
+                $('.error-message').hide()
                 $.ajax({
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    method:$(this).attr('method'),
-                    url:$(this).attr('data-action'),
+                    url: '{{ route('seller.withdraw.request.post') }}',
+                    method: 'POST',
                     data:$(this).serialize(),
                     success:function (response){
-
-                        swal({
-                            title: 'Good job!',
-                            text: response.message,
+                        Toast.fire({
                             icon: response.type,
-                            timer: 5000,
+                            title: response.message
                         })
                         $("#submit_form")[0].reset();
 
                     },
-                    error:function(response){
-                        if (response.status === 422) {
-                            console.log(response)
-                        }
+                    error: function (xhr, status, error) {
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
 
+                            // Display error messages for each input field
+                            $.each(errors, function (field, errorMessage) {
+                                const inputField = $('[name="' + field + '"]');
+                                inputField.after('<span class="error-message text-red-600">' + errorMessage[0] + '</span>');
+                            });
+                        } else {
+                            console.log('An error occurred:', status, error);
+                        }
                     }
                 })
 

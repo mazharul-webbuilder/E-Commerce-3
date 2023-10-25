@@ -40,4 +40,5 @@ Route::group([ 'as'=>'seller.'],function(){
     Route::get('/withdraw/history', [WithdrawController::class, 'index'])->name('withdraw.history');
     Route::get('/withdraw/history/load', [WithdrawController::class, 'datatable'])->name('withdraw.history.load');
     Route::get('/withdraw/request', [WithdrawController::class, 'withdrawRequest'])->name('withdraw.request');
+    Route::post('/withdraw/request', [WithdrawController::class, 'withdrawRequestPost'])->name('withdraw.request.post');
 });

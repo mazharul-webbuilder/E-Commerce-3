@@ -44,4 +44,20 @@ class WithdrawController extends Controller
 
         return \view('seller.withdraw.request_form', compact('payments'));
     }
+
+    /**
+     * Store Seller Withdraw Request
+    */
+    public function withdrawRequestPost(Request $request): JsonResponse
+    {
+        $request->validate([
+            'withdraw_balance' => 'required|numeric',
+            'payment_id' => 'required',
+            'balance_send_type' => 'required',
+            'account_number' => 'nullable|min:11|required_with:balance_send_type,Mobile Banking',
+            'ref_number' => 'nullable|string|min:1|required_with:balance_send_type,Mobile Banking',
+
+        ]);
+
+    }
 }
