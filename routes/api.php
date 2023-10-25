@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\TournamentController;
+use App\Http\Controllers\Api\GeneralController;
 use App\Http\Controllers\Ecommerce\CartController;
 use App\Http\Controllers\Ecommerce\ProductController;
 use App\Http\Controllers\Ludo\AdvertisementController;
@@ -305,3 +306,12 @@ Route::group(['middleware' => ['auth:api']], function () {
 });
 
 Route::post('home-game/entry-fee', [HomeDimondController::class, 'entry_fee_check']);
+
+Route::group(['prefix'=>'v2'],function (){
+
+    Route::group(['prefix'=>'general'],function (){
+        Route::post('send_verification_code',[GeneralController::class,'send_verification_code']);
+        Route::post('verify_email_phone',[GeneralController::class,'verify_email_phone']);
+    });
+
+});
