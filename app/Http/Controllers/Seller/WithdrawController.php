@@ -14,10 +14,18 @@ class WithdrawController extends Controller
     }
 
     /**
-     * Show Index
+     * Show Seller Withdraw History
     */
     public function index(): View
     {
         return  \view('seller.withdraw.index');
+    }
+
+    /**
+     * Show Seller Withdraw Request Form
+    */
+    public function withdrawRequest(): View
+    {
+        return \view('seller.withdraw.request_form');
     }
 }
