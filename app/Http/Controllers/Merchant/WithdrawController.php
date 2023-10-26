@@ -56,7 +56,19 @@ class WithdrawController extends Controller
                         ';
                 }
             })
-            ->rawColumns(['bank_detail'])->make(true);
+            ->addColumn('status', function ($withdraw){
+                switch ($withdraw->status){
+                    case 1:
+                        return "Pending";
+                    case 2:
+                        return "Processing";
+                    case 3:
+                        return "Accepted";
+                    case 4:
+                        return "Rejected";
+                }
+            })
+            ->rawColumns(['bank_detail', 'status'])->make(true);
     }
 
     /**
