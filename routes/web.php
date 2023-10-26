@@ -561,12 +561,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
         Route::post('status/change', [MerchantWithdrawController::class, 'statusUpdate'])->name('status.change');
         /*Seller*/
         Route::get('list/seller', [SellerWithdrawController::class, 'index'])->name('list.seller');
+        Route::get('list/seller/datatable', [SellerWithdrawController::class, 'datatable'])->name('list.datatable.seller');
+        Route::post('status/change/seller', [SellerWithdrawController::class, 'statusUpdate'])->name('status.change.seller');
         /*Affiliate*/
         Route::get('list/affiliator', [AffiliatorWithdrawController::class, 'index'])->name('list.affiliator');
+        Route::get('list/seller/datatable', [AffiliatorWithdrawController::class, 'datatable'])->name('list.datatable.affiliate');
+        Route::post('status/change/affiliator', [AffiliatorWithdrawController::class, 'statusUpdate'])->name('status.change.affiliate');
     });
     /*Ecommerce Withdraw End*/
-
-
     Route::group(['prefix' => 'currency'], function () {
         Route::get('/', [CurrencyController::class, 'index'])->name('currency.index');
         Route::get('edit/{id}', [CurrencyController::class, 'edit'])->name('currency.edit');
