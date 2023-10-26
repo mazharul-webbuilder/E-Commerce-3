@@ -86,6 +86,7 @@ class CartController extends Controller
 
     public function view_cart(){
 
+
         return response()->json([
             'data'=>CartResource::collection(Cart::carts()),
             'subtotal'=>Cart::subtotal(),
