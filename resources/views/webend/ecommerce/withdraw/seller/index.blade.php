@@ -32,7 +32,7 @@
                                   clip-rule="evenodd"></path>
                         </svg>
                         <a href="#" class="flex items-center hover:scale-105">
-                            <span class="ml-1 font-medium text-gray-500 md:ml-2 dark:text-gray-400">Withdraw List</span>
+                            <span class="ml-1 font-medium text-gray-500 md:ml-2 dark:text-gray-400">Withdraw List Seller</span>
                         </a>
                     </li>
                 </ol>
@@ -41,7 +41,7 @@
             <!-- table start -->
             <div class="border border-[#8e0789] rounded-md mt-10">
                 <div class="bg-[#8e0789] overflow-hidden w-full px-0 py-3 flex items-center">
-                    <h2 class="text-2xl font-bold py-2 text-white pl-3">Withdraw List</h2>
+                    <h2 class="text-2xl font-bold py-2 text-white pl-3">Withdraw List Seller</h2>
                 </div>
                 <br>
                 <div class="py-2 px-1" style="overflow-x: auto;">
