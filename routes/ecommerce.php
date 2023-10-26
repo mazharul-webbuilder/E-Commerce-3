@@ -11,8 +11,6 @@ Route::post('email_verification',[RegisterController::class,'email_verification'
 Route::post('seller_register',[RegisterController::class,'seller_register']);
 Route::post('affiliate_register',[RegisterController::class,'affiliate_register']);
 
-
-
 //category
 Route::get('/get_categories', [EcommerceController::class, 'get_category']);
 Route::get('/category_wise_product/{id}', [EcommerceController::class, 'category_wise_product']);
