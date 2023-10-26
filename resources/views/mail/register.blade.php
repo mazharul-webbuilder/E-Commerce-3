@@ -11,7 +11,10 @@
 
 <p>{!! $data['body'] !!}</p>
 
-<p>Please Login your account by using this link: {{$data['login_link']}}</p>
+<p>Please Login your account by using this link:</p>
+<p>For Merchant: {{route('merchant.login.show')}}</p>
+<p>For Reseller: {{route('seller.login.show')}}</p>
+<p>For Affiliator: {{route('affiliate.login.show')}}</p>
 
 <p>Thank you,</p>
 <p>Please stay with Netel Mart</p>
