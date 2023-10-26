@@ -30,9 +30,9 @@ class Cart extends Model
     public static function carts()
     {
        if (auth()->guard('api')->check()){
-           $carts=Cart::where('user_id',auth()->guard('api')->user()->id)->get();
+           $carts=Cart::where(['user_id'=>auth()->guard('api')->user()->id])->get();
        }else{
-           $carts=Cart::where('ip_address',\Request::ip())->get();
+           $carts=Cart::where(['ip_address'=>\Request::ip()])->get();
        }
        return $carts;
     }
