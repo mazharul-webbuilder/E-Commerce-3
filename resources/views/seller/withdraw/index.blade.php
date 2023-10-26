@@ -80,14 +80,9 @@
                                 </div>
                             </th>
 
-                            <th scope="col" class="px-4 py-3">
-                                <div class="text-center">
-                                    Mobile Banking Details
-                                </div>
-                            </th>
                             <th scope="col" class="px-6 py-3 whitespace-nowrap">
                                 <div class="text-center">
-                                    Banking Details
+                                    Banking / Mobile Banking Details
                                 </div>
                             </th>
 
@@ -95,11 +90,6 @@
                             <th scope="col" class="px-4 py-3">
                                 <div class="text-center">
                                     Status
-                                </div>
-                            </th>
-                            <th scope="col" class="px-4 py-3">
-                                <div class="text-center">
-                                    Process Time
                                 </div>
                             </th>
                         </tr>
@@ -128,10 +118,8 @@
                 { data: 'withdraw_balance',name:'withdraw_balance'},
                 { data: 'charge',name:'charge'},
                 { data: 'balance_send_type',name:'balance_send_type'},
-                { data: 'mobile_account_detail',name:'mobile_account_detail'},
                 { data: 'bank_detail',name:'bank_detail'},
                 { data: 'status',name:'status'},
-                { data: 'processing_time',name:'processing_time'},
             ],
 
             language : {
