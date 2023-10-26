@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Merchant\Merchant;
 use App\Models\WithdrawHistory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -30,7 +33,7 @@ class MerchantWithdrawController extends Controller
     */
     public function datatable(): JsonResponse
     {
-        $withdraw_lists = DB::table('withdraw_histories')->where('merchant_id', '!=', 'null')->where('status', 1)->latest()->get();
+        $withdraw_lists = DB::table('withdraw_histories')->where('merchant_id', '!=', 'null')->latest()->get();
 
         return DataTables::of($withdraw_lists)
             ->addIndexColumn()
@@ -41,7 +44,7 @@ class MerchantWithdrawController extends Controller
                     3 => 'Accept',
                     4 => 'Reject',
                 ];
-                $statusSelect = '<select class="status-select form-control" style="background: #FFE5E5;
+                $statusSelect = '<select class="status-select form-control" data-id="'.$withdraw->id.'" style="background: #FFE5E5;
                                     padding: 7px;
                                     border: 1px solid transparent;
                                     border-radius: 10px;
@@ -76,6 +79,44 @@ class MerchantWithdrawController extends Controller
                 }
             })
             ->rawColumns(['status', 'bank_detail'])->make(true);
+
+    }
+    /**
+     * Change Withdraw Status
+    */
+    public function statusUpdate(Request $request): JsonResponse
+    {
+        try {
+            $withdraw = WithdrawHistory::find($request->id);
+            if ($withdraw->status > 2) {
+                return response()->json([
+                    'response' => Response::HTTP_OK,
+                    'type' => 'error',
+                    'message' => "Invalid Action"
+                ]);
+            } else {
+                $withdraw->status = $request->status;
+                $withdraw->save();
+                if ($withdraw->status == 4) {
+                    $merchant = Merchant::find($withdraw->merchant_id);
+                    $merchant->balance += $withdraw->withdraw_balance;
+                    $merchant->save();
+                }
+                return response()->json([
+                    'response' => Response::HTTP_OK,
+                    'type' => 'success',
+                    'message' => "Status Updated Successfully"
+                ]);
+            }
+
+        } catch (QueryException $e) {
+            DB::rollBack();
+            return response()->json([
+                'response' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'type' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
 
     }
 }

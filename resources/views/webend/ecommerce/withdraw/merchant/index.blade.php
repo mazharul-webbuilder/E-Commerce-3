@@ -88,11 +88,6 @@
                                     Status
                                 </div>
                             </th>
-                            <th scope="col" class="px-4 py-3">
-                                <div class="text-center">
-                                    Process Time
-                                </div>
-                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -107,28 +102,75 @@
 @endsection
 @section('extra_js')
     <script>
-        var table = $("#dataTable").DataTable({
-            processing: true,
-            responsive: true,
-            serverSide: true,
-            ordering: false,
-            pagingType: "full_numbers",
-            ajax: '{{ route('ecommerce.withdraw.list.datatable.merchant') }}',
-            columns: [
-                { data: 'DT_RowIndex',name:'DT_RowIndex' },
-                { data: 'withdraw_balance',name:'withdraw_balance'},
-                { data: 'charge',name:'charge'},
-                { data: 'balance_send_type',name:'balance_send_type'},
-                { data: 'bank_detail',name:'bank_detail'},
-                { data: 'user_received_balance',name:'user_received_balance'},
-                { data: 'status',name:'status'},
-                { data: 'processing_time',name:'processing_time'},
-            ],
+        $(document).ready(function (){
+            /*Load Datatable*/
+            var table = $("#dataTable").DataTable({
+                processing: true,
+                responsive: true,
+                serverSide: true,
+                ordering: false,
+                pagingType: "full_numbers",
+                ajax: '{{ route('ecommerce.withdraw.list.datatable.merchant') }}',
+                columns: [
+                    { data: 'DT_RowIndex',name:'DT_RowIndex' },
+                    { data: 'withdraw_balance',name:'withdraw_balance'},
+                    { data: 'charge',name:'charge'},
+                    { data: 'balance_send_type',name:'balance_send_type'},
+                    { data: 'bank_detail',name:'bank_detail'},
+                    { data: 'user_received_balance',name:'user_received_balance'},
+                    { data: 'status',name:'status'},
+                ],
+                language : {
+                    processing: 'Processing'
+                },
+            });
+            /*Change Withdraw Status*/
+            $('body').on('change','.status-select', function (){
+                let status = $(this).val()
+                let id = $(this).data('id');
+                if ((status == 3) || (status == 4) ) {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, Change Status!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '{{route('ecommerce.withdraw.status.change')}}',
+                                method: 'POST',
+                                data: {status: status, id: id},
+                                success: function (data) {
+                                    if (data.response === 200) {
+                                        Toast.fire({
+                                            icon: data.type,
+                                            title: data.message
+                                        })
+                                    }
+                                }
+                            })
+                        }
+                    })
+                } else {
+                    $.ajax({
+                        url: '{{route('ecommerce.withdraw.status.change')}}',
+                        method: 'POST',
+                        data: {status: status, id: id},
+                        success: function (data) {
+                            if (data.response === 200) {
+                                Toast.fire({
+                                    icon: data.type,
+                                    title: data.message
+                                })
+                            }
+                        }
+                    })
+                }
 
-            language : {
-                processing: 'Processing'
-            },
-
-        });
+            })
+        })
     </script>
 @endsection
