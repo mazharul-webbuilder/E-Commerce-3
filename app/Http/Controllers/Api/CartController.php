@@ -64,6 +64,7 @@ class CartController extends Controller
                 $data->seller_id=$request->seller_number  !=null ? seller($request->seller_number)->id : null;
                 $data->affiliator_id=$request->affiliate_number  !=null ? affiliator($request->affiliate_number)->id : null;
                 $data->is_flash_deal=$product->flash_deal==1 ? 1 : 0;
+                $data->type=$request->type;
                 $data->save();
 
             }else{
@@ -84,6 +85,7 @@ class CartController extends Controller
     }
 
     public function view_cart(){
+
         return response()->json([
             'data'=>CartResource::collection(Cart::carts()),
             'subtotal'=>Cart::subtotal(),

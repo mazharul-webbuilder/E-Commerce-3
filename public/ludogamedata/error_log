@@ -26,3 +26,269 @@ Stack trace:
 #1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
 #2 {main}
   thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[17-Jul-2023 09:37:48 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[17-Jul-2023 09:37:48 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[17-Jul-2023 09:52:52 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[17-Jul-2023 09:52:52 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[17-Jul-2023 09:52:52 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[17-Jul-2023 09:52:52 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[17-Jul-2023 09:57:53 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[17-Jul-2023 09:57:53 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[17-Jul-2023 09:57:54 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[17-Jul-2023 09:57:54 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[17-Jul-2023 09:58:23 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[17-Jul-2023 09:58:23 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[17-Jul-2023 09:58:24 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[17-Jul-2023 09:58:24 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[17-Jul-2023 09:58:50 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[17-Jul-2023 09:58:50 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[17-Jul-2023 09:59:29 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[17-Jul-2023 09:59:29 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:28:58 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:28:58 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:28:59 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:28:59 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:29:07 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:29:07 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:30:39 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:30:39 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:30:46 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:30:46 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:31:53 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:31:53 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:32:35 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:32:35 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:32:54 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:32:54 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:34:03 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:34:03 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:34:03 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:34:03 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:34:03 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:34:03 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:34:22 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:34:22 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:34:27 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:34:27 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:34:27 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:34:27 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:34:28 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:34:28 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:34:33 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:34:33 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:34:34 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:34:34 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:34:43 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:34:43 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:34:50 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:34:50 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:34:57 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:34:57 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:35:00 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:35:00 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:35:14 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:35:14 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:35:15 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:35:15 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:35:15 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:35:15 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:35:16 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:35:16 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 04:35:16 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 04:35:16 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 11:27:43 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 11:27:43 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 11:27:45 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 11:27:45 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
+[07-Sep-2023 17:19:09 America/New_York] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/netemfre/public_html/public/ludogamedata/Database.php on line 14
+[07-Sep-2023 17:19:09 America/New_York] PHP Fatal error:  Uncaught Error: mysqli object is already closed in /home/netemfre/public_html/public/ludogamedata/Database.php:15
+Stack trace:
+#0 /home/netemfre/public_html/public/ludogamedata/Database.php(15): mysqli->set_charset()
+#1 /home/netemfre/public_html/public/ludogamedata/api.php(10): Database->__construct()
+#2 {main}
+  thrown in /home/netemfre/public_html/public/ludogamedata/Database.php on line 15
