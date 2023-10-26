@@ -561,7 +561,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
         Route::post('status/change', [MerchantWithdrawController::class, 'statusUpdate'])->name('status.change');
         /*Seller*/
         Route::get('list/seller', [SellerWithdrawController::class, 'index'])->name('list.seller');
-        Route::get('list/seller/datatable', [SellerWithdrawController::class, 'datatable'])->name('list.datatable.seller');
+        Route::get('seller/datatable', [SellerWithdrawController::class, 'datatable'])->name('list.datatable.seller');
         Route::post('status/change/seller', [SellerWithdrawController::class, 'statusUpdate'])->name('status.change.seller');
         /*Affiliate*/
         Route::get('list/affiliator', [AffiliatorWithdrawController::class, 'index'])->name('list.affiliator');
