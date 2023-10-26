@@ -55,9 +55,11 @@ class MerchantWithdrawController extends Controller
                 return $statusSelect;
             })
             ->addColumn('bank_detail', function ($withdraw){
+                /*Get Bank Details Array Banking or Mobile Banking*/
+                $banking_details = (array) json_decode($withdraw->bank_detail, true);
+
                 switch ($withdraw->balance_send_type){
                     case "Banking":
-                        $banking_details = (array) json_decode($withdraw->bank_detail, true);
                         return '
                             <p class="py-1">Bank Name: '.$banking_details['bank_name'].'</p>
                             <p class="py-1">Account Holder Name: '.$banking_details['bank_holder_name'].'</p>
@@ -66,11 +68,12 @@ class MerchantWithdrawController extends Controller
                             <p class="py-1">Routing Number: '.$banking_details['bank_route_number'].'</p>
                             <p class="py-1">Swift Code: '.$banking_details['bank_swift_code'].'</p>
                         ';
-
-
+                    case "Mobile Banking":
+                        return '
+                            <p class="py-1">Account Number: '.$banking_details['mobile_account_number'].'</p>
+                            <p class="py-1">Reference: '.$banking_details['ref_number'].'</p>
+                        ';
                 }
-
-
             })
             ->rawColumns(['status', 'bank_detail'])->make(true);
 

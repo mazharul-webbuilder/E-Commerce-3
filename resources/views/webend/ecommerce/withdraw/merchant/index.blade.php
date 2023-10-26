@@ -76,6 +76,11 @@
                                     Banking / Mobile Banking Detail
                                 </div>
                             </th>
+                            <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                                <div class="text-center">
+                                    Payable Amount
+                                </div>
+                            </th>
 
 
                             <th scope="col" class="px-4 py-3">
@@ -115,6 +120,7 @@
                 { data: 'charge',name:'charge'},
                 { data: 'balance_send_type',name:'balance_send_type'},
                 { data: 'bank_detail',name:'bank_detail'},
+                { data: 'user_received_balance',name:'user_received_balance'},
                 { data: 'status',name:'status'},
                 { data: 'processing_time',name:'processing_time'},
             ],
