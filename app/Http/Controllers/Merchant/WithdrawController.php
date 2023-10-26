@@ -33,7 +33,42 @@ class WithdrawController extends Controller
     {
         $withdraw_histories = DB::table('withdraw_histories')->where('merchant_id', Auth::guard('merchant')->user()->id)->latest()->get();
 
-        return DataTables::of($withdraw_histories)->addIndexColumn()->rawColumns([''])->make(true);
+        return DataTables::of($withdraw_histories)
+            ->addIndexColumn()
+            ->addColumn('bank_detail', function ($withdraw){
+                /*Get Bank Details Array Banking or Mobile Banking*/
+                $banking_details = (array) json_decode($withdraw->bank_detail, true);
+
+                switch ($withdraw->balance_send_type){
+                    case "Banking":
+                        return '
+                            <p class="py-1">Bank Name: '.$banking_details['bank_name'].'</p>
+                            <p class="py-1">Account Holder Name: '.$banking_details['bank_holder_name'].'</p>
+                            <p class="py-1">Account Number: '.$banking_details['bank_account_number'].'</p>
+                            <p class="py-1">Branch Name: '.$banking_details['bank_branch_name'].'</p>
+                            <p class="py-1">Routing Number: '.$banking_details['bank_route_number'].'</p>
+                            <p class="py-1">Swift Code: '.$banking_details['bank_swift_code'].'</p>
+                        ';
+                    case "Mobile Banking":
+                        return '
+                            <p class="py-1">Account Number: '.$banking_details['mobile_account_number'].'</p>
+                            <p class="py-1">Reference: '.$banking_details['ref_number'].'</p>
+                        ';
+                }
+            })
+            ->addColumn('status', function ($withdraw){
+                switch ($withdraw->status){
+                    case 1:
+                        return "Pending";
+                    case 2:
+                        return "Processing";
+                    case 3:
+                        return "Accepted";
+                    case 4:
+                        return "Rejected";
+                }
+            })
+            ->rawColumns(['bank_detail', 'status'])->make(true);
     }
 
     /**

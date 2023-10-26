@@ -33,6 +33,9 @@ use App\Http\Controllers\Ludo\CampaignController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ManageSellerController;
+use App\Http\Controllers\Admin\MerchantWithdrawController;
+use App\Http\Controllers\Admin\SellerWithdrawController;
+use App\Http\Controllers\Admin\AffiliatorWithdrawController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -550,7 +553,22 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     /*Admin Own Order*/
     Route::get('/admin/own/order', [OrderController::class, 'admin_order'])->name('admin.order');
 
-
+    /*Ecommerce Withdraw Start*/
+    Route::group(['prefix' => 'ecommerce/withdraw/', 'as' => 'ecommerce.withdraw.'], function (){
+        /*Merchant*/
+        Route::get('list/merchant', [MerchantWithdrawController::class, 'index'])->name('list.merchant');
+        Route::get('list/merchant/datatable', [MerchantWithdrawController::class, 'datatable'])->name('list.datatable.merchant');
+        Route::post('status/change', [MerchantWithdrawController::class, 'statusUpdate'])->name('status.change');
+        /*Seller*/
+        Route::get('list/seller', [SellerWithdrawController::class, 'index'])->name('list.seller');
+        Route::get('seller/datatable', [SellerWithdrawController::class, 'datatable'])->name('list.datatable.seller');
+        Route::post('status/change/seller', [SellerWithdrawController::class, 'statusUpdate'])->name('status.change.seller');
+        /*Affiliate*/
+        Route::get('list/affiliator', [AffiliatorWithdrawController::class, 'index'])->name('list.affiliator');
+        Route::get('affiliator/datatable', [AffiliatorWithdrawController::class, 'datatable'])->name('list.datatable.affiliate');
+        Route::post('status/change/affiliator', [AffiliatorWithdrawController::class, 'statusUpdate'])->name('status.change.affiliate');
+    });
+    /*Ecommerce Withdraw End*/
     Route::group(['prefix' => 'currency'], function () {
         Route::get('/', [CurrencyController::class, 'index'])->name('currency.index');
         Route::get('edit/{id}', [CurrencyController::class, 'edit'])->name('currency.edit');
