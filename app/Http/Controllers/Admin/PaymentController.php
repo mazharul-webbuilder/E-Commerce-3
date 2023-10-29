@@ -24,19 +24,26 @@ class PaymentController extends Controller
         return view('webend.ecommerce.payment.index',compact('payments'));
     }
 
-    public function create(){
-        return view('webend.ecommerce.payment.create');
+    /**
+     * New Payment Create Page
+    */
+    public function create(): View
+    {
+        $payment_methods = DB::table('payment_methods')->where('status', 1)->get();
+
+        return view('webend.ecommerce.payment.create', compact('payment_methods'));
     }
 
+    /**
+     * Store New Payment Method into payments table
+     */
     public function store(Request $request)
     {
-//        return $request->all();
-
-
         $this->validate($request,[
             'payment_name'=>'required|max:255',
             'image' => 'required|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'type'=>'required',
+            'payment_method_id' => 'required|integer',
             'priority'=>'required|unique:payments,priority'
         ]);
         if ($request->isMethod('POST'))
@@ -67,6 +74,7 @@ class PaymentController extends Controller
 
                 $payment->payment_name      = $request->payment_name;
                 $payment->type              = $request->type;
+                $payment->payment_method_id  = $request->payment_method_id;
                 $payment->priority          = $request->priority;
 
                 $payment->account_detail=json_encode(['bank_holder_name'=>$request->bank_holder_name,
@@ -98,10 +106,16 @@ class PaymentController extends Controller
 
     }
 
-    public function edit($id)
+    /**
+     * View Payment Edit page
+    */
+    public function edit($id): View
     {
         $payment = Payment::findOrFail($id);
-        return view('webend.ecommerce.payment.edit', compact('payment'));
+
+        $payment_methods = DB::table('payment_methods')->where('status', 1)->get();
+
+        return view('webend.ecommerce.payment.edit', compact('payment', 'payment_methods'));
     }
 
 
@@ -112,6 +126,7 @@ class PaymentController extends Controller
             'payment_name'=>'required|max:255',
             'type'=>'required',
             'status'=>'required',
+            'payment_method_id' => 'required|integer',
             'priority'=>'required|unique:payments,priority,'.$payment->id,
         ]);
 
@@ -120,6 +135,7 @@ class PaymentController extends Controller
                 DB::beginTransaction();
                 $payment->payment_name=$request->payment_name;
                 $payment->type=$request->type;
+                $payment->payment_method_id=$request->payment_method_id;
                 $payment->priority= $request->priority;
                 $payment->status=$request->status;
 

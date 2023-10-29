@@ -574,4 +574,18 @@ class ProductController extends Controller
     }
 
 
+    /**
+     * Get Sub Categories
+    */
+    public function find_sub_category(Request $request): JsonResponse
+    {
+        $sub_categories=SubCategory::where(['category_id'=>$request->category_id,'status'=>1])->get();
+        return \response()->json([
+            'subcategoryes' => $sub_categories,
+            'status_code' => 200
+        ], Response::HTTP_OK);
+
+    }
+
+
 }
