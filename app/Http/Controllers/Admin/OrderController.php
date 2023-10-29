@@ -112,6 +112,7 @@ class OrderController extends Controller
                 } elseif ($request->status === "delivered") {
                     $order_details = Order_detail::where('order_id', $order->id)->get();
                     $this->provide_order_commission($request->order_id);
+
                     if (!empty($order_details)) {
                         // Rest of the code for updating stock, adding coin, and sending notifications
 
