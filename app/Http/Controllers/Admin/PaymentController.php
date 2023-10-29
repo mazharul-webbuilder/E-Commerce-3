@@ -7,6 +7,7 @@ use App\Models\Ecommerce\Payment;
 use App\Models\Ecommerce\Product;
 use App\Models\Ecommerce\Review_coin;
 use Doctrine\DBAL\Query\QueryException;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -16,10 +17,10 @@ use Intervention\Image\Facades\Image;
 
 class PaymentController extends Controller
 {
-
-    public function index()
+    public function index(): View
     {
-        $payments = Payment::latest()->get();
+        $payments = DB::table('payments')->latest()->get();
+
         return view('webend.ecommerce.payment.index',compact('payments'));
     }
 
