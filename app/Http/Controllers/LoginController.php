@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Userprofile;
+use App\Models\Ecommerce\Cart;
 use App\Models\Free2pgame;
 use App\Models\Free3pgame;
 use App\Models\Free4playergame;
@@ -31,6 +32,7 @@ class LoginController extends Controller
 
     public function login_step_one(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'loginType' => 'required',
         ]);
@@ -312,6 +314,7 @@ class LoginController extends Controller
 
     public function gmail_Login(Request $request)
     {
+
         $login_Type = 'email';
         if ($login_Type == 'email') {
             $validator = Validator::make($request->all(), [
@@ -407,11 +410,18 @@ class LoginController extends Controller
                 $additional_info = $this->user_incomplete_game($user);
                 // $success['additional_info']=$additional_info;
                 $success['token'] =  Auth::user()->createToken('MyApp')->accessToken;
+                $this->update_cart($user->id);
 
                 return response()->json(['type' => "verified-user", 'message' => "Login Successfully!.", 'data' => $success]);
             }
         } else {
             return response()->json(['type' => 'error', 'message' => "Something went a wrong!, try again"], 200);
+        }
+    }
+
+    public function update_cart($user_id){
+        foreach (Cart::carts() as $cart){
+            $cart->update(['user_id'=>$user_id]);
         }
     }
 
