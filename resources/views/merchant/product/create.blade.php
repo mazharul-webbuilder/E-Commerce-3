@@ -343,7 +343,7 @@
                 } else {
 
                     let purchaseCoin = ((commission * currentPrice) / 100)
-                    $('#purchaseCoin').attr('value', purchaseCoin)
+                    $('#purchaseCoin').attr('value', purchaseCoin * 500)
                 }
 
             })
