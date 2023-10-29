@@ -28,7 +28,7 @@
             </div>
             <div class="border border-[#8e0789] rounded-md mt-10">
                 <div class="bg-[#8e0789] overflow-hidden w-full px-0">
-                    <h2 class="text-2xl font-bold py-2 text-white pl-3">Product Payment Create</h2>
+                    <h2 class="text-2xl font-bold py-2 text-white pl-3">Product Payment Edit</h2>
                 </div>
                 <!-- Category form start -->
                 <form id="submit_form" data-action="{{ route('payment.update',$payment->id) }}" method="POST" enctype="multipart/form-data">
@@ -74,6 +74,18 @@
 
                         </div>
 
+                        <div class="w-full">
+                            <div class="w-full">
+                                <h4 class="mb-2 font-medium text-zinc-700">Payment Method</h4>
+                                <select name="payment_method_id" class="account_type w-full h-12 pl-4 pr-10 cursor-pointer bg-white border border-gray-300 rounded-md appearance-none text-zinc-700 focus:outline-none">
+                                    <option value="" selected disabled>--Select Type--</option>
+                                    @foreach($payment_methods as $payment_method)
+                                        <option value="{{$payment_method->id}}" {{$payment_method->id == $payment->paymentMethod->id ? 'selected' : ''}}>{{ $payment_method->payment_method_name }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="type text-red-400"></span>
+                            </div>
+                        </div>
                         <div class="w-full">
                             <div class="w-full">
                                 <h4 class="mb-2 font-medium text-zinc-700">Type</h4>

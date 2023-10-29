@@ -112,7 +112,10 @@ class PaymentController extends Controller
     public function edit($id): View
     {
         $payment = Payment::findOrFail($id);
-        return view('webend.ecommerce.payment.edit', compact('payment'));
+
+        $payment_methods = DB::table('payment_methods')->where('status', 1)->get();
+
+        return view('webend.ecommerce.payment.edit', compact('payment', 'payment_methods'));
     }
 
 
@@ -123,6 +126,7 @@ class PaymentController extends Controller
             'payment_name'=>'required|max:255',
             'type'=>'required',
             'status'=>'required',
+            'payment_method_id' => 'required|integer',
             'priority'=>'required|unique:payments,priority,'.$payment->id,
         ]);
 
@@ -131,6 +135,7 @@ class PaymentController extends Controller
                 DB::beginTransaction();
                 $payment->payment_name=$request->payment_name;
                 $payment->type=$request->type;
+                $payment->payment_method_id=$request->payment_method_id;
                 $payment->priority= $request->priority;
                 $payment->status=$request->status;
 
