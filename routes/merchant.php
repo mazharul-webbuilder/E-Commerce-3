@@ -23,6 +23,7 @@ Route::middleware('merchant')->group(function (){
 });
 //manage product
 Route::group(['prefix'=>'product', 'as'=>'merchant.'],function(){
+    Route::post('/find_sub_category', [ProductController::class, 'find_sub_category'])->name('find_sub_category');
     Route::get('product_load',[ProductController::class,'datatable'])->name('product.load');
     Route::get('/',[ProductController::class,'index'])->name('product.index');
     Route::get('/create',[ProductController::class,'create'])->name('product.create');

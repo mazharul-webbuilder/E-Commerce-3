@@ -76,7 +76,7 @@
                                 <div class="relative inline-flex w-full">
 
                                     <select class="find_sub_category w-full h-12 pl-4 pr-10 cursor-pointer bg-white border border-gray-300 rounded-md appearance-none text-zinc-700 focus:outline-none"
-                                            name="category_id" id="category_id" data-action="{{ route('find_sub_category') }}">
+                                            name="category_id" id="category_id" data-action="{{ route('merchant.find_sub_category') }}">
                                         <option value="">Select Category</option>
                                         @foreach($categories as $category)
                                             <option value="{{$category->id}}" {{$category->id == $product->category_id ? "selected" : ""}}>{{$category->name}}</option>
