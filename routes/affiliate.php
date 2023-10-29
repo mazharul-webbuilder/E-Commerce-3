@@ -12,8 +12,16 @@ Route::group([ 'as'=>'affiliate.'],function(){
     Route::post('logout',[LoginController::class,'logout'])->name('logout');
     Route::get('dashboard',[DashboardController::class,'index'])->name('dashboard');
 
-    // Manage product
+    /*Affiliate Authenticate Routes*/
+    Route::middleware('affiliate')->group(function (){
+        Route::post('logout',[LoginController::class,'logout'])->name('logout');
+        Route::get('dashboard',[DashboardController::class,'index'])->name('dashboard');
+        Route::get('profile',[DashboardController::class,'profile'])->name('profile');
+        Route::post('update_profile',[DashboardController::class,'update_profile'])->name('update_profile');
 
+    });
+
+    // Manage product
     Route::group(['prefix'=>'product'],function (){
         Route::get('product_load',[ManageProductController::class,'datatable'])->name('product.load');
         Route::get('/',[ManageProductController::class,'index'])->name('product.index');
