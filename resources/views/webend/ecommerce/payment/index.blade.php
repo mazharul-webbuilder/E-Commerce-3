@@ -26,12 +26,12 @@
                        Add New Payment
                    </a>
                </div>
-               <div class="">
-                   <a href="{{route('payment.create')}}"  class="text-white bg-cyan-700 hover:bg-teal-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center">
-                       <i class="fas fa-plus mr-2"></i>
-                       Add New Payment Method
-                   </a>
-               </div>
+{{--               <div class="">--}}
+{{--                   <a href="{{route('payment.create')}}"  class="text-white bg-cyan-700 hover:bg-teal-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center">--}}
+{{--                       <i class="fas fa-plus mr-2"></i>--}}
+{{--                       Add New Payment Method--}}
+{{--                   </a>--}}
+{{--               </div>--}}
            </div>
             <!-- end menu -->
             <div class="border border-[#8e0789] rounded-md mt-5">
