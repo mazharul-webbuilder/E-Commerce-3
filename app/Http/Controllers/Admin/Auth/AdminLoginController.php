@@ -27,7 +27,7 @@ class AdminLoginController extends Controller
         ]);
         $credentials = $request->only('email', 'password');
         if (Auth::guard('admin')->attempt($credentials)) {
-            Alert::success('Welcome to Admin Panel.');
+//            Alert::success('Welcome to Admin Panel.');
             return redirect()->route('dashboard');
         } else {
             Alert::warning('Credential not matched.')->persistent('dismiss');
