@@ -11,7 +11,15 @@ Route::group([ 'as'=>'seller.'],function(){
     /*Authentication Routes*/
     Route::get('login',[LoginController::class,'showForm'])->name('login.show');
     Route::post('login',[LoginController::class,'formSubmit'])->name('login.submit');
-    Route::post('logout',[LoginController::class,'sellerLogout'])->name('logout');
+
+    /*Seller Authenticate Routes*/
+    Route::middleware('seller')->group(function (){
+        Route::post('logout',[LoginController::class,'sellerLogout'])->name('logout');
+        Route::get('dashboard',[DashboardController::class,'index'])->name('seller.dashboard');
+        Route::get('profile',[DashboardController::class,'profile'])->name('profile');
+        Route::post('update_profile',[DashboardController::class,'update_profile'])->name('seller.update_profile');
+
+    });
 
     /*Dashboard*/
     Route::get('dashboard',[DashboardController::class,'index'])->name('dashboard');
