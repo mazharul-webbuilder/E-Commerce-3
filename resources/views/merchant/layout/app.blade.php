@@ -199,7 +199,7 @@
                         <button id="dropdownAvatarNameButton" data-dropdown-toggle="dropdownAvatarName" class="flex text-white items-center text-sm font-medium text-gray-900 rounded-full hover:text-blue-600 dark:hover:text-blue-500 md:mr-0 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-white" type="button">
                             <span class="sr-only">Open user menu</span>
                             @php
-                            $merchant = \Illuminate\Support\Facades\Auth::guard('$merchant')->user();
+                            $merchant = \Illuminate\Support\Facades\Auth::guard('merchant')->user();
                             @endphp
                             <img class="w-8 h-8 mr-2 rounded-full"
                                  src="{{(!is_null($merchant->avatar)) ? asset("uploads/merchant/resize") . '/' . $merchant->avatar : default_image()}}"

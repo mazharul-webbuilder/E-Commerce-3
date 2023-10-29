@@ -17,7 +17,7 @@ Route::group([ 'as'=>'seller.'],function(){
         Route::post('logout',[LoginController::class,'sellerLogout'])->name('logout');
         Route::get('dashboard',[DashboardController::class,'index'])->name('seller.dashboard');
         Route::get('profile',[DashboardController::class,'profile'])->name('profile');
-        Route::post('update_profile',[DashboardController::class,'update_profile'])->name('seller.update_profile');
+        Route::post('update_profile',[DashboardController::class,'update_profile'])->name('update_profile');
 
     });
 

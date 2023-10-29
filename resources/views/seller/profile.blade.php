@@ -35,7 +35,7 @@
                     <h2 class="text-2xl font-bold py-2 text-white pl-3">Profile Update</h2>
                 </div>
                 <!-- Category form start -->
-                <form id="submit_form" data-action="{{ route('merchant.update_profile') }}" method="POST" enctype="multipart/form-data">
+                <form id="submit_form" data-action="{{ route('seller.update_profile') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="flex flex-col gap-4 p-4 mt-3">
                         <div class="flex flex-col md:flex-row justify-between gap-3">
@@ -130,39 +130,6 @@
                 })
 
             })
-
-            $("body").on('change','.get_payment_detail',function (){
-                let payment_id=$(this).val();
-                let image_path=($(this).attr('image_path'))
-
-                if (payment_id !==""){
-                    $(".bank_detail_area").removeClass('hidden')
-                    $.ajax({
-                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                        method:"post",
-                        url:$(this).attr('data-action'),
-                        data:{payment_id:payment_id},
-                        success:function (response){
-
-                            $('.set_account_number').text(response.data.account_number)
-                            $('.set_account_type').text(response.data.type)
-                            $('.set_payment_image').attr('src',image_path+"/"+response.data.image)
-                        }
-                    })
-                }else{
-                    $(".bank_detail_area").addClass('hidden')
-                }
-            })
-
-            $("body").on('click','.transfer_share',function (){
-
-                $('.set_share_id').val($(this).attr('share_id'))
-            })
-
-            $("body").on('click','.close_modal',function (){
-                $('.title_error').text("");
-            })
-
             $('.dropify').dropify();
         })
     </script>
