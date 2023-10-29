@@ -292,7 +292,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('tournament-list', [TournamentApiController::class, 'tournamentList']);
 
         Route::get('tournament-complete-bid-list', [TournamentApiController::class, 'tournamentCompleteBidList']);
-        Route::get('tournament-incomplete-bid-list', [TournamentApiController::class, 'tournamentInCompleteBidList']);
+        Route::get('tournament-incomplete-bid-list', [TournamentApiController::class, 'tournam entInCompleteBidList']);
     });
 });
 
