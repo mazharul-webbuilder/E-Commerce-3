@@ -43,14 +43,27 @@ class DashboardController extends Controller
     public function update_profile(AffiliatorProfileUpdateRequest $request): JsonResponse
     {
         try {
+            $affiliator = Auth::guard('affiliate')->user();
             DB::beginTransaction();
-            if ($request->has('password')) {
+
+            /*Image*/
+            if ($request->hasFile('image')) {
+                delete_2_type_image_if_exist($affiliator, 'affiliator');
                 $request->merge([
-                    'password' => Hash::make($request->password)
+                    'avatar' => store_2_type_image_nd_get_image_name($request, 'affiliator', 200, 200)
                 ]);
             }
-            $seller = Auth::guard('affiliate')->user();
-            $seller->update($request->all());
+            /*Take data without image value*/
+            $data = $request->except('image');
+
+            /*Password*/
+            if (!is_null($request->password)) {
+                $data['password'] = Hash::make($request->password);
+            } else {
+                $data = $request->except('password', 'image');
+            }
+
+            $affiliator->update($data);
             DB::commit();
             return response()->json([
                 'message' => 'Profile Updated Successfully',

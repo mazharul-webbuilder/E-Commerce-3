@@ -199,7 +199,7 @@
                                 $affiliator = \Illuminate\Support\Facades\Auth::guard('affiliate')->user();
                             @endphp
                             <img class="w-8 h-8 mr-2 rounded-full"
-                                 src="{{(!is_null($affiliator->avatar)) ? asset("uploads/affiliate/resize") . '/' . $affiliator->avatar : default_image()}}"
+                                 src="{{(!is_null($affiliator->avatar)) ? asset("uploads/affiliator/resize") . '/' . $affiliator->avatar : default_image()}}"
                                  alt="user photo">
                             {{$affiliator->name}}
                             <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">

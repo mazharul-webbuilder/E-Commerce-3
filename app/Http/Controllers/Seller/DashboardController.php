@@ -43,13 +43,24 @@ class DashboardController extends Controller
     {
         try {
             DB::beginTransaction();
-            if ($request->has('password')) {
+            $seller = Auth::guard('seller')->user();
+            /*Image*/
+            if ($request->hasFile('image')) {
+                delete_2_type_image_if_exist($seller, 'seller');
                 $request->merge([
-                    'password' => Hash::make($request->password)
+                    'avatar' => store_2_type_image_nd_get_image_name($request, 'seller', 200, 200)
                 ]);
             }
-            $seller = Auth::guard('seller')->user();
-            $seller->update($request->all());
+            /*Take data without image value*/
+            $data = $request->except('image');
+
+            /*Password*/
+            if (!is_null($request->password)) {
+                $data['password'] = Hash::make($request->password);
+            } else {
+                $data = $request->except('password', 'image');
+            }
+            $seller->update($data);
             DB::commit();
             return response()->json([
                 'message' => 'Profile Updated Successfully',
