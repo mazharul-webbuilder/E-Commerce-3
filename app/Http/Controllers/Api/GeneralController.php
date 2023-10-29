@@ -21,7 +21,7 @@ class GeneralController extends Controller
     public function send_verification_code(Request $request){
         if ($request->isMethod("post")){
             $validator =Validator::make($request->all(),[
-                'email_or_phone'=>'required|unique:verification_codes',
+                'email_or_phone'=>'required',
             ]);
 
             try {
