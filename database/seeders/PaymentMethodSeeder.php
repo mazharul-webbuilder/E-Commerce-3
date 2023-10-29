@@ -18,17 +18,17 @@ class PaymentMethodSeeder extends Seeder
         DB::table('payment_methods')->insert([
                 [
                     'payment_method_name' => 'UPI (Google Pay/ PhonePe)',
-                    'status' => 0,
+                    'status' => 1,
                     'created_at' => Carbon::now()
                 ],
                 [
                     'payment_method_name' => 'Wallet',
-                    'status' => 0,
+                    'status' => 1,
                     'created_at' => Carbon::now()
                 ],
                 [
                     'payment_method_name' => 'Debit/Credit Card',
-                    'status' => 0,
+                    'status' => 1,
                     'created_at' => Carbon::now()
                 ],
                 [
