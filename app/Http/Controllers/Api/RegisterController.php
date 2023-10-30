@@ -59,7 +59,6 @@ class RegisterController extends Controller
                         'login_link'=>route('merchant.login.show')
                     ];
 
-                    send_mail($main_info,$request->email);
 
                     $data->save();
 
@@ -172,7 +171,7 @@ class RegisterController extends Controller
                         'login_link'=>route('seller.login.show')
                     ];
 
-                    send_mail($main_info,$request->email);
+
                     $data->save();
                     return response()->json([
                         'message'=>'Your Registration has been successfully',
@@ -233,7 +232,7 @@ class RegisterController extends Controller
                         'login_link'=>route('affiliate.login.show')
                     ];
 
-                    send_mail($main_info,$request->email);
+
 
                     $data->save();
                     return response()->json([
