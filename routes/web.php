@@ -80,6 +80,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/all/admin.users', [AdminUserController::class, 'index'])->name('admin.all');
     Route::get('/datatable/all', [AdminUserController::class, 'datatable'])->name('admin.all.datatable');
     Route::get('/all/merchant.users', [MerchantUserController::class, 'index'])->name('merchant.all');
+    Route::get('/datatable/merchants', [MerchantUserController::class, 'datatable'])->name('merchant.all.datatable');
     Route::get('/all/seller.users', [SellerUserController::class, 'index'])->name('seller.all');
     Route::get('/all/affiliator.users', [AffiliatorUserController::class, 'index'])->name('affiliator.all');
     /*Ecommerce All Type Users End*/
