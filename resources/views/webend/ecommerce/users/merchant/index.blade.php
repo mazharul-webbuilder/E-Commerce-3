@@ -67,6 +67,11 @@
                             </th>
                             <th scope="col" class="px-6 py-3 whitespace-nowrap">
                                 <div class="text-center">
+                                    Phone
+                                </div>
+                            </th>
+                            <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                                <div class="text-center">
                                     Avatar
                                 </div>
                             </th>
@@ -113,6 +118,7 @@
                     { data: 'DT_RowIndex',name:'DT_RowIndex' },
                     { data: 'name',name:'name'},
                     { data: 'email',name:'email'},
+                    { data: 'phone',name:'phone'},
                     { data: 'avatar',name:'avatar'},
                     { data: 'balance',name:'balance'},
                     { data: 'total_product',name:'total_product'},
