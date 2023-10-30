@@ -206,8 +206,7 @@ class ManageProductController extends Controller
 
             /*Calculate Coin from seller*/
             $price_diff = $request->seller_price -  $seller_product->product->current_price;
-            $seller_product->coin_from_seller = (($price_diff * $request->seller_company_commission) / 100);
-
+            $seller_product->coin_from_seller = ((($price_diff * $request->seller_company_commission) / 100) * setting()->coin_per_dollar);
             $seller_product->save();
             DB::commit();
             return \response()->json([
