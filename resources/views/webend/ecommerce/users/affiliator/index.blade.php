@@ -33,7 +33,7 @@
                                   clip-rule="evenodd"></path>
                         </svg>
                         <a href="javascript:void(0)" class="flex items-center hover:scale-105">
-                            <span class="ml-1 font-medium text-gray-500 md:ml-2 dark:text-gray-400">Merchants</span>
+                            <span class="ml-1 font-medium text-gray-500 md:ml-2 dark:text-gray-400">Affiliators</span>
                         </a>
                     </li>
                 </ol>
@@ -42,7 +42,7 @@
             <!-- table start -->
             <div class="border border-[#8e0789] rounded-md mt-10">
                 <div class="bg-[#8e0789] overflow-hidden w-full px-0 py-3 flex items-center">
-                    <h2 class="text-2xl font-bold py-2 text-white pl-3">Merchant List</h2>
+                    <h2 class="text-2xl font-bold py-2 text-white pl-3">Affiliator List</h2>
                 </div>
                 <br>
                 <div class="py-2 px-1 mt-3" style="overflow-x: auto;">
@@ -67,6 +67,11 @@
                             </th>
                             <th scope="col" class="px-6 py-3 whitespace-nowrap">
                                 <div class="text-center">
+                                    Phone
+                                </div>
+                            </th>
+                            <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                                <div class="text-center">
                                     Avatar
                                 </div>
                             </th>
@@ -80,10 +85,6 @@
                                     Total Product
                                 </div>
                             </th>
-                            <th scope="col" class="px-6 py-3 whitespace-nowrap">
-                                <div class="text-center">
-                                    Status
-                                </div>
                             </th>
 
 
@@ -108,15 +109,15 @@
                 serverSide: true,
                 ordering: false,
                 pagingType: "full_numbers",
-                ajax: '{{ route('merchant.all.datatable') }}',
+                ajax: '{{ route('affiliator.all.datatable') }}',
                 columns: [
                     { data: 'DT_RowIndex',name:'DT_RowIndex' },
                     { data: 'name',name:'name'},
                     { data: 'email',name:'email'},
+                    { data: 'phone',name:'phone'},
                     { data: 'avatar',name:'avatar'},
                     { data: 'balance',name:'balance'},
                     { data: 'total_product',name:'total_product'},
-                    { data: 'status',name:'status'},
                 ],
 
                 language : {

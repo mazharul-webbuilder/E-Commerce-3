@@ -84,6 +84,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/all/seller.users', [SellerUserController::class, 'index'])->name('seller.all');
     Route::get('/datatable/seller', [SellerUserController::class, 'datatable'])->name('seller.all.datatable');
     Route::get('/all/affiliator.users', [AffiliatorUserController::class, 'index'])->name('affiliator.all');
+    Route::get('/datatable/affiliator', [AffiliatorUserController::class, 'datatable'])->name('affiliator.all.datatable');
     /*Ecommerce All Type Users End*/
 
     //    user route start here
