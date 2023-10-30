@@ -1045,6 +1045,71 @@
                             </li>
                             <hr>
                             <!-- e-commerce section -->
+
+                            {{--Start Ecommerce Users--}}
+                            <li>
+                                <button type="button"
+                                        class="text-lg text-white font-normal rounded-lg flex items-center p-2 hover:bg-blue-500 group @if (Request::routeIs('admin.all') ||
+                                            Request::routeIs('merchant.all') ||
+                                            Request::routeIs('seller.all') ||
+                                            Request::routeIs('affiliator.all')) bg-blue-500 @endif  w-full transition duration-75 group"
+                                        aria-controls="dropdown-example-15" data-collapse-toggle="dropdown-example-15">
+                                    <i class="fas fa-th text-white group-hover:text-white transition duration-75"></i>
+                                    <span
+                                        class="ml-3 group-hover:text-white  font-normal transition duration-150">Ecommerce Users</span>
+                                    <svg aria-hidden="true" focusable="false" data-prefix="fas"
+                                         class="w-4 h-4 ml-auto" role="img" xmlns="http://www.w3.org/2000/svg"
+                                         viewBox="0 0 448 512">
+                                        <path fill="currentColor"
+                                              d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z">
+                                        </path>
+                                    </svg>
+                                </button>
+                                <ul id="dropdown-example-15"
+                                    class=" @if (Request::routeIs('admin.all') ||
+                                            Request::routeIs('merchant.all') ||
+                                            Request::routeIs('seller.all') ||
+                                            Request::routeIs('affiliator.all')) @else hidden @endif  py-2 bg-blue-900 rounded p-1">
+                                    <li>
+                                        <a href="{{ route('admin.all') }}"
+                                           class="block px-1.5 py-2 mt-2 font-semibold rounded-lg text-white md:mt-0 focus:text-gray-900 hover:bg-blue-500 group @if (Request::routeIs('admin.all')) bg-blue-500 @else @endif focus:outline-none focus:shadow-outline">
+                                            <i
+                                                class="fas fa-th text-white group-hover:text-white transition duration-75"></i>
+                                            <span
+                                                class="group-hover:text-white font-normal transition duration-150">Admins</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('merchant.all') }}"
+                                           class="block px-1.5 py-2 mt-2 font-semibold rounded-lg text-white md:mt-0 focus:text-gray-900 hover:bg-blue-500 group @if (Request::routeIs('merchant.all')) bg-blue-500 @else @endif active:bg-blue-500 focus:outline-none focus:shadow-outline">
+                                            <i
+                                                class="fas fa-th text-white group-hover:text-white transition duration-75"></i>
+                                            <span
+                                                class="group-hover:text-white font-normal transition duration-150">Merchants</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('seller.all') }}"
+                                           class="block px-1.5 py-2 mt-2 font-semibold rounded-lg text-white md:mt-0 focus:text-gray-900 hover:bg-blue-500 group @if (Request::routeIs('seller.all')) bg-blue-500 @else @endif active:bg-blue-500 focus:outline-none focus:shadow-outline">
+                                            <i
+                                                class="fas fa-th text-white group-hover:text-white transition duration-75"></i>
+                                            <span
+                                                class="group-hover:text-white font-normal transition duration-150">Sellers</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('affiliator.all') }}"
+                                           class="block px-1.5 py-2 mt-2 font-semibold rounded-lg text-white md:mt-0 focus:text-gray-900 hover:bg-blue-500 group @if (Request::routeIs('affiliator.all')) bg-blue-500 @else @endif active:bg-blue-500 focus:outline-none focus:shadow-outline">
+                                            <i
+                                                class="fas fa-th text-white group-hover:text-white transition duration-75"></i>
+                                            <span
+                                                class="group-hover:text-white font-normal transition duration-150">Affiliators</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            {{--End Ecommerce Users--}}
+
                             <li>
                                 <a href="{{ route('admin.seller.balance.history') }}"
                                    class="{{ Route::is('admin.seller.balance.history') ? 'bg-blue-500' : '' }} text-lg text-white font-normal rounded-lg flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">

@@ -36,6 +36,10 @@ use App\Http\Controllers\Admin\ManageSellerController;
 use App\Http\Controllers\Admin\MerchantWithdrawController;
 use App\Http\Controllers\Admin\SellerWithdrawController;
 use App\Http\Controllers\Admin\AffiliatorWithdrawController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\MerchantUserController;
+use App\Http\Controllers\Admin\SellerUserController;
+use App\Http\Controllers\Admin\AffiliatorUserController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -72,6 +76,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/system_version', [Admin\DashboardController::class, 'system_version'])->name('system_version');
     Route::post('/version_update', [Admin\DashboardController::class, 'version_update'])->name('version_update');
     // your protected routes.
+    /*Ecommerce All Type Users Start*/
+    Route::get('/all/admin.users', [AdminUserController::class, 'index'])->name('admin.all');
+    Route::get('/all/merchant.users', [MerchantUserController::class, 'index'])->name('merchant.all');
+    Route::get('/all/seller.users', [SellerUserController::class, 'index'])->name('seller.all');
+    Route::get('/all/affiliator.users', [AffiliatorUserController::class, 'index'])->name('affiliator.all');
+    /*Ecommerce All Type Users End*/
 
     //    user route start here
     Route::get('/users', [Admin\UserController::class, 'index'])->name('all.user');
