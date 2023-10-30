@@ -53,14 +53,15 @@ class RegisterController extends Controller
                     }
 
                     $main_info=[
-                        'subject'=>"Netel Mart: Merchant Account Verification code.",
-                        'body'=>"Hey ,".$request->name.",your merchant account has been created successfully.
-                        \n Please verify your by using this code.\n Verification code.".'<h1>'.$verification_code.'</h1>',
-                        'login_link'=>route('merchant.login.show')
+                        'subject'=>'Netel Mart: Merchant Account create Confirmation.',
+                        'body'=>'Hey, '.$request->name.' Your merchant account created successfully. Your email is '.$request->email.'.
+                        Please login your account by using this link is '.route('merchant.login.show').'.',
                     ];
 
 
                     $data->save();
+
+                    mail_template($main_info,$request->email);
 
                     return response()->json([
                         'message'=>'Your Registration has been successfully',
@@ -165,14 +166,16 @@ class RegisterController extends Controller
                     }
 
                     $main_info=[
-                        'subject'=>"Netel Mart: Reseller Account Verification code.",
-                        'body'=>"Hey ,".$request->name.",your  Reseller account has been created successfully.
-                        \n Please verify your by using this code.\n Verification code.".'<h1>'.$verification_code.'</h1>',
-                        'login_link'=>route('seller.login.show')
+                        'subject'=>'Netel Mart: Seller Account create Confirmation.',
+                        'body'=>'Hey, '.$request->name.' Your Seller account created successfully. Your email is '.$request->email.'.
+                        Please login your account by using this link is '.route('seller.login.show').'.',
                     ];
 
 
                     $data->save();
+
+                    mail_template($main_info,$request->email);
+
                     return response()->json([
                         'message'=>'Your Registration has been successfully',
                         'type'=>"success",
@@ -226,15 +229,15 @@ class RegisterController extends Controller
                     }
 
                     $main_info=[
-                        'subject'=>"Netel Mart: Affiliate Account Verification code.",
-                        'body'=>"Hey ,".$request->name.",your  Affiliate account has been created successfully.
-                        \n Please verify your by using this code.\n Verification code.".'<h1>'.$verification_code.'</h1>',
-                        'login_link'=>route('affiliate.login.show')
+                        'subject'=>'Netel Mart: Affiliate Account create Confirmation.',
+                        'body'=>'Hey, '.$request->name.' Your Affiliate account created successfully. Your email is '.$request->email.'.
+                        Please login your account by using this link is '.route('merchant.login.show').'.',
                     ];
 
 
-
                     $data->save();
+
+                    mail_template($main_info,$request->email);
                     return response()->json([
                         'message'=>'Your Registration has been successfully',
                         'type'=>"success",
