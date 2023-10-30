@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use App\Models\Ecommerce\Order_detail;
+use App\Mail\Sendmail;
 
 const MERCHANT_RANK=['vim'=>"VIM",'mim'=>"MIM",'sim'=>"SIM"];
 
@@ -198,6 +199,9 @@ function delete_2_type_image_if_exist($data, $folderName)
 
  function send_mail($data,$to_mail){
      Mail::to($to_mail)->send(new VerifyAccount($data));
+ }
+ function mail_template($data,$to_mail){
+     Mail::to($to_mail)->send(new Sendmail($data));
  }
 
 
