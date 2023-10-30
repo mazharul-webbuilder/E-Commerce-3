@@ -78,6 +78,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     // your protected routes.
     /*Ecommerce All Type Users Start*/
     Route::get('/all/admin.users', [AdminUserController::class, 'index'])->name('admin.all');
+    Route::get('/datatable/all', [AdminUserController::class, 'datatable'])->name('admin.all.datatable');
     Route::get('/all/merchant.users', [MerchantUserController::class, 'index'])->name('merchant.all');
     Route::get('/all/seller.users', [SellerUserController::class, 'index'])->name('seller.all');
     Route::get('/all/affiliator.users', [AffiliatorUserController::class, 'index'])->name('affiliator.all');

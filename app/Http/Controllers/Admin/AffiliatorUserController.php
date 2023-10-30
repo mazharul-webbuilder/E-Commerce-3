@@ -7,5 +7,8 @@ use Illuminate\Http\Request;
 
 class AffiliatorUserController extends Controller
 {
-    //
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
 }

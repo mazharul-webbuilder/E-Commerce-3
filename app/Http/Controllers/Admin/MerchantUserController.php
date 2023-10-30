@@ -7,5 +7,8 @@ use Illuminate\Http\Request;
 
 class MerchantUserController extends Controller
 {
-    //
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
 }
