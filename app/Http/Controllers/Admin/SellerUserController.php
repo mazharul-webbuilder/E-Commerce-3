@@ -32,7 +32,10 @@ class SellerUserController extends Controller
 
         return DataTables::of($sellers)->addIndexColumn()
             ->addColumn('avatar', function ($seller){
-                return '<img src="'.asset('uploads/seller/resize/').'/'.$seller->avatar.'" alt="'.$seller->name.'" />';
+                return (!is_null($seller->avatar)) ?  '<img src="'.asset('uploads/seller/resize/').'/'.$seller->avatar.'" alt="'.$seller->name.'" />'
+                    :
+                    '<img src="'.asset(default_image()).'" alt="'.$seller->name.'" />'
+                    ;
             })
             ->addColumn('total_product', function ($seller){
                 return DB::table('seller_products')->where('seller_id', $seller->id)->count();

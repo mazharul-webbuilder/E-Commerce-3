@@ -33,7 +33,10 @@ class AffiliatorUserController extends Controller
 
         return DataTables::of($affiliators)->addIndexColumn()
             ->addColumn('avatar', function ($affiliator){
-                return '<img src="'.asset('uploads/affiliator/resize/').'/'.$affiliator->avatar.'" alt="'.$affiliator->name.'" />';
+                return (!is_null($affiliator->avatar)) ?  '<img src="'.asset('uploads/affiliator/resize/').'/'.$affiliator->avatar.'" alt="'.$affiliator->name.'" />'
+                    :
+                    '<img src="'.asset(default_image()).'" alt="'.$affiliator->name.'" />'
+                    ;
             })
             ->addColumn('total_product', function ($affiliator){
                 return DB::table('affiliator_products')->where('affiliator_id', $affiliator->id)->count();

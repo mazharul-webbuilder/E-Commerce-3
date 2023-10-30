@@ -31,7 +31,10 @@ class MerchantUserController extends Controller
 
         return DataTables::of($merchants)->addIndexColumn()
             ->addColumn('avatar', function ($merchant){
-                return '<img src="'.asset('uploads/merchant/resize/').'/'.$merchant->avatar.'" alt="'.$merchant->name.'" />';
+                return (!is_null($merchant->avatar)) ?  '<img src="'.asset('uploads/merchant/resize/').'/'.$merchant->avatar.'" alt="'.$merchant->name.'" />'
+                    :
+                    '<img src="'.asset(default_image()).'" alt="'.$merchant->name.'" />'
+                    ;
             })
             ->addColumn('status', function ($merchant) {
                 $statusOptions = [
