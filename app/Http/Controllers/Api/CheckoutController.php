@@ -10,6 +10,7 @@ use App\Models\Ecommerce\Order;
 use App\Models\Ecommerce\Order_detail;
 use App\Models\Ecommerce\Payment;
 use App\Models\Ecommerce\Product;
+use App\Models\PaymentMethod;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -22,8 +23,10 @@ class CheckoutController extends Controller
 
 
 public function get_payment(){
-    $datas = Payment::where('status',1)->get();
+
+    $datas = PaymentMethod::query()->get();
     $payments=  Paymentresource::collection($datas);
+
     return response()->json([
         'payments'=>$payments,
         'status'=>200,

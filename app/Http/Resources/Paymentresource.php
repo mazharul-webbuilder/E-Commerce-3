@@ -16,11 +16,22 @@ class Paymentresource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'name'=>$this->payment_name,
-            'type'=>$this->type,
-            'image'=>asset('uploads/payment/resize/'.$this->image),
-            'account_detail'=>json_decode($this->account_detail),
+            'name'=>$this->payment_method_name,
+
+            'payments'=>$this->payments->map(function ($data){
+                return[
+                    'id'=>$data->id,
+                    'name'=>$data->payment_name,
+                    'type'=>$data->type,
+                    'image'=>asset('uploads/payment/resize/'.$data->image),
+                    'account_detail'=>json_decode($data->account_detail),
+                    'status'=>$data->status,
+                ];
+            }),
+
+
 
         ];
     }
 }
+
