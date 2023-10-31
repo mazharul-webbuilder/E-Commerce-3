@@ -87,7 +87,7 @@ class OrderController extends Controller
             // Check if the current status is already "delivered"
             if ($currentStatus !== 'delivered') {
                 $order->status = $request->status;
-                $order->save();
+               // $order->save();
 
                 if ($request->status == 'shipping') {
                     // Send notification for shipping status
@@ -193,12 +193,15 @@ class OrderController extends Controller
                 $merchant=Merchant::find($order_item->merchant_id);
                 $total_product_price=$product->price()*$order_item->product_quantity;
 
+
+
                 //=============when affiliate and seller not found. only company commission===================
                 if ($order_item->affiliator_id==null && $order_item->seller_id==null)
                 {
                     //===company commission
-                    $individual_company_commission=(($product->price()*$product->compnay_commission)/100)*$order_item->product_quantity;
-                    $merchant_will_get=$total_product_price-$individual_company_commission;
+                    $company_commission_from_merchant=(($product->price()*$product->company_commission)/100)*$order_item->product_quantity;
+                   // return $company_commission_from_merchant;
+                    $merchant_will_get=$total_product_price-$company_commission_from_merchant;
                     $merchant->balance=$merchant->balance+$merchant_will_get;
                     $merchant->save();
 
@@ -209,25 +212,28 @@ class OrderController extends Controller
                 {
                     // seller commission from merchant
                     $seller=Seller::find($order_item->seller_id);
-                    $individual_seller_commission=(($product->price()*$product->product_commission->reseller_commission)/100)*$order_item->product_quantity;
+                    $seller_commission_from_merchant=(($product->price()*$product->product_commission->reseller_commission)/100)*$order_item->product_quantity;
 
                     // seller extra earning
-                    $seller_price_data=seller_price($seller->id,$product->id);
+                    $seller_product=seller_price($seller->id,$product->id);
 
-                    $product_extra_price=$seller_price_data->seller_price*$order_item->product_quantity-$product->price()*$order_item->product_quantity;
+                    $product_extra_price=$seller_product->seller_price*$order_item->product_quantity-$product->price()*$order_item->product_quantity;
 
-                    $company_extra_commission=$product_extra_price*$seller_price_data->seller_company_commission/100;
+                    $company_commission_from_seller=$product_extra_price*$seller_product->seller_company_commission/100;
 
-                    $seller_extra_get=$product_extra_price-$company_extra_commission;
+                    $seller_extra_get=$product_extra_price-$company_commission_from_seller;
 
-                    $total_seller_get=$seller_extra_get+$individual_seller_commission;
+                    $total_seller_get=$seller_extra_get+$seller_commission_from_merchant;
                     $seller->balance=$seller->balance+$total_seller_get;
                     $seller->save();
 
-                    // company commission
-                    $individual_company_commission=(($product->price()*$product->product_commission)/100)*$order_item->product_quantity;
-                    $total_seller_company_commission=$individual_company_commission+$individual_seller_commission;
-                    $merchant_will_get=$total_product_price-$total_seller_company_commission;
+                    // merchant will get total amount
+                    $company_commission_from_merchant=(($product->price()*$product->company_commission)/100)*$order_item->product_quantity;
+
+                    $total_seller_and_company_commission=$company_commission_from_merchant+$seller_commission_from_merchant;
+
+                    $merchant_will_get=$total_product_price-$total_seller_and_company_commission;
+                    //return $merchant_will_get;
                     $merchant->balance=$merchant->balance+$merchant_will_get;
                     $merchant->save();
 
@@ -240,19 +246,20 @@ class OrderController extends Controller
                     $affiliate=Affiliator::find($order_item->affiliator_id);
 
                     // affiliate commission
-                    $individual_affiliate_commission=(($product->price()*$product->product_affiliate_commission->affiliate_commission)/100)*$order_item->product_quantity;
-                    $affiliate->balance=$affiliate->balance+$individual_affiliate_commission;
+                    $affiliate_commission_from_merchant=(($product->price()*$product->product_commission->affiliate_commission)/100)*$order_item->product_quantity;
+                    $affiliate->balance=$affiliate->balance+$affiliate_commission_from_merchant;
                     $affiliate->save();
 
                     // company commission
-                    $individual_company_commission=(($product->price()*$product->product_affiliate_commission->company_commission)/100)*$order_item->product_quantity;
-                    $total_affiliate_company_commission=$individual_company_commission+$individual_affiliate_commission;
-                    $merchant_will_get=$total_product_price-$total_affiliate_company_commission;
+                    $company_commission_from_merchant=(($product->price()*$product->company_commission)/100)*$order_item->product_quantity;
+                    $total_affiliate_and_company_commission=$company_commission_from_merchant+$affiliate_commission_from_merchant;
+
+                    $merchant_will_get=$total_product_price-$total_affiliate_and_company_commission;
+                   // return $merchant_will_get;
                     $merchant->balance=$merchant->balance+$merchant_will_get;
                     $merchant->save();
 
                 }
-
 
             }
         }
