@@ -33,8 +33,8 @@ class ShopSettingRequest extends FormRequest
             'help_line' => 'nullable|digits_between:3,13',
             'available_time' => 'nullable|string|min:2',
             'detail' => 'nullable|string',
-            'image' => 'nullable|image'
-
+            'image' => 'nullable|image',
+            'banner' => 'nullable|image'
         ];
     }
 }
