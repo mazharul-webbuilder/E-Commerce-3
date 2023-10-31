@@ -87,7 +87,7 @@
                             </th>
                             <th scope="col" class="px-6 py-3 whitespace-nowrap">
                                 <div class="text-center">
-                                    Status
+                                    View Shop Detial
                                 </div>
                             </th>
 
@@ -122,7 +122,7 @@
                     { data: 'avatar',name:'avatar'},
                     { data: 'balance',name:'balance'},
                     { data: 'total_product',name:'total_product'},
-                    { data: 'status',name:'status'},
+                    { data: 'shop_detail',name:'shop_detail'},
                 ],
 
                 language : {

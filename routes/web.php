@@ -77,12 +77,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::post('/version_update', [Admin\DashboardController::class, 'version_update'])->name('version_update');
     // your protected routes.
     /*Ecommerce All Type Users Start*/
+    /*Admin*/
     Route::get('/all/admin.users', [AdminUserController::class, 'index'])->name('admin.all');
     Route::get('/datatable/all', [AdminUserController::class, 'datatable'])->name('admin.all.datatable');
+    /*Merchant*/
     Route::get('/all/merchant.users', [MerchantUserController::class, 'index'])->name('merchant.all');
     Route::get('/datatable/merchants', [MerchantUserController::class, 'datatable'])->name('merchant.all.datatable');
+    Route::get('/shop/detail/{id}', [MerchantUserController::class, 'shopDetail'])->name('admin.merchant.shop.detail');
+    /*Seller*/
     Route::get('/all/seller.users', [SellerUserController::class, 'index'])->name('seller.all');
     Route::get('/datatable/seller', [SellerUserController::class, 'datatable'])->name('seller.all.datatable');
+    /*Affiliator*/
     Route::get('/all/affiliator.users', [AffiliatorUserController::class, 'index'])->name('affiliator.all');
     Route::get('/datatable/affiliator', [AffiliatorUserController::class, 'datatable'])->name('affiliator.all.datatable');
     /*Ecommerce All Type Users End*/

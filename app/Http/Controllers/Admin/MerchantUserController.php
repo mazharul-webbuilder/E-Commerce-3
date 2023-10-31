@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ShopDetail;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,28 +37,31 @@ class MerchantUserController extends Controller
                     '<img src="'.asset(default_image()).'" alt="'.$merchant->name.'" />'
                     ;
             })
-            ->addColumn('status', function ($merchant) {
-                $statusOptions = [
-                    1 => 'Active',
-                    0 => 'Inactive',
-                ];
+            ->addColumn('shop_detail', function ($merchant) {
+                $shop = DB::table('shop_details')->where('merchant_id', $merchant->id)->first();
 
-                $statusSelect = '<select class="merchant-status form-control" style="background: #FFE5E5;
-                                    padding: 7px;
-                                    border: 1px solid transparent;
-                                    border-radius: 10px;
-                                    color: black;" data-id="' . $merchant->id . '">';
-
-                foreach ($statusOptions as $value => $label) { // $value = array_key && $label = published or unpublished
-                    $selected = $merchant->status == $value ? 'selected' : '';
-                    $statusSelect .= '<option value="' . $value . '" ' . $selected . '>' . $label . '</option>';
-                }
-                $statusSelect .= '</select>';
-                return $statusSelect;
+                return (!is_null($shop)) ? ' <a href="' . route('admin.merchant.shop.detail', $shop->id) . '" type="button" class="text-white bg-teal-500 hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                Shop Detial
+            </a>'
+                    :
+            ' <a href="javascript:void(0)" type="button" class="text-white bg-red-600 hover:bg-red-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                Not Set Yet
+            </a>'
+                    ;
             })
             ->addColumn('total_product', function ($merchant){
                 return DB::table('products')->where('merchant_id', $merchant->id)->count();
             })
-            ->rawColumns(['status', 'avatar', 'total_product'])->make(true);
+            ->rawColumns(['shop_detail', 'avatar', 'total_product'])->make(true);
+    }
+
+    /**
+     * Display Merchant Shop Detail
+    */
+    public function shopDetail($id)
+    {
+        $shop = ShopDetail::find($id);
+
+        return \view('webend.ecommerce.users.merchant.shop', compact('shop'));
     }
 }
