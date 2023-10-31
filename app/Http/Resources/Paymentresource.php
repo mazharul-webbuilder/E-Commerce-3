@@ -17,7 +17,6 @@ class Paymentresource extends JsonResource
         return [
             'id'=>$this->id,
             'name'=>$this->payment_method_name,
-
             'payments'=>$this->payments->map(function ($data){
                 return[
                     'id'=>$data->id,
