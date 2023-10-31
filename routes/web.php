@@ -40,6 +40,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\MerchantUserController;
 use App\Http\Controllers\Admin\SellerUserController;
 use App\Http\Controllers\Admin\AffiliatorUserController;
+use App\Http\Controllers\Admin\ProductDetailController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -76,6 +77,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/system_version', [Admin\DashboardController::class, 'system_version'])->name('system_version');
     Route::post('/version_update', [Admin\DashboardController::class, 'version_update'])->name('version_update');
     // your protected routes.
+    /*=====================================================================================*/
     /*Ecommerce All Type Users Start*/
     /*Admin*/
     Route::get('/all/admin.users', [AdminUserController::class, 'index'])->name('admin.all');
@@ -84,6 +86,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/all/merchant.users', [MerchantUserController::class, 'index'])->name('merchant.all');
     Route::get('/datatable/merchants', [MerchantUserController::class, 'datatable'])->name('merchant.all.datatable');
     Route::get('/shop/detail/{id}', [MerchantUserController::class, 'shopDetail'])->name('admin.merchant.shop.detail');
+    Route::get('/shop/product/detail/{id}', [MerchantUserController::class, 'shopProductDetail'])->name('admin.merchant.shop.product.detail');
     /*Seller*/
     Route::get('/all/seller.users', [SellerUserController::class, 'index'])->name('seller.all');
     Route::get('/datatable/seller', [SellerUserController::class, 'datatable'])->name('seller.all.datatable');
@@ -91,6 +94,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/all/affiliator.users', [AffiliatorUserController::class, 'index'])->name('affiliator.all');
     Route::get('/datatable/affiliator', [AffiliatorUserController::class, 'datatable'])->name('affiliator.all.datatable');
     /*Ecommerce All Type Users End*/
+    /*Common*/
+    Route::get('/product/details/{id}', ProductDetailController::class)->name('admin.users.product.detail');
+    /*==========================================================================================*/
 
     //    user route start here
     Route::get('/users', [Admin\UserController::class, 'index'])->name('all.user');

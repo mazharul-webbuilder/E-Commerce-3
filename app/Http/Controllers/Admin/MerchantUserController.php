@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Ecommerce\Product;
 use App\Models\ShopDetail;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -62,6 +63,8 @@ class MerchantUserController extends Controller
     {
         $shop = ShopDetail::find($id);
 
-        return \view('webend.ecommerce.users.merchant.shop', compact('shop'));
+        $products = Product::where('merchant_id', $shop->merchant->id)->get();
+
+        return \view('webend.ecommerce.users.merchant.shop', compact('shop', 'products'));
     }
 }
