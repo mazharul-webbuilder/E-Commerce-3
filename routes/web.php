@@ -86,7 +86,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/all/merchant.users', [MerchantUserController::class, 'index'])->name('merchant.all');
     Route::get('/datatable/merchants', [MerchantUserController::class, 'datatable'])->name('merchant.all.datatable');
     Route::get('/shop/detail/{id}', [MerchantUserController::class, 'shopDetail'])->name('admin.merchant.shop.detail');
-    Route::get('/shop/product/detail/{id}', [MerchantUserController::class, 'shopProductDetail'])->name('admin.merchant.shop.product.detail');
     /*Seller*/
     Route::get('/all/seller.users', [SellerUserController::class, 'index'])->name('seller.all');
     Route::get('/datatable/seller', [SellerUserController::class, 'datatable'])->name('seller.all.datatable');
