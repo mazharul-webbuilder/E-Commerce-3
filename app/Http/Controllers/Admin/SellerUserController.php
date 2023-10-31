@@ -41,8 +41,6 @@ class SellerUserController extends Controller
                     ;
             })
             ->addColumn('view_store_detail', function ($seller) {
-                $shop = DB::table('shop_details')->where('merchant_id', $seller->id)->first();
-
                 return  ' <a href="' . route('admin.seller.shop.detail', $seller->id) . '" type="button" class="text-white bg-teal-500 hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                         Store Detail
                     </a>';

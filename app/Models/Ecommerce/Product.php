@@ -28,6 +28,14 @@ class Product extends Model
         return $this->hasMany(SellerProduct::class);
     }
 
+    /**
+     * Seller Products
+    */
+    public function affiliator_products()
+    {
+        return $this->hasMany(AffiliatorProduct::class);
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
