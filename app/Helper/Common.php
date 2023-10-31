@@ -161,6 +161,26 @@ function delete_2_type_image_if_exist($data, $folderName)
         File::delete(public_path($resize_image_path));
     }
 }
+
+
+/**
+ * Delete Origin and Resize Image If Exist Latest
+ */
+function delete_2_type_image_if_exist_latest($imageName, $folderName)
+{
+    $original_image_path = "uploads/{$folderName}/original/{$imageName}";
+    $resize_image_path = "uploads/{$folderName}/resize/{$imageName}";
+
+    if (File::exists(public_path($original_image_path))) {
+        // Set permissions before deleting (e.g., set to 0644)
+        File::chmod(public_path($original_image_path), 0644);
+        File::chmod(public_path($resize_image_path), 0644);
+
+        // Delete the files
+        File::delete(public_path($original_image_path));
+        File::delete(public_path($resize_image_path));
+    }
+}
  function merchant_ratting($merchant_id){
 
     $reviews=Review::where(['merchant_id'=>$merchant_id,'status'=>1])->get();

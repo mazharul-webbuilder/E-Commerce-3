@@ -60,18 +60,7 @@ class ShopController extends Controller
 
             if ($request->hasFile('image')) {
                 if (!is_null($shop_detail->logo)) {
-                    $original_image_path = "uploads/shop/original/{$shop_detail->logo}";
-                    $resize_image_path = "uploads/shop/resize/{$shop_detail->logo}";
-
-                    if (File::exists(public_path($original_image_path))) {
-                        // Set permissions before deleting (e.g., set to 0644)
-                        File::chmod(public_path($original_image_path), 0644);
-                        File::chmod(public_path($resize_image_path), 0644);
-
-                        // Delete the files
-                        File::delete(public_path($original_image_path));
-                        File::delete(public_path($resize_image_path));
-                    }
+                    delete_2_type_image_if_exist_latest($shop_detail->logo, 'shop');
                 }
 
                 $image = $request->file('image');
@@ -96,18 +85,7 @@ class ShopController extends Controller
             /*Add Banner*/
             if ($request->hasFile('banner')) {
                 if (!is_null($shop_detail->banner)) {
-                    $original_image_path = "uploads/shop/banner/original/{$shop_detail->banner}";
-                    $resize_image_path = "uploads/shop/banner/resize/{$shop_detail->banner}";
-
-                    if (File::exists(public_path($original_image_path))) {
-                        // Set permissions before deleting (e.g., set to 0644)
-                        File::chmod(public_path($original_image_path), 0644);
-                        File::chmod(public_path($resize_image_path), 0644);
-
-                        // Delete the files
-                        File::delete(public_path($original_image_path));
-                        File::delete(public_path($resize_image_path));
-                    }
+                    delete_2_type_image_if_exist_latest(imageName: $shop_detail->banner, folderName:  'shop/banner');
                 }
                 /*Store Banner New Image*/
                 $image = $request->file('banner');
