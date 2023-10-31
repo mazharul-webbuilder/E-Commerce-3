@@ -38,14 +38,6 @@
                     <h2 class="text-2xl font-bold py-2 text-white pl-3">Product List</h2>
 
                 </div>
-                @if($count_deal>0)
-                <div class="flex justify-end p-1">
-                    <a href="{{route('product.all_flash_deal')}}"  class="text-white bg-blue-700 hover:bg-blue-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center">
-                        <i class="fas fa-eye mr-2"></i>
-                        All Flash Deal Product
-                    </a>
-                </div>
-                @endif
                 <div class="py-2 px-1 mt-3" style="overflow-x: auto;">
                     <table class="text-sm text-left text-white border-l border-r" id="dataTableAuthor" style=" width: 100%;">
                         <thead class="text-xs text-white uppercase bg-amber-600">
