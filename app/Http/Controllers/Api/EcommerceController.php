@@ -313,15 +313,22 @@ class EcommerceController extends Controller
         $merchant_data=[
                 'merchant_id'=>$merchant->id,
                 'merchant_name'=>$merchant->na,
-                'logo'=>'nai',
+
                 'total_product'=>count($merchant->publish_products),
-                 'review_detail'=>merchant_ratting($merchant_id)
+                 'review_detail'=>merchant_ratting($merchant_id),
+                'shop'=>$merchant->shop_detail ? [
+                    'shop_name'=>$merchant->shop_detail->shop_name,
+                    'logo'=>$merchant->shop_detail->logo,
+                    'banner'=>$merchant->shop_detail->banner,
+                    'help_line'=>$merchant->shop_detail->help_line,
+                    'available_time'=>$merchant->shop_detail->available_time
+                ] : ''
                ];
 
         return \response()->json([
+            'merchant_data'=>$merchant_data,
             'products'=>$datas,
             'type'=>'success',
-            'merchant_data'=>$merchant_data,
             'status'=>Response::HTTP_OK
         ],Response::HTTP_OK);
     }
