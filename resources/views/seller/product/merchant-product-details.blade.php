@@ -111,6 +111,10 @@
                                         </tr>
 
                                         <tr class="bg-gray-200">
+                                            <th class="py-2 px-4  border border-gray-300">Reseller Commission</th>
+                                            <td class="py-2 px-4 border border-gray-300">{{ $product->product_commission->reseller_commission ? price_format($product->product_commission->reseller_commission) : ''}}</td>
+                                        </tr>
+                                        <tr class="bg-gray-200">
                                             <th class="py-2 px-4  border border-gray-300">Current Price (Product Owner)</th>
                                             <td class="py-2 px-4 border border-gray-300">{{ $product->current_price ? price_format($product->current_price) : ''}}</td>
                                         </tr>

@@ -28,7 +28,7 @@ Route::group([ 'as'=>'affiliate.'],function(){
         Route::post('/add_to_store',[ManageProductController::class,'add_to_store'])->name('product.add_to_store');
         Route::get('/shop_product_load',[ManageProductController::class,'shop_datatable'])->name('shop.product.load');
         Route::get('/shop',[ManageProductController::class,'shop'])->name('product.shop');
-        Route::get('/merchant/detail/{id}',[ManageProductController::class,'merchantProductDetail'])->name('merchant.product.details');
+        Route::get('/detail/{id}',[ManageProductController::class,'merchantProductDetail'])->name('merchant.product.details');
         Route::get('/view-product/{id}',[ManageProductController::class,'viewProduct'])->name('product.view');
         Route::post('/add_to_store',[ManageProductController::class,'add_to_store'])->name('product.add_to_store');
         Route::get('/delete-product',[ManageProductController::class,'deleteProduct'])->name('product.delete');
