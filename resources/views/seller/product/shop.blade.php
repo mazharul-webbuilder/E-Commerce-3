@@ -81,7 +81,7 @@
                     </table>
                 </div>
             </div>
-            <a href="fdfsdgdf" onclick="copyURI(event)">Copy cover URL</a>
+
 
         </div>
     </section>

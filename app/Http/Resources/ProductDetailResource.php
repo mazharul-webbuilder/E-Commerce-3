@@ -45,10 +45,14 @@ class ProductDetailResource extends JsonResource
             'merchant_info'=>$this->merchant ? [
                     'merchant_id'=>$this->merchant_id,
                     'merchant_name'=>$this->merchant->name,
-                    'logo'=>"nai",
+                    'shop_name'=>$this->merchant->shop_detail->shop_name,
                     'follower'=>200,
                     'total_product'=>count($this->merchant->publish_products),
                     'review_detail'=>merchant_ratting($this->merchant_id),
+                    'shop'=>$this->merchant->shop_detail ? [
+                        'shop_name'=>$this->merchant->shop_detail->shop_name,
+                        'logo'=>$this->merchant->shop_detail->logo
+                    ] : ''
 
                 ] : '',
 
