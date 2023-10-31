@@ -80,6 +80,11 @@
                                     Total Product
                                 </div>
                             </th>
+                            <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                                <div class="text-center">
+                                    View Store Detail
+                                </div>
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -109,6 +114,7 @@
                     { data: 'avatar',name:'avatar'},
                     { data: 'balance',name:'balance'},
                     { data: 'total_product',name:'total_product'},
+                    { data: 'view_store_detail',name:'view_store_detail'},
                 ],
 
                 language : {
