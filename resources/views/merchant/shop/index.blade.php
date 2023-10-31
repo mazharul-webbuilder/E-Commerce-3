@@ -126,6 +126,22 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="flex flex-col md:flex-row justify-between gap-3">
+                            <div class="w-full">
+                                <div class="w-full">
+                                    <div class="upload__box mt-5">
+                                        <div class="upload__btn-box">
+                                            <label class="upload__btn">
+                                                <p>Upload Shop Banner</p>
+                                                <input type="file" name="banner" class="upload__inputfile dropify"
+                                                       @if($data) data-default-file="{{asset('uploads/shop/banner/original/'.$data->banner)}}@endif">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="flex flex-col md:flex-row justify-between gap-3">
                             <div class="w-full">
                                 <div class="w-full">

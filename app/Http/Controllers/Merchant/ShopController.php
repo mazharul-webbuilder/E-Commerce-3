@@ -55,11 +55,10 @@ class ShopController extends Controller
                     'available_time' => $request->available_time,
                 ]
             );
-            DB::commit();
+            /*Get Merchant Shop Details*/
+            $shop_detail = ShopDetail::where('merchant_id', $merchant->id)->first();
 
             if ($request->hasFile('image')) {
-                $shop_detail = ShopDetail::where('merchant_id', $merchant->id)->first();
-
                 if (!is_null($shop_detail->logo)) {
                     $original_image_path = "uploads/shop/original/{$shop_detail->logo}";
                     $resize_image_path = "uploads/shop/resize/{$shop_detail->logo}";
@@ -92,9 +91,48 @@ class ShopController extends Controller
                 Image::make($image)->resize(200, 200)->save($resize_large_path);
 
                 $shop_detail->logo = $image_name;
-                $shop_detail->save();
+
+            }
+            /*Add Banner*/
+            if ($request->hasFile('banner')) {
+                if (!is_null($shop_detail->banner)) {
+                    $original_image_path = "uploads/shop/banner/original/{$shop_detail->banner}";
+                    $resize_image_path = "uploads/shop/banner/resize/{$shop_detail->banner}";
+
+                    if (File::exists(public_path($original_image_path))) {
+                        // Set permissions before deleting (e.g., set to 0644)
+                        File::chmod(public_path($original_image_path), 0644);
+                        File::chmod(public_path($resize_image_path), 0644);
+
+                        // Delete the files
+                        File::delete(public_path($original_image_path));
+                        File::delete(public_path($resize_image_path));
+                    }
+                }
+                /*Store Banner New Image*/
+                $image = $request->file('banner');
+                $image_name = strtolower(Str::random(10)) . time() . "." . $image->getClientOriginalExtension();
+
+                $original_directory = "uploads/shop/banner/original";
+                $resize_directory = "uploads/shop/banner/resize";
+
+                if (!File::exists(public_path($original_directory))) {
+                    File::makeDirectory(public_path($original_directory), 0777, true);
+                    File::makeDirectory(public_path($resize_directory), 0777, true);
+                }
+                $original_image_path = public_path("{$original_directory}/{$image_name}");
+                $resize_large_path = public_path("{$resize_directory}/{$image_name}");
+
+                Image::make($image)->save($original_image_path);
+                Image::make($image)->resize(1080, 720)->save($resize_large_path);
+
+                $shop_detail->banner = $image_name;
             }
 
+            /*Shop Save*/
+            $shop_detail->save();
+
+            DB::commit();
             return  response()->json([
                 'message' => 'Setting Successfully',
                 'type' => 'success',
