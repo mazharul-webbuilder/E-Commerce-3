@@ -55,6 +55,12 @@
                     </div>
                     <div class="text-sm ml-3">
                         <label for="remember" class="font-medium text-gray-900">Remember me</label>
+                    </div>  <div class="w-full">
+                        <div class="text-sm w-full ">
+                            <p style="text-align: right">
+                                <a href="{{route('forget.password', FORGET_PASSWORD_BY['seller'])}}" class="text-blue-600">Forget Password ?</a>
+                            </p>
+                        </div>
                     </div>
 
                 </div>

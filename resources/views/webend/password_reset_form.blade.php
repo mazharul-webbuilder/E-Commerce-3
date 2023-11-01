@@ -114,7 +114,7 @@
                             case 'seller':
                                 window.location.href = '{{route('seller.login.show')}}'
                                 break;
-                            case 'affiliate':
+                            case 'affiliator':
                                 window.location.href = '{{route('affiliate.login.show')}}'
                         }
 
