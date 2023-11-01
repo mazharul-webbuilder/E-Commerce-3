@@ -73,8 +73,8 @@ Route::get('/user_manage', [AdminLoginController::class, 'user_manage'])->name('
 //Common Routes
 Route::get('{userType}/forget/password', [ForgetPasswordController::class, 'showForm'])->name('forget.password');
 Route::post('forget/password', [ForgetPasswordController::class, 'forgetPasswordPost'])->name('forget.password.post');
-Route::get('{userType}/reset/password', [ForgetPasswordController::class, 'passwordResetForm'])->name('password.reset');
-Route::post('post/reset/password', [ForgetPasswordController::class, 'passwordResetPost'])->name('password.reset');
+Route::get('{type}/reset/password', [ForgetPasswordController::class, 'passwordResetForm'])->name('password.reset');
+Route::post('password/reset', [ForgetPasswordController::class, 'passwordResetPost'])->name('password.reset.post');
 /*=========================================================*/
 
 //Route::get('/login', [LoginController::class, 'login'])->name('login');

@@ -4,11 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PasswordResetRequest;
 use App\Http\Requests\ResetPasswordRequest;
+use App\Models\Admin;
+use App\Models\Affiliate\Affiliator;
+use App\Models\Merchant\Merchant;
+use App\Models\Seller\Seller;
 use App\Models\VerificationCode;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class ForgetPasswordController extends Controller
@@ -64,8 +71,9 @@ class ForgetPasswordController extends Controller
     /**
      * Display Password reset form
     */
-    public function passwordResetForm(string $userType): View
+    public function passwordResetForm($userType): View
     {
+
         return \view('webend.password_reset_form', compact('userType'));
     }
 
@@ -74,6 +82,52 @@ class ForgetPasswordController extends Controller
     */
     public function passwordResetPost(ResetPasswordRequest $request)
     {
-        dd($request->all());
+        try {
+            $verification = VerificationCode::where('verify_code', $request->verification_code)->first();
+
+            DB::beginTransaction();
+
+            switch ($request->userType){
+                case 'admin':
+                    $admin = Admin::where('email', '=' , $verification->email_or_phone)->first();
+                    $admin->password = Hash::make($request->password);
+                    $admin->save();
+                    break;
+                case 'merchant':
+                    $merchant = Merchant::where('email', $verification->email_or_phone)->first();
+                    $merchant->password = Hash::make($request->password);
+                    $merchant->save();
+                    break;
+                case 'seller':
+                    $seller = Seller::where('email', $verification->email_or_phone)->first();
+                    $seller->password = Hash::make($request->password);
+                    $seller->save();
+                    break;
+                case 'affiliator':
+                    $affiliator = Affiliator::where('email', $verification->email_or_phone)->first();
+                    $affiliator->password = Hash::make($request->password);
+                    $affiliator->save();
+                    break;
+            }
+            $verification->delete();
+
+            DB::commit();
+
+            return \response()->json([
+                'type' => 'success',
+                'response' => Response::HTTP_OK,
+                'message' => 'Password Changed Successfully'
+            ]);
+
+        } catch (QueryException $exception) {
+            DB::rollBack();
+
+            return \response()->json([
+                'type' => 'error',
+                'response' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'message' => $exception->getMessage()
+            ]);
+        }
+
     }
 }

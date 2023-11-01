@@ -93,7 +93,7 @@
             const formData = form.serialize();
 
             $.ajax({
-                url: '{{route('password.reset')}}',
+                url: '{{route('password.reset.post')}}',
                 method: 'POST',
                 data: formData,
                 success: function (data) {
@@ -103,7 +103,7 @@
                             title: data.message
                         });
                         $('#SubmitBtn').text('Reset Password')
-                        window.location.href = '{{route('dashboard')}}'
+                        window.location.href = '{{route('show.login')}}'
                     }
                 },
                 error: function (xhr, status, error) {
