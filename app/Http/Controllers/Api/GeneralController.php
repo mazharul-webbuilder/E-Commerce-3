@@ -41,6 +41,7 @@ class GeneralController extends Controller
                           ];
 
                     send_mail($main_info,$request->email_or_phone);
+
                     $data->save();
 
                     return response()->json([
