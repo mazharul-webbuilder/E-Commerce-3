@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendMailJob;
 use App\Models\Affiliate\Affiliator;
 use App\Models\Merchant\Merchant;
 use App\Models\Seller\Seller;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Validator;
 class GeneralController extends Controller
 {
     public function send_verification_code(Request $request){
+
         if ($request->isMethod("post")){
             $validator =Validator::make($request->all(),[
                 'email_or_phone'=>'required',
@@ -35,14 +37,15 @@ class GeneralController extends Controller
                           $data->email_or_phone=$request->email_or_phone;
                           $data->type='email';
 
-                          $main_info=[
+                          $mail_info=[
                                 'subject'=>"Netel Mart: Email verification  code.",
                                 'body'=>"Hey dear, valuable user your verification code is"."<h1>".$verify_code."</h2>"
                           ];
 
-                    send_mail($main_info,$request->email_or_phone);
+                        send_mail($mail_info,$request->email_or_phone);
+                        //dispatch(new SendMailJob($mail_info,$request->email_or_phone));
 
-                    $data->save();
+                        $data->save();
 
                     return response()->json([
                         'message'=>'You have been sent a verification code to email.',
