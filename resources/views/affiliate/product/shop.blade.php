@@ -142,29 +142,32 @@
 
             // copy link
             $('body').on('click','.copy_link',function (e){
+                e.preventDefault();
+                var copyText = $(this).attr('share_link');
+                $(this).text('Copying...')
 
-                $(this).text('Copying....')
-                navigator.clipboard.writeText(e.target.attributes.share_link.nodeValue).then(() => {
+                document.addEventListener('copy', function(e) {
+                    e.clipboardData.setData('text/plain', copyText);
+                    e.preventDefault();
+                }, true);
+                let result=document.execCommand('copy');
+                if (result){
                     swal({
                         title: 'Good job!',
                         text: "Successfully copied",
                         icon: 'success',
                         timer: 5000,
                     })
-                    let vm=this
-                   setInterval(function (){
-                       $(vm).text('Copy Link')
-
-                   },1000)
-
-                }, () => {
+                }else{
                     swal({
                         title: 'Error!',
                         text: response.data,
                         icon: 'error',
                         timer: 5000,
                     })
-                });
+                }
+                $(this).text('Copy Link')
+
             })
         })
     </script>
