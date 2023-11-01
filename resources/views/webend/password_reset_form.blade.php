@@ -23,7 +23,7 @@
 <div class="mx-auto md:h-screen flex flex-col justify-center items-center px-6 pt-8 pt:mt-0">
     <a href="" class="text-2xl font-semibold flex justify-center items-center mb-8 lg:mb-10">
 
-        <span class="self-center text-2xl font-bold whitespace-nowrap uppercase">{{ config('app.name') }} Forget Password</span>
+        <span class="self-center text-2xl font-bold whitespace-nowrap uppercase">{{ config('app.name') }} Reset Password</span>
     </a>
     <!-- Card -->
     <div class="bg-white shadow rounded-lg md:mt-0 w-full sm:max-w-screen-sm xl:p-0">
@@ -33,15 +33,42 @@
                     <img class="h-14 w-14 md:h-28 md:w-32" alt="LUDO" src="{{ asset('webend/logo.png') }}">
                 </a>
             </div>
-            <form class="mt-8 space-y-6" id="ForgetPasswordForm">
+            <form class="mt-8 space-y-6" id="ResetPasswordForm">
                 @csrf
                 <div>
-                    <label for="email" class="text-sm font-medium text-gray-900 block mb-2">Your email</label>
-                    <input type="email"
-                           name="email"
-                           id="email"
+                    <label for="email" class="text-sm font-medium text-gray-900 block mb-2">Verification Code</label>
+                    <input type="number"
+                           name="verification_code"
                            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 @error('email') border-red-500 @enderror"
-                          placeholder="name@company.com">
+                          >
+                    <div>
+                        <label for="password" class="text-sm font-medium text-gray-900 block mb-2">Enter new password</label>
+                        <div class="relative flex items-center">
+                            <span class="absolute inset-y-0 right-0 flex items-center p-4 cursor-pointer"
+                                  onclick="passwordToggle('#passwordVisibiltyIcon', '#password', '#adminShowEyeIcon');"
+                                  id="passwordVisibiltyIcon">
+                                <ion-icon class="text-gray-600 bg-gray-100" name="eye-off" id="adminShowEyeIcon">
+                                </ion-icon>
+                            </span>
+                            <input type="password" name="password" id="password" placeholder=""
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 @error('password') border-red-500 @enderror"
+                                   >
+                        </div>
+                    </div>
+                    <div>
+                        <label for="password" class="text-sm font-medium text-gray-900 block mb-2">Retype password</label>
+                        <div class="relative flex items-center">
+                            <span class="absolute inset-y-0 right-0 flex items-center p-4 cursor-pointer"
+                                  onclick="passwordToggle('#passwordVisibiltyIcon', '#passwordConfirm', '#adminShowEyeIcon');"
+                                  id="passwordVisibiltyIcon">
+                                <ion-icon class="text-gray-600 bg-gray-100" name="eye-off" id="adminShowEyeIcon">
+                                </ion-icon>
+                            </span>
+                            <input type="password" name="password_confirmation" id="passwordConfirm" placeholder=""
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 @error('password') border-red-500 @enderror"
+                                   >
+                        </div>
+                    </div>
                     <input type="hidden" name="userType" value="{{$userType}}">
                 </div>
                 <button type="submit" id="SubmitBtn" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-base px-5 py-3 w-full sm:w-auto text-center">
@@ -58,7 +85,7 @@
 @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
 <script>
     $(document).ready(function (){
-        $('#ForgetPasswordForm').on('submit', function (e){
+        $('#ResetPasswordForm').on('submit', function (e){
             e.preventDefault()
             $('#SubmitBtn').text('Processing.....')
             $('.error-message').hide()
@@ -66,7 +93,7 @@
             const formData = form.serialize();
 
             $.ajax({
-                url: '{{route('forget.password.post')}}',
+                url: '{{route('password.reset')}}',
                 method: 'POST',
                 data: formData,
                 success: function (data) {
@@ -76,7 +103,7 @@
                             title: data.message
                         });
                         $('#SubmitBtn').text('Reset Password')
-                        window.location.href = '{{route('password.reset', FORGET_PASSWORD_BY['admin'])}}'
+                        window.location.href = '{{route('dashboard')}}'
                     }
                 },
                 error: function (xhr, status, error) {
