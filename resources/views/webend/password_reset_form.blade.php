@@ -103,7 +103,21 @@
                             title: data.message
                         });
                         $('#SubmitBtn').text('Reset Password')
-                        window.location.href = '{{route('show.login')}}'
+
+                        switch ('{{$userType}}'){
+                            case 'admin':
+                                window.location.href = '{{route('show.login')}}'
+                                break;
+                            case 'merchant':
+                                window.location.href = '{{route('merchant.login.show')}}'
+                                break;
+                            case 'seller':
+                                window.location.href = '{{route('seller.login.show')}}'
+                                break;
+                            case 'affiliate':
+                                window.location.href = '{{route('affiliate.login.show')}}'
+                        }
+
                     }
                 },
                 error: function (xhr, status, error) {

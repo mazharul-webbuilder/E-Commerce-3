@@ -76,7 +76,7 @@
                             title: data.message
                         });
                         $('#SubmitBtn').text('Reset Password')
-                        window.location.href = '{{route('password.reset', FORGET_PASSWORD_BY['admin'])}}'
+                        window.location.href = '{{route('password.reset', $userType)}}'
                     }
                 },
                 error: function (xhr, status, error) {
