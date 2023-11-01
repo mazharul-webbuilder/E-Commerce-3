@@ -162,10 +162,9 @@
 
             $('body').on('click','.copy_link',function (e){
                 e.preventDefault();
+
                 var copyText = $(this).attr('share_link');
-
                 $(this).text('Copying...')
-
 
                 document.addEventListener('copy', function(e) {
                     e.clipboardData.setData('text/plain', copyText);
