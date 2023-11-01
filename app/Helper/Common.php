@@ -19,6 +19,17 @@ use App\Mail\Sendmail;
 
 const MERCHANT_RANK=['vim'=>"VIM",'mim'=>"MIM",'sim'=>"SIM"];
 
+/**
+ * Used In Forget Password user type
+ * when request for password reset
+*/
+const FORGET_PASSWORD_BY=[
+    'admin' => "admin",
+    'merchant' => "merchant",
+    'seller' => "seller",
+    'affiliator' => "affiliator"
+];
+
 function default_image()
 {
     return asset('uploads/default.png');

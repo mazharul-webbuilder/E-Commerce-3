@@ -32,6 +32,7 @@ use App\Http\Controllers\Admin\WithdrawPaymentController;
 use App\Http\Controllers\Ludo\CampaignController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\ForgetPasswordController;
 use App\Http\Controllers\Admin\ManageSellerController;
 use App\Http\Controllers\Admin\MerchantWithdrawController;
 use App\Http\Controllers\Admin\SellerWithdrawController;
@@ -67,6 +68,12 @@ Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('admin/login', [AdminLoginController::class, 'showForm'])->name('show.login');
 Route::post('/auth-login', [AdminLoginController::class, 'auth_login'])->name('auth.login');
 Route::get('/user_manage', [AdminLoginController::class, 'user_manage'])->name('login.user_manage');
+
+/*=========================================================*/
+//Common Routes
+Route::get('{userType}/forget/password', [ForgetPasswordController::class, 'showForm'])->name('forget.password');
+Route::post('forget/password', [ForgetPasswordController::class, 'forgetPasswordPost'])->name('forget.password.post');
+/*=========================================================*/
 
 //Route::get('/login', [LoginController::class, 'login'])->name('login');
 
