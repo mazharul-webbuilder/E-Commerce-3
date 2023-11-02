@@ -511,6 +511,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::group(['prefix' => 'product'], function () {
         Route::get('/', [ProductController::class, 'index'])->name('product.index');
         Route::get('/of/merchants', [ProductController::class, 'merchantsProduct'])->name('product.merchant');
+        Route::get('/datatable/merchant', [ProductController::class, 'merchantsProductDatatable'])->name('product.merchant.datatable');
         Route::get('/create', [ProductController::class, 'create'])->name('product.create');
         Route::post('/store', [ProductController::class, 'store'])->name('product.store');
         Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');

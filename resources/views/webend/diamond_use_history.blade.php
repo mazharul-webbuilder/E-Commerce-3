@@ -125,13 +125,13 @@
                                         {{ $data->user->name ?? '' }}
                                     </td>
                                     <td class="px-2 py-4 text-black border-r text-center">
-                                        {{ $data->tournament->tournament_name }}
+                                        {{ $data->tournament?->tournament_name }}
                                     </td>
                                     <td class="px-2 py-4 text-black border-r text-center">
-                                        {{ $data->game->game_no }}
+                                        {{ $data->game?->game_no }}
                                     </td>
                                     <td class="px-2 py-4 text-black border-r text-center">
-                                        {{ $data->round->round_no }}
+                                        {{ $data->round?->round_no }}
                                     </td>
                                     <td class="px-2 py-4 text-black border-r text-center">
                                         {{ $data->used_diamond }}

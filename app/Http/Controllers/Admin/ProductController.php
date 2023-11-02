@@ -13,12 +13,14 @@ use App\Models\Ecommerce\SubCategory;
 use App\Models\Ecommerce\Unit;
 use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
 {
@@ -36,10 +38,22 @@ class ProductController extends Controller
      */
     public function merchantsProduct(): View
     {
-        $products = Product::where('admin_id', '=', null)->latest()->get();
+        return view('webend.ecommerce.merchant.product.index');
+    }
 
-        return view('webend.ecommerce.merchant.product.index',compact('products'));
+    /**
+     * Datatable of Merchant Product in Admin Panel
+    */
+    public function merchantsProductDatatable(): JsonResponse
+    {
+        $products = Product::where('merchant_id', '!=', null)->latest()->get();
 
+        return DataTables::of($products)
+            ->addIndexColumn()
+            ->addColumn(function ($product){
+                return '';
+            })
+            ->make(true);
     }
 
     public function create()
