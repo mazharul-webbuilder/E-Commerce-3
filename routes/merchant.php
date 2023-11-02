@@ -39,6 +39,13 @@ Route::group(['prefix'=>'product', 'as'=>'merchant.'],function(){
     Route::get('/delete',[ProductController::class,'delete'])->name('product.delete');
 });
 
+//Shop
+Route::group(['as' => 'merchant.'], function (){
+    Route::get('/shop', [ShopController::class, 'myShop'])->name('shop.index');
+    Route::get('/product/details/{id}', [ShopController::class, 'productDetails'])->name('product.detail');
+
+});
+
 // Stock route
 Route::group(['prefix' => 'stock', 'as' => 'merchant.'], function () {
     Route::get('/{product_id}', [StockController::class, 'index'])->name('stock.index');

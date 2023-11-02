@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Merchant;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ShopSettingRequest;
+use App\Models\Ecommerce\Product;
 use App\Models\ShopDetail;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
@@ -21,6 +22,30 @@ class ShopController extends Controller
     public function __construct()
     {
         $this->middleware('merchant');
+    }
+
+    /**
+     * Show Merchant Shop In Merchant Dashboard
+    */
+    public function myShop(): View
+    {
+        $merchant = Auth::guard('merchant')->user();
+
+        $shop = ShopDetail::where('merchant_id', $merchant->id)->first();
+
+        $products = Product::where('merchant_id', $merchant->id)->where('status', 1)->get();
+
+        return  \view('merchant.shop.my_shop', compact('shop', 'products'));
+    }
+
+    /**
+     * Shop Active Product Details
+    */
+    public function productDetails($id): View
+    {
+        $product = Product::find($id);
+
+        return  view('merchant.shop.detail', compact('product'));
     }
 
     /**
