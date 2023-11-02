@@ -56,12 +56,17 @@
                             </th>
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
                                 <div class="text-center">
+                                    Title
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
                                     Merchant
                                 </div>
                             </th>
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
                                 <div class="text-center">
-                                    Name
+                                    Shop Name
                                 </div>
                             </th>
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
@@ -72,6 +77,11 @@
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
                                 <div class="text-center">
                                     Current Coin
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    Status
                                 </div>
                             </th>
                             <th scope="col" class="px-2 py-3" width="90px">
@@ -107,16 +117,14 @@
             columns: [
                 { data: 'DT_RowIndex',name:'DT_RowIndex' },
                 { data: 'thumbnail',name:'thumbnail'},
-                // { data: 'title',name:'title'},
-                // { data: 'current_price',name:'current_price'},
-                // { data: 'previous_price',name:'previous_price'},
-                // { data: 'current_coin',name:'current_coin'},
-                // { data: 'status',name:'status'},
-                // { data: 'flash_deal',name:'flash_deal'},
-                // { data: 'control_panel',name:'control_panel'},
-                // { data: 'stock_manager',name:'stock_manager'},
-                // { data: 'gallery',name:'gallery'},
-                // { data: 'action',name:'action' },
+                { data: 'title',name:'title'},
+                { data: 'merchant',name:'merchant'},
+                { data: 'shop',name:'shop'},
+                { data: 'current_price',name:'current_price'},
+                { data: 'current_coin',name:'current_coin'},
+                { data: 'status',name:'status'},
+                { data: 'available_stock',name:'available_stock'},
+                { data: 'action',name:'action' },
             ],
 
             language : {
@@ -129,12 +137,5 @@
 
 
 
-
-{{--<td class="whitespace-nowrap px-2 py-4 text-black border-r text-center">--}}
-{{--    <a href="{{route('product.product_detail',$product->slug)}}" class="text-white bg-indigo-400  hover:bg-sky-500 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 py-2 text-center">--}}
-{{--        <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg>--}}
-{{--        View--}}
-{{--    </a>--}}
-{{--</td>--}}
 
 
