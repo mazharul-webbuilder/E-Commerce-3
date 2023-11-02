@@ -139,6 +139,30 @@
 
         });
     </script>
+    <script>
+        $('document').ready(function (){
+            $('body').on('change', '.status-update', function (){
+                const productId = $(this).data('id')
+                let newStatus = $(this).val()
+                $.ajax({
+                    url: '{{route('product.merchant.status.update')}}',
+                    method: 'get',
+                    data: {
+                        productId: productId,
+                        newStatus: newStatus
+                    },
+                    success: function (data) {
+                      if (data.response === 200) {
+                          Toast.fire({
+                              icon: data.type,
+                              title: data.message
+                          });
+                      }
+                    }
+                })
+            })
+        })
+    </script>
 @endsection
 
 

@@ -11,7 +11,6 @@ use App\Models\Ecommerce\Order_detail;
 use App\Models\Ecommerce\Product;
 use App\Models\Ecommerce\SubCategory;
 use App\Models\Ecommerce\Unit;
-use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -21,6 +20,7 @@ use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Database\QueryException;
 
 class ProductController extends Controller
 {
@@ -59,6 +59,26 @@ class ProductController extends Controller
             ->addColumn('shop', function ($product){
                 return $product->merchant?->shop_detail?->shop_name;
             })
+            /*Status Column*/
+            ->addColumn('status', function ($product) {
+                $statusOptions = [
+                    1 => 'Published',
+                    0 => 'Unpublished',
+                ];
+
+                $statusSelect = '<select class="status-update form-control" style="background: #FFE5E5;
+                                    padding: 7px;
+                                    border: 1px solid transparent;
+                                    border-radius: 10px;
+                                    color: black;" data-id="' . $product->id . '">';
+
+                foreach ($statusOptions as $value => $label) { // $value = array_key && $label = published or unpublished
+                    $selected = $product->status == $value ? 'selected' : '';
+                    $statusSelect .= '<option value="' . $value . '" ' . $selected . '>' . $label . '</option>';
+                }
+                $statusSelect .= '</select>';
+                return $statusSelect;
+            })
             ->addColumn('available_size', function ($product){
                 return $product->stocks?->count();
             })
@@ -71,8 +91,35 @@ class ProductController extends Controller
                           View Details
                         </a>';
             })
-            ->rawColumns(['thumbnail', 'merchant', 'shop', 'available_size', 'available_stock', 'action'])
+            ->rawColumns(['thumbnail', 'merchant', 'shop', 'status', 'available_size', 'available_stock', 'action'])
             ->make(true);
+    }
+
+    /**
+     * Change Merchant Product Status
+    */
+    public function merchantsProductStatusUpdate(Request $request): JsonResponse
+    {
+        try {
+            DB::beginTransaction();
+            $product = Product::find($request->productId);
+            $product->status = $request->newStatus;
+            $product->save();
+            DB::commit();
+            return \response()->json([
+                'message' => "Status Updated Successfully",
+                'type' => 'success',
+                'response' => Response::HTTP_OK
+            ]);
+
+        } catch (QueryException $exception) {
+            DB::rollBack();
+            return \response()->json([
+                'message' => $exception->getMessage(),
+                'type' => 'error',
+                'response' => Response::HTTP_INTERNAL_SERVER_ERROR
+            ]);
+        }
     }
 
     public function create()
