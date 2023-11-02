@@ -11,6 +11,7 @@ use App\Models\Tournament;
 use App\Models\User;
 use App\Models\VersionUpdate;
 use Doctrine\DBAL\Query\QueryException;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -19,17 +20,15 @@ use Illuminate\Support\Facades\DB;
 class DashboardController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display Admin Dashboard
      */
-    public function index()
+    public function index(): View
     {
         $user = User::latest()->count();
         $tournament = Tournament::latest()->where('status', 1)->count();
         $banner = Banner::latest()->where('status', 1)->count();
         $slider = Slider::latest()->where('status', 1)->count();
-        //        dd($user);
+
         return view('webend.home', compact('user', 'tournament', 'banner', 'slider'));
     }
 

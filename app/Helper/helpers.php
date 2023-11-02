@@ -17,6 +17,10 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Ixudra\Curl\Facades\Curl;
 use App\Models\Admin\SmsCredential;
+use App\Models\Merchant\Merchant;
+use App\Models\Ecommerce\Product;
+use App\Models\Seller\Seller;
+use App\Models\Affiliate\Affiliator;
 use App\Models\AdvertisementSetting;
 
 
@@ -29,6 +33,55 @@ use App\Models\AdvertisementSetting;
 function sms_credential(){
     $data=SmsCredential::first();
     return $data;
+}
+/**
+ * return Total Merchants
+*/
+if (!function_exists('total_merchants')) {
+    function total_merchants()
+    {
+        return Merchant::count();
+    }
+}
+
+/**
+ * return Total Sellers
+*/
+if (!function_exists('total_sellers')) {
+    function total_sellers()
+    {
+        return Seller::count();
+    }
+}
+
+/**
+ * return Total affiliators
+*/
+if (!function_exists('total_affiliators')) {
+    function total_affiliators()
+    {
+        return Affiliator::count();
+    }
+}
+
+/**
+ * return  total_admin_product
+*/
+if (!function_exists('total_admin_product')) {
+    function total_admin_product()
+    {
+        return Product::where('admin_id', '!=', null)->count();
+    }
+}
+
+/**
+ * return  total_merchant_product
+*/
+if (!function_exists('total_merchant_product')) {
+    function total_merchant_product()
+    {
+        return Product::where('admin_id', '=', null)->count();
+    }
 }
 
 
