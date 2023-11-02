@@ -86,6 +86,11 @@
                             </th>
                             <th scope="col" class="px-2 py-3" width="90px">
                                 <div class="text-center" style="width: 70px">
+                                    Available Size
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 py-3" width="90px">
+                                <div class="text-center" style="width: 70px">
                                     Available Stock
                                 </div>
                             </th>
@@ -123,6 +128,7 @@
                 { data: 'current_price',name:'current_price'},
                 { data: 'current_coin',name:'current_coin'},
                 { data: 'status',name:'status'},
+                { data: 'available_size',name:'available_size'},
                 { data: 'available_stock',name:'available_stock'},
                 { data: 'action',name:'action' },
             ],
