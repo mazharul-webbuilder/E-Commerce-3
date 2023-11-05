@@ -52,8 +52,6 @@ Route::prefix('club_owner')->group(base_path('routes/club_owner.php'));
 Route::prefix('share_owner')->group(base_path('routes/share_owner.php'));
 
 
-
-
 /*============================================
 #Frontent Routes
 ====================================================*/
