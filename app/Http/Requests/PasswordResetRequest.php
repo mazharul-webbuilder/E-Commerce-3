@@ -25,7 +25,7 @@ class PasswordResetRequest extends FormRequest
     public function rules()
     {
         return [
-            'userType' => ['required', 'string', Rule::in(['admin', 'merchant', 'seller', 'affiliator'])],
+            'userType' => ['required', 'string', Rule::in(['admin', 'merchant', 'seller', 'affiliator', 'shareOwner', 'clubOwner'])],
             'email' => [
                 'required',
                 'email',

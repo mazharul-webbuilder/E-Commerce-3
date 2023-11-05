@@ -1,6 +1,4 @@
 @extends('webend.layouts.master')
-
-
 @section('content')
     <div class="mt-6 mx-6 p-4 bg-[#8e0789] flex items-center justify-center border-gray-200 rounded-md">
         <p class="typewriter inline-block text-white text-base sm:text-2xl font-bold text-center">Welcome to
@@ -8,7 +6,111 @@
     </div>
     <div class="mt-4 mx-6">
         <div class="grid grid-cols-1 gap-5 mt-6 sm:grid-cols-2 lg:grid-cols-3 pb-3">
-
+            {{--Total Merchants--}}
+            <div
+                class="py-3 px-5 transition-shadow bg-gradient-to-b from-green-200 to-green-100 border-b-4 border-green-600 rounded-lg shadow-sm hover:shadow-lg">
+                <div class="p-4 flex items-start justify-between border-b-2 border-gray-300">
+                    <div class="flex flex-col space-y-2">
+                        <span class="text-gray-600 font-bold text-2xl">Total Merchants</span>
+                        <span class="text-lg font-medium">{{ total_merchants() }}</span>
+                    </div>
+                    <div class="p-2 bg-green-600 text-white rounded-md text-5xl">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+                <div class="p-2">
+                    <a href="{{ route('merchant.all') }}">
+                        <div class="flex justify-end">
+                            <div class="inline-block px-2 rounded text-black font-bold cursor-pointer">View all</div>
+                            <div class="text-black font-bold cursor-pointer"><i class="fas fa-chevron-right"></i></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {{--Total Sellers--}}
+            <div
+                class="py-3 px-5 transition-shadow bg-gradient-to-b from-green-200 to-green-100 border-b-4 border-green-600 rounded-lg shadow-sm hover:shadow-lg">
+                <div class="p-4 flex items-start justify-between border-b-2 border-gray-300">
+                    <div class="flex flex-col space-y-2">
+                        <span class="text-gray-600 font-bold text-2xl">Total Sellers</span>
+                        <span class="text-lg font-medium">{{ total_sellers() }}</span>
+                    </div>
+                    <div class="p-2 bg-green-600 text-white rounded-md text-5xl">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+                <div class="p-2">
+                    <a href="{{ route('seller.all') }}">
+                        <div class="flex justify-end">
+                            <div class="inline-block px-2 rounded text-black font-bold cursor-pointer">View all</div>
+                            <div class="text-black font-bold cursor-pointer"><i class="fas fa-chevron-right"></i></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {{--Total Affiliaotrs--}}
+            <div
+                class="py-3 px-5 transition-shadow bg-gradient-to-b from-green-200 to-green-100 border-b-4 border-green-600 rounded-lg shadow-sm hover:shadow-lg">
+                <div class="p-4 flex items-start justify-between border-b-2 border-gray-300">
+                    <div class="flex flex-col space-y-2">
+                        <span class="text-gray-600 font-bold text-2xl">Total Affiliators</span>
+                        <span class="text-lg font-medium">{{ total_affiliators() }}</span>
+                    </div>
+                    <div class="p-2 bg-green-600 text-white rounded-md text-5xl">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+                <div class="p-2">
+                    <a href="{{ route('affiliator.all') }}">
+                        <div class="flex justify-end">
+                            <div class="inline-block px-2 rounded text-black font-bold cursor-pointer">View all</div>
+                            <div class="text-black font-bold cursor-pointer"><i class="fas fa-chevron-right"></i></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {{--Total Admin Product--}}
+            <div
+                class="py-3 px-5 transition-shadow bg-gradient-to-b from-green-200 to-green-100 border-b-4 border-green-600 rounded-lg shadow-sm hover:shadow-lg">
+                <div class="p-4 flex items-start justify-between border-b-2 border-gray-300">
+                    <div class="flex flex-col space-y-2">
+                        <span class="text-gray-600 font-bold text-2xl">Total Admin Product</span>
+                        <span class="text-lg font-medium">{{ total_admin_product() }}</span>
+                    </div>
+                    <div class="p-2 bg-green-600 text-white rounded-md text-5xl">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                </div>
+                <div class="p-2">
+                    <a href="{{ route('product.index') }}">
+                        <div class="flex justify-end">
+                            <div class="inline-block px-2 rounded text-black font-bold cursor-pointer">View all</div>
+                            <div class="text-black font-bold cursor-pointer"><i class="fas fa-chevron-right"></i></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {{--Total Merchnat Product--}}
+            <div
+                class="py-3 px-5 transition-shadow bg-gradient-to-b from-green-200 to-green-100 border-b-4 border-green-600 rounded-lg shadow-sm hover:shadow-lg">
+                <div class="p-4 flex items-start justify-between border-b-2 border-gray-300">
+                    <div class="flex flex-col space-y-2">
+                        <span class="text-gray-600 font-bold text-2xl">Total Merchant Product</span>
+                        <span class="text-lg font-medium">{{ total_merchant_product() }}</span>
+                    </div>
+                    <div class="p-2 bg-green-600 text-white rounded-md text-5xl">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                </div>
+                <div class="p-2">
+                    <a href="{{ route('product.merchant') }}">
+                        <div class="flex justify-end">
+                            <div class="inline-block px-2 rounded text-black font-bold cursor-pointer">View all</div>
+                            <div class="text-black font-bold cursor-pointer"><i class="fas fa-chevron-right"></i></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
             <div
                 class="py-3 px-5 transition-shadow bg-gradient-to-b from-green-200 to-green-100 border-b-4 border-green-600 rounded-lg shadow-sm hover:shadow-lg">
                 <div class="p-4 flex items-start justify-between border-b-2 border-gray-300">
@@ -162,7 +264,7 @@
                 </div>
                 <div class="p-2">
                     <a href="{{ route('rank_wise_user', ['rank_name' => 3, 'type' => 'rank']) }}"
-                        class="flex justify-end">
+                       class="flex justify-end">
                         <div class="inline-block px-2 rounded text-black font-bold cursor-pointer">View all</div>
                         <div class="text-black font-bold cursor-pointer"><i class="fas fa-chevron-right"></i></div>
                     </a>
@@ -182,7 +284,7 @@
                 </div>
                 <div class="p-2">
                     <a href="{{ route('rank_wise_user', ['rank_name' => 4, 'type' => 'rank']) }}"
-                        class="flex justify-end">
+                       class="flex justify-end">
                         <div class="inline-block px-2 rounded text-black font-bold cursor-pointer">View all</div>
                         <div class="text-black font-bold cursor-pointer"><i class="fas fa-chevron-right"></i></div>
                     </a>
@@ -202,7 +304,7 @@
                 </div>
                 <div class="p-2">
                     <a href="{{ route('rank_wise_user', ['rank_name' => 5, 'type' => 'rank']) }}"
-                        class="flex justify-end">
+                       class="flex justify-end">
                         <div class="inline-block px-2 rounded text-black font-bold cursor-pointer">View all</div>
                         <div class="text-black font-bold cursor-pointer"><i class="fas fa-chevron-right"></i></div>
                     </a>
@@ -223,7 +325,7 @@
                 </div>
                 <div class="p-2">
                     <a href="{{ route('rank_wise_user', ['rank_name' => 1, 'type' => 'diamond_partner']) }}"
-                        class="flex justify-end">
+                       class="flex justify-end">
                         <div class="inline-block px-2 rounded text-black font-bold cursor-pointer">View all</div>
                         <div class="text-black font-bold cursor-pointer"><i class="fas fa-chevron-right"></i></div>
                     </a>
@@ -359,7 +461,7 @@
                 </div>
                 <div class="p-2">
                     <a href="{{ route('get_earning_coin', COIN_EARNING_SOURCE['tournament_winning']) }}"
-                        class="flex justify-end">
+                       class="flex justify-end">
                         <div class="inline-block px-2 rounded text-black font-bold cursor-pointer">View all</div>
                         <div class="text-black font-bold cursor-pointer"><i class="fas fa-chevron-right"></i></div>
                     </a>
@@ -400,7 +502,7 @@
                 </div>
                 <div class="p-2">
                     <a href="{{ route('get_transfer_balance', ['constant_title' => 'win_to_gift']) }}"
-                        class="flex justify-end">
+                       class="flex justify-end">
                         <div class="inline-block px-2 rounded text-black font-bold cursor-pointer">View all</div>
                         <div class="text-black font-bold cursor-pointer"><i class="fas fa-chevron-right"></i></div>
                     </a>
@@ -441,7 +543,7 @@
                 </div>
                 <div class="p-2">
                     <a href="{{ route('get_earning_coin', COIN_EARNING_SOURCE['share_fund_history']) }}"
-                        class="flex justify-end">
+                       class="flex justify-end">
                         <div class="inline-block px-2 rounded text-black font-bold cursor-pointer">View all</div>
                         <div class="text-black font-bold cursor-pointer"><i class="fas fa-chevron-right"></i></div>
                     </a>
@@ -462,7 +564,7 @@
                 </div>
                 <div class="p-2">
                     <a href="{{ route('get_transfer_balance', ['constant_title' => 'marketing_to_win']) }}"
-                        class="flex justify-end">
+                       class="flex justify-end">
                         <div class="inline-block px-2 rounded text-black font-bold cursor-pointer">View all</div>
                         <div class="text-black font-bold cursor-pointer"><i class="fas fa-chevron-right"></i></div>
                     </a>
@@ -503,7 +605,7 @@
                 </div>
                 <div class="p-2">
                     <a href="{{ route('get_coin_uses_history', ['purpose' => 'tournament_registration']) }}"
-                        class="flex justify-end">
+                       class="flex justify-end">
                         <div class="inline-block px-2 rounded text-black font-bold cursor-pointer">View all</div>
                         <div class="text-black font-bold cursor-pointer"><i class="fas fa-chevron-right"></i></div>
                     </a>
@@ -525,7 +627,7 @@
                 </div>
                 <div class="p-2">
                     <a href="{{ route('get_transfer_balance', ['constant_title' => 'gift_to_win']) }}"
-                        class="flex justify-end">
+                       class="flex justify-end">
                         <div class="inline-block px-2 rounded text-black font-bold cursor-pointer">View all</div>
                         <div class="text-black font-bold cursor-pointer"><i class="fas fa-chevron-right"></i></div>
                     </a>
@@ -585,7 +687,7 @@
                 </div>
                 <div class="p-2">
                     <a href="{{ route('get_source_wise_token', ['getting_source' => 'league_tournament']) }}"
-                        class="flex justify-end">
+                       class="flex justify-end">
                         <div class="inline-block px-2 rounded text-black font-bold cursor-pointer">View all</div>
                         <div class="text-black font-bold cursor-pointer"><i class="fas fa-chevron-right"></i></div>
                     </a>

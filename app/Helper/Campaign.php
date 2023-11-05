@@ -25,6 +25,21 @@ const CAMPAIGN_POSITION_CONSTRAIN_TITLE=[
     'diamond_partner'=>'diamond_partner'
 ];
 
+
+/**
+ * @author DEV3
+ * List of source by which commission can be distribution to all over the application,
+ * Don't change any value, if needed you can add a new
+*/
+const COMMISSION_SOURCE = [
+    'admin' => 'admin',
+    'merchant' => 'merchant',
+    'seller' => 'seller',
+    'affiliator' => 'affiliator',
+    'shareOwner' => 'shareOwner',
+    'clubOwner' => 'clubOwner'
+];
+
 function share_holder_fund_history($income_source_type,$coin){
     $income_source=ShareHolderIncomeSource::where('constrain_title',$income_source_type)->first();
     if ($income_source->commission_type==1){

@@ -329,8 +329,8 @@
     <div class="bg-[#1b1b9b] text-center lg:text-left fixed bottom-0  w-full">
         <div class="text-center text-white p-0 text-sm flex flex-col">
             Copyright © {{date('Y')}}
-            <div class="text-white">
-                Developed by <a class="text-white font-medium" target="_blank" href="#">IROZEN LLC</a>
+            <div class="text-white mb-2">
+                Developed by IROZEN LLC
             </div>
         </div>
     </div>

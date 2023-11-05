@@ -26,7 +26,7 @@ class ResetPasswordRequest extends FormRequest
     {
         return [
             'verification_code' => ['required', 'exists:verification_codes,verify_code'],
-            'userType' => ['required', 'string', Rule::in(['admin', 'merchant', 'seller', 'affiliator'])],
+            'userType' => ['required', 'string', Rule::in(['admin', 'merchant', 'seller', 'affiliator', 'shareOwner', 'clubOwner'])],
             'password' => ['required', 'min:3', 'confirmed'],
         ];
     }

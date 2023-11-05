@@ -116,6 +116,13 @@
                                 break;
                             case 'affiliator':
                                 window.location.href = '{{route('affiliate.login.show')}}'
+                                break;
+                            case 'shareOwner':
+                                window.location.href = '{{route('share_owner.login.show')}}'
+                                break;
+                            case 'clubOwner':
+                                window.location.href = '{{route('club_owner.login.show')}}'
+                                break;
                         }
 
                     }
