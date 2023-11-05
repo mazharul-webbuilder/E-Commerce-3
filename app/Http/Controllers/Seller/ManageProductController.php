@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Models\AffiliateSetting;
+use App\Models\CompanyCommission;
 use App\Models\DueProduct;
 use App\Models\Ecommerce\Product;
+use App\Models\GameAssetCommission;
 use App\Models\SellerProduct;
 use App\Models\SellerProductBuyHistory;
 use App\Models\Settings;
+use App\Models\TopSellerCommission;
 use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -80,31 +84,46 @@ class ManageProductController extends Controller
 
             if (is_null($checker)){ // if product not in seller table then store it
                 DB::beginTransaction();
-                if (isset($product_in_due_product) && $product_in_due_product->status == 1){ // If seller has due product
+                // Get Seller Product P. C. from Setting
+                $sellerProductPurchaseCharge = setting()->seller_product_purchase_charge;
+
+                // If seller has due product
+                if (isset($product_in_due_product) && $product_in_due_product->status == 1){
                     $product_in_due_product->status = 0;
                     $product_in_due_product->save();
-                } elseif ($auth_user->balance >= setting()->seller_product_purchase_charge ) { // If no due product, balance will deduct
-                    $auth_user->balance -= setting()->seller_product_purchase_charge;
+                }
+                // If no due product, balance will deduct
+                elseif ($auth_user->balance >= $sellerProductPurchaseCharge ) {
+                    $auth_user->balance -= $sellerProductPurchaseCharge;
                     $auth_user->save();
 
                     /*Distribute the Seller Product Purchase Charge below users*/
-//                    DB::table('affiliate_settings')->insert([
-//                            'company_commission' => calculatePercentage(),
-//                            'generation_commission' => 20,
-//                            'game_asset_commission' => 10,
-//                            'top_seller_commission' => 30,
-//                            'share_holder_commission' => 15,
-//                            'updated_at' => Carbon::now(),
-//                            'created_at' => Carbon::now()
-//
-//                        ]);
+                    $distributePercentage = AffiliateSetting::first();
+                    // Give Company Commission
+                    CompanyCommission::create([
+                        'amount' => calculatePercentage(number: $sellerProductPurchaseCharge, percentage: $distributePercentage->company_commission),
+                        'commission_source' => COMMISSION_SOURCE['seller'],
+                    ]);
+                    // Give Game Asset Commission
+                    GameAssetCommission::create([
+                        'amount' => calculatePercentage(number: $sellerProductPurchaseCharge, percentage: $distributePercentage->game_asset_commission),
+                        'commission_source' => COMMISSION_SOURCE['seller'],
+                    ]);
+                    // Give To Seller Commission
+                    TopSellerCommission::create([
+                        'amount' => calculatePercentage(number: $sellerProductPurchaseCharge, percentage: $distributePercentage->top_seller_commission),
+                        'commission_source' => COMMISSION_SOURCE['seller'],
+                    ]);
+                    /**
+                     * @TODO Generation Commission & Shareholder Commission
+                    */
 
                     /*Insert Record Into Seller Product Buy History*/
                     SellerProductBuyHistory::create([
                         'seller_id' => $auth_user->id,
                         'merchant_id' => $product->merchant_id,
                         'product_id' => $request->item_id,
-                        'amount' => setting()->seller_product_purchase_charge,
+                        'amount' => $sellerProductPurchaseCharge,
                     ]);
                 } else {
                     return response()->json([
