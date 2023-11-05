@@ -7,7 +7,9 @@ use App\Http\Requests\ResetPasswordRequest;
 use App\Models\Admin;
 use App\Models\Affiliate\Affiliator;
 use App\Models\Merchant\Merchant;
+use App\Models\Owner;
 use App\Models\Seller\Seller;
+use App\Models\ShareOwner;
 use App\Models\VerificationCode;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
@@ -80,7 +82,7 @@ class ForgetPasswordController extends Controller
     /**
      * Reset new Password
     */
-    public function passwordResetPost(ResetPasswordRequest $request)
+    public function passwordResetPost(ResetPasswordRequest $request): JsonResponse
     {
         try {
             $verification = VerificationCode::where('verify_code', $request->verification_code)->first();
@@ -107,6 +109,16 @@ class ForgetPasswordController extends Controller
                     $affiliator = Affiliator::where('email', $verification->email_or_phone)->first();
                     $affiliator->password = Hash::make($request->password);
                     $affiliator->save();
+                    break;
+                case 'shareOwner':
+                    $shareOwner = ShareOwner::where('email', $verification->email_or_phone)->first();
+                    $shareOwner->password = Hash::make($request->password);
+                    $shareOwner->save();
+                    break;
+                case 'clubOwner':
+                    $clubOwner = Owner::where('email', $verification->email_or_phone)->first();
+                    $clubOwner->password = Hash::make($request->password);
+                    $clubOwner->save();
                     break;
             }
             $verification->delete();

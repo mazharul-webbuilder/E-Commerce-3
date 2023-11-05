@@ -27,7 +27,9 @@ const FORGET_PASSWORD_BY=[
     'admin' => "admin",
     'merchant' => "merchant",
     'seller' => "seller",
-    'affiliator' => "affiliator"
+    'affiliator' => "affiliator",
+    'shareOwner' => "shareOwner",
+    'clubOwner' => "clubOwner"
 ];
 
 function default_image()
