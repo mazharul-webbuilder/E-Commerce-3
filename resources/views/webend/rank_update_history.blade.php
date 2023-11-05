@@ -72,7 +72,7 @@
                                     {{ $loop->iteration }}
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $data->user->name }}
+                                    {{ $data->user?->name }}
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
                                     {{ $data->previous_rank->rank_name }}

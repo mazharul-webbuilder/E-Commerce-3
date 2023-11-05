@@ -1,5 +1,11 @@
 @extends('seller.layout.app')
 @section('content')
+    <style>
+        tbody > tr > td {
+            text-align: center;
+            color: black;
+        }
+    </style>
 
     <section class="w-full bg-white p-3 mt-5">
         <div class="container px-2 mx-auto xl:px-5">

@@ -4,6 +4,16 @@
     <link rel="stylesheet" href="{{asset('webend/style/css/checkbox.css')}}">
 @endsection
 @section('content')
+    <style>
+        tbody > tr {
+            height: 60px;
+        }
+
+        tbody > tr > td{
+            color: black;
+            text-align: center;
+        }
+    </style>
     <section class="w-full bg-white p-3 mt-5">
         <div class="container px-2 mx-auto xl:px-5">
             <!-- start menu -->
@@ -31,7 +41,7 @@
                 </div>
 
                 <div class="py-2 px-1 mt-3" style="overflow-x: auto;">
-                    <table class="text-sm text-left text-white border-l border-r" id="dataTableAuthor" style=" width: 100%;">
+                    <table class="text-sm text-left text-white border-l border-r" id="dataTable" style=" width: 100%;">
                         <thead class="text-xs text-white uppercase bg-amber-600">
                         <tr>
                             <th scope="col" class="px-6 py-3 whitespace-nowrap">
@@ -46,12 +56,17 @@
                             </th>
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
                                 <div class="text-center">
+                                    Title
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
                                     Merchant
                                 </div>
                             </th>
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
                                 <div class="text-center">
-                                    Name
+                                    Shop Name
                                 </div>
                             </th>
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
@@ -62,6 +77,16 @@
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
                                 <div class="text-center">
                                     Current Coin
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    Status
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 py-3" width="90px">
+                                <div class="text-center" style="width: 70px">
+                                    Available Size
                                 </div>
                             </th>
                             <th scope="col" class="px-2 py-3" width="90px">
@@ -76,65 +101,70 @@
                             </th>
                         </tr>
                         </thead>
-                        <tbody>
-                       @if(!is_null($products))
-                           @foreach($products as $product)
-                               <tr class="hide_row{{$product->id}} bg-white  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                   <td class="px-2 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r text-center">
-                                       {{ $loop->iteration }}
-                                   </td>
-
-                                   <td class="px-2 py-4 text-black border-r text-center">
-                                       <img style="width: 150px;height: 60px" src="{{asset('uploads/product/small/'.$product->thumbnail) }}">
-                                   </td>
-                                   <td class="px-2 py-4 text-black border-r text-center">
-                                       {{$product->merchant?->name}}
-                                   </td>
-                                   <td class="px-2 py-4 text-black border-r text-center">
-                                       {{$product->title}}
-                                   </td>
-                                   <td class="px-2 py-4 text-black border-r text-center">
-                                       {{price_format($product->current_price)}}
-                                   </td>
-                                   <td class="px-2 py-4 text-black border-r text-center">
-                                       {{$product->current_coin}}
-                                   </td>
-                                   <td class="px-2 py-4 text-black border-r text-center">
-                                       {{$product->stocks->sum('quantity')}}
-                                   </td>
-
-                                   <td class="whitespace-nowrap px-2 py-4 text-black border-r text-center">
-                                       <a href="{{route('product.product_detail',$product->slug)}}" class="text-white bg-indigo-400  hover:bg-sky-500 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 py-2 text-center">
-                                           <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg>
-                                           View
-                                       </a>
-                                   </td>
-                               </tr>
-                           @endforeach
-                       @endif
-                        </tbody>
                     </table>
                 </div>
             </div>
-            <!-- table end -->
-            <!-- Modal -->
-            @include('webend.ecommerce.product.modal.control')
-            @include('webend.ecommerce.product.modal.deal')
-
-
-            <!-- Modal toggle -->
-
-
         </div>
     </section>
 @endsection
 @section('extra_js')
-
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{asset('webend/style/js/product.js')}}"></script>
+    <script>
+        var table = $("#dataTable").DataTable({
+            processing: true,
+            responsive: true,
+            serverSide: true,
+            ordering: false,
+            pagingType: "full_numbers",
+            ajax: '{{ route('product.merchant.datatable') }}',
+            columns: [
+                { data: 'DT_RowIndex',name:'DT_RowIndex' },
+                { data: 'thumbnail',name:'thumbnail'},
+                { data: 'title',name:'title'},
+                { data: 'merchant',name:'merchant'},
+                { data: 'shop',name:'shop'},
+                { data: 'current_price',name:'current_price'},
+                { data: 'current_coin',name:'current_coin'},
+                { data: 'status',name:'status'},
+                { data: 'available_size',name:'available_size'},
+                { data: 'available_stock',name:'available_stock'},
+                { data: 'action',name:'action' },
+            ],
 
+            language : {
+                processing: 'Processing'
+            },
+
+        });
+    </script>
+    <script>
+        $('document').ready(function (){
+            $('body').on('change', '.status-update', function (){
+                const productId = $(this).data('id')
+                let newStatus = $(this).val()
+                $.ajax({
+                    url: '{{route('product.merchant.status.update')}}',
+                    method: 'get',
+                    data: {
+                        productId: productId,
+                        newStatus: newStatus
+                    },
+                    success: function (data) {
+                      if (data.response === 200) {
+                          Toast.fire({
+                              icon: data.type,
+                              title: data.message
+                          });
+                      }
+                    }
+                })
+            })
+        })
+    </script>
 @endsection
+
 
 
 
