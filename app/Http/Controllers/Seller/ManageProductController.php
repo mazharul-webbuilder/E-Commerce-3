@@ -13,6 +13,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -40,7 +41,7 @@ class ManageProductController extends Controller
                 return '<img src='.$url.' border="0" width="120" height="50" class="img-rounded" />';
             })
             ->editColumn('merchant',function(Product $data){
-               return '<div><p>Name: '.$data->merchant->name ?? "".'</p></div>';
+                return '<div><p>Name: '.$data->merchant->name ?? "".'</p></div>';
             })
             ->editColumn('action',function(Product $data){
                 return '
@@ -64,70 +65,80 @@ class ManageProductController extends Controller
     /**
      * Store Merchant reseller allow product
      * to seller products
-    */
+     */
     public function add_to_store(Request $request): JsonResponse
     {
-        if ($request->isMethod("POST")){
-            try {
-                $auth_user = get_auth_seller();
+        try {
+            $auth_user = get_auth_seller();
 
-                /*Get Product From DB*/
-                $product = Product::find($request->item_id);
+            /*Get Product From DB*/
+            $product = Product::find($request->item_id);
 
-                $checker = SellerProduct::where(['seller_id'=>$auth_user->id,'product_id'=> $product->id])->first();
+            $checker = SellerProduct::where(['seller_id'=>$auth_user->id,'product_id'=> $product->id])->first();
 
-                $product_in_due_product = DueProduct::where(['seller_id' => $auth_user->id, 'status' => 1])->first();
+            $product_in_due_product = DueProduct::where(['seller_id' => $auth_user->id, 'status' => 1])->first();
 
-                if (is_null($checker)){ // if product not in seller table then store it
-                    if (isset($product_in_due_product) && $product_in_due_product->status == 1){
-                        $product_in_due_product->status = 0;
-                        $product_in_due_product->save();
-                    } elseif ($auth_user->balance >= setting()->seller_product_purchase_charge ) {
-                        $auth_user->balance -= setting()->seller_product_purchase_charge;
-                        $auth_user->save();
+            if (is_null($checker)){ // if product not in seller table then store it
+                DB::beginTransaction();
+                if (isset($product_in_due_product) && $product_in_due_product->status == 1){ // If seller has due product
+                    $product_in_due_product->status = 0;
+                    $product_in_due_product->save();
+                } elseif ($auth_user->balance >= setting()->seller_product_purchase_charge ) { // If no due product, balance will deduct
+                    $auth_user->balance -= setting()->seller_product_purchase_charge;
+                    $auth_user->save();
 
-                        /*Insert Record Into Seller Product Buy History*/
-                        SellerProductBuyHistory::create([
-                            'seller_id' => $auth_user->id,
-                            'merchant_id' => $product->merchant_id,
-                            'product_id' => $request->item_id,
-                            'amount' => setting()->seller_product_purchase_charge,
-                        ]);
-                                            }
-                    else {
-                        return response()->json([
-                            'data'=>'Insufficient Balance Or No Due Product Left.',
-                            'type'=>'warning',
-                            'status'=>201
-                        ],Response::HTTP_OK);
-                    }
-                    $data=new SellerProduct();
-                    $data->seller_id=$auth_user->id;
-                    $data->product_id=$request->item_id;
-                    $data->seller_price = $product->current_price; // Set Default Price
-                    $data->coin_from_merchant = $product->current_coin; // Set merchant product current coin
-                    $data->save();
+                    /*Distribute the Seller Product Purchase Charge below users*/
+//                    DB::table('affiliate_settings')->insert([
+//                            'company_commission' => calculatePercentage(),
+//                            'generation_commission' => 20,
+//                            'game_asset_commission' => 10,
+//                            'top_seller_commission' => 30,
+//                            'share_holder_commission' => 15,
+//                            'updated_at' => Carbon::now(),
+//                            'created_at' => Carbon::now()
+//
+//                        ]);
+
+                    /*Insert Record Into Seller Product Buy History*/
+                    SellerProductBuyHistory::create([
+                        'seller_id' => $auth_user->id,
+                        'merchant_id' => $product->merchant_id,
+                        'product_id' => $request->item_id,
+                        'amount' => setting()->seller_product_purchase_charge,
+                    ]);
+                } else {
                     return response()->json([
-                        'data'=>'Successfully added',
-                        'type'=>'success',
-                        'status'=>200
-                    ],Response::HTTP_OK);
-                }else{
-                    return response()->json([
-                        'data'=>'You have already added',
+                        'data'=>'Insufficient Balance Or No Due Product Left.',
                         'type'=>'warning',
                         'status'=>201
                     ],Response::HTTP_OK);
                 }
-
-
-            }catch (\Exception $exception){
+                $data=new SellerProduct();
+                $data->seller_id=$auth_user->id;
+                $data->product_id=$request->item_id;
+                $data->seller_price = $product->current_price; // Set Default Price
+                $data->coin_from_merchant = $product->current_coin; // Set merchant product current coin
+                $data->save();
+                DB::commit();
                 return response()->json([
-                    'data'=>$exception->getMessage(),
-                    'type'=>'error',
-                    'status'=>500
-                ],Response::HTTP_INTERNAL_SERVER_ERROR);
+                    'data'=>'Successfully added',
+                    'type'=>'success',
+                    'status'=>200
+                ]);
+            }else{
+                return response()->json([
+                    'data'=>'You have already added',
+                    'type'=>'warning',
+                    'status'=>201
+                ]);
             }
+        }catch (\Exception $exception){
+            DB::rollBack();
+            return response()->json([
+                'data'=>$exception->getMessage(),
+                'type'=>'error',
+                'status'=>500
+            ],Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -182,7 +193,7 @@ class ManageProductController extends Controller
 
     /**
      * Get Seller Product Details
-    */
+     */
     public function details(Request $request): JsonResponse
     {
         $seller_product = SellerProduct::select('id', 'seller_price', 'seller_company_commission', 'product_id')->find($request->sellerProductId);
@@ -195,7 +206,7 @@ class ManageProductController extends Controller
 
     /**
      * Store Seller Configuration
-    */
+     */
     public function configStore(Request $request): JsonResponse
     {
         $request->validate([
@@ -232,20 +243,20 @@ class ManageProductController extends Controller
 
     /**
      * View Product Detail
-    */
+     */
     public function viewProduct($id): View //id is products table product id
     {
         $product = Product::find($id);
 
         $sellerProduct = SellerProduct::where('product_id', $product->id)
-                ->where('seller_id', \auth()->guard('seller')->id())->first();
+            ->where('seller_id', \auth()->guard('seller')->id())->first();
 
         return  view('seller.product.details', compact('product', 'sellerProduct'));
     }
 
     /**
      * Delete PRoduct
-    */
+     */
     public function deleteProduct(Request $request): JsonResponse
     {
         if ($request->ajax()) {
@@ -262,7 +273,7 @@ class ManageProductController extends Controller
 
     /**
      *  Get Details of Merchant Product
-    */
+     */
     public  function merchantProductDetail($id): View
     {
         $product = Product::find($id);

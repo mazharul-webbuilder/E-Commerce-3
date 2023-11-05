@@ -401,3 +401,10 @@ function get_advertisement_setting(){
     return AdvertisementSetting::first();
 }
 
+if (!function_exists('calculatePercentage')) {
+    function calculatePercentage(int|float $number, int|float $percentage): int|float
+    {
+        return ($number * $percentage) / 100;
+    }
+}
+
