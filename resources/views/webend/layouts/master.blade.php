@@ -1439,10 +1439,8 @@
         </div>
         <div class="bg-[#1b1b9b] text-center lg:text-left fixed bottom-0  w-full">
             <div class="text-center text-white p-0 text-sm flex flex-col">
-                Copyright © 2022
+                Copyright © 2023
                 <div class="text-white mb-2">
-                    {{-- Developed by <a class="text-white font-medium" target="_blank"
-                        href="https://www.banglapuzzle.com/">Bangla Puzzle Limited</a> --}}
                     <a href="{{ route('privacy_page') }}">Privacy Poicy</a>
                     |
                     <a href="{{ route('terms_condition') }}">Terms</a>
