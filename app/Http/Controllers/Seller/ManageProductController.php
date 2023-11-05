@@ -61,11 +61,16 @@ class ManageProductController extends Controller
         return view('seller.product.index');
     }
 
-    public function add_to_store(Request $request){
-
+    /**
+     * Store Merchant reseller allow product
+     * to seller products
+    */
+    public function add_to_store(Request $request): JsonResponse
+    {
         if ($request->isMethod("POST")){
             try {
-                $auth_user = Auth::guard('seller')->user();
+                $auth_user = get_auth_seller();
+
                 /*Get Product From DB*/
                 $product = Product::find($request->item_id);
 
