@@ -1441,9 +1441,7 @@
             <div class="text-center text-white p-0 text-sm flex flex-col">
                 Copyright © 2023
                 <div class="text-white mb-2">
-                    <a href="{{ route('privacy_page') }}">Privacy Poicy</a>
-                    |
-                    <a href="{{ route('terms_condition') }}">Terms</a>
+                    Developed by IROZEN LLC
                 </div>
             </div>
         </div>
