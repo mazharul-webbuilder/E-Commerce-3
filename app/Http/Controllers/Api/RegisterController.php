@@ -7,6 +7,7 @@ use App\Mail\VerifyAccount;
 use App\Models\Affiliate\Affiliator;
 use App\Models\Merchant\Merchant;
 use App\Models\Seller\Seller;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -264,6 +265,97 @@ class RegisterController extends Controller
 
     public function master_account_register(Request $request){
 
+        $validator = Validator::make($request->all(),[
+            'player_number'=>'required',
+        ]);
+        if ($request->isMethod("post")){
+           if (!$validator->fails()){
+               try {
+                   DB::beginTransaction();
+                   $user= User::where('playerid',$request->player_number)->first();
+                   $accounts=[];
+                   if (!is_null($user)){
+                       $random_password=rand(10000000,99999999);
+
+                       if ($request->merchant_account==1){
+                           Merchant::create([
+                               'name'=>$user->name,
+                               'email'=>$user->email,
+                               'password'=>bcrypt($random_password),
+                               'merchant_number'=>"M".rand(100000,999990),
+                               'user_id'=>$user->id,
+                           ]);
+                           array_push($accounts,'Merchant Account');
+
+                       }
+
+                       if ($request->seller_account==1){
+                           Seller::create([
+                               'name'=>$user->name,
+                               'email'=>$user->email,
+                               'password'=>bcrypt($random_password),
+                               'seller_number'=>"S".rand(100000,999990),
+                               'user_id'=>$user->id,
+                           ]);
+                           array_push($accounts,'Seller Account');
+
+
+                       }
+
+                       if ($request->affiliate_account==1){
+                           Affiliator::create([
+                               'name'=>$user->name,
+                               'email'=>$user->email,
+                               'password'=>bcrypt($random_password),
+                               'affiliate_number'=>"A".rand(100000,999990),
+                               'user_id'=>$user->id,
+                           ]);
+                           array_push($accounts,'Affiliate Account');
+                       }
+                       DB::commit();
+
+                       $data=[
+                           'subject'=>"Netel Mart: Master account creation",
+                           'body'=>"Hello,"."Your ".implode(", ",$accounts)." has been created successfully."
+                           ." Your email is"."<h1>".$user->email."</h1>"." and pass is "."<h1>".$random_password."</h1>"." Please login your account."
+                       ];
+
+                       mail_template($data,$user->email);
+
+                       return response()->json([
+                           'message'=>"Account created successfully. Please check your user account email for credentials",
+                           'type'=>"warning",
+                           'status'=>Response::HTTP_NO_CONTENT,
+                       ],Response::HTTP_OK);
+
+
+                   }else{
+                       return response()->json([
+                           'message'=>"User not found",
+                           'type'=>"warning",
+                           'status'=>Response::HTTP_NO_CONTENT,
+                       ],Response::HTTP_OK);
+                   }
+
+
+               }catch (QueryException $exception){
+                   DB::commit();
+                   return response()->json([
+                       'message'       =>$exception->getMessage(),
+                       'type'          =>"error",
+                       'status' =>500
+                   ],Response::HTTP_UNPROCESSABLE_ENTITY);
+               }
+
+           }else{
+               return response()->json([
+                   'message'=>$validator->errors()->first(),
+                   'type'=>"error",
+                   'status' =>422
+               ],Response::HTTP_UNPROCESSABLE_ENTITY);
+
+           }
+        }
     }
 
 }
