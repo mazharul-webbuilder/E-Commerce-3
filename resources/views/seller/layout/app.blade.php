@@ -220,6 +220,19 @@
                                 <li>
                                     <a href="{{route('seller.profile')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
                                 </li>
+                                @if(!isConnectedWithUserAccount(USER['seller']))
+                                    <li>
+                                        <a href="{{route('seller.connect.with.user.account')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                            Connect With User Account
+                                        </a>
+                                    </li>
+                                @else
+                                    <li>
+                                        <a href="{{route('seller.connected.user.account')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                            Connected User Account
+                                        </a>
+                                    </li>
+                                @endif
                             </ul>
                             <div class="py-2">
                                 <a href="{{ route('seller.logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();"  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
