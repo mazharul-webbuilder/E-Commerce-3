@@ -91,9 +91,9 @@ Route::group(['as' => 'merchant.'], function (){
     Route::get('/connect/with/user/account', [ConnectionWithUserAccountController::class, 'index'])->name('connect.with.user.account');
     Route::post('/connect/with/user/account', [ConnectionWithUserAccountController::class, 'sendVerificationCode'])->name('connect.with.user.account');
     Route::post('verify/account', [ConnectionWithUserAccountController::class, 'verifyCode'])->name('connect.with.user.account.verify');
-
-
+    /*Connect Account*/
     Route::get('/connected/user/account', [ConnectionWithUserAccountController::class, 'connectedAccount'])->name('connected.user.account');
+    Route::post('/disconnect/user/account', [ConnectionWithUserAccountController::class, 'userDisconnect'])->name('account.discount');
 });
 
 

@@ -74,6 +74,27 @@ class ConnectionWithUserAccountController extends Controller
     */
     public function connectedAccount(): View
     {
-        return \view('merchant.userAccount.connected_user');
+        $connectedUser = User::find(get_auth_merchant()->user_id);
+
+        return \view('merchant.userAccount.connected_user', compact('connectedUser'));
+    }
+
+    /**
+     * Disconnect User Account
+    */
+    public function userDisconnect(): JsonResponse
+    {
+        try {
+            $merchant = get_auth_merchant();
+            $merchant->user_id = null;
+            $merchant->save();
+            return \response()->json([
+                'response' => Response::HTTP_OK,
+                'message' => 'User Disconnected Successfully',
+                'type' => 'success'
+            ]);
+        } catch (\Exception $exception) {
+            return \response()->json();
+        }
     }
 }
