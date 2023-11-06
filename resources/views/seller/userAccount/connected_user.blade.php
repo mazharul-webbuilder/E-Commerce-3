@@ -1,4 +1,4 @@
-@extends('merchant.layout.app')
+@extends('seller.layout.app')
 @section('content')
     <section class="w-full bg-white p-3 mt-5">
         <div class="bg-white rounded-lg p-4 shadow-md">
@@ -59,7 +59,7 @@
                     if (result.isConfirmed) {
                         $.ajax({
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                            url: '{{route('merchant.account.discount')}}',
+                            url: '{{route('seller.account.discount')}}',
                             method: 'POST',
                             success:function(data){
                                 if (data.response === 200) {
@@ -67,7 +67,7 @@
                                         icon: data.type,
                                         title: data.message
                                     })
-                                    window.location.href = '{{route('merchant.dashboard')}}'
+                                    window.location.href = '{{route('seller.dashboard')}}'
                                 }
                             }
                         });
