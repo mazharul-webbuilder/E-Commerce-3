@@ -224,7 +224,7 @@ class ShareHolderSettingController extends Controller
         }
 
          foreach ($datas as $data){
-          // $data->update(['status'=>2]);
+           $data->update(['status'=>2]);
         }
 
         return response()->json([

@@ -57,6 +57,7 @@ class Free4playerController extends Controller
                             $types = RANK_COMMISSION_COLUMN[0];
                             $this->auth_user = auth()->user();
                             $this->rank_commission_distribution(auth()->user(), $types, COIN_EARNING_SOURCE['home_game_registration']);
+                            share_holder_fund_history(SHARE_HOLDER_INCOME_SOURCE['tournament_registration'], $this->coin);
 
                             if ($game) {
                                 DB::commit();
