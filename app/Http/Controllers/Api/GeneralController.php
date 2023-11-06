@@ -125,19 +125,46 @@ class GeneralController extends Controller
             'player_number'=>'required',
         ]);
         try {
+            DB::beginTransaction();
+
             $user_account=User::where('playerid',$request->player_number)->first();
+
             if (!is_null($user_account)){
+                $verify_code=rand(10000,99999);
+                $data  =new VerificationCode();
+                $data->verify_code=$verify_code;
+                $data->email_or_phone=$user_account->email;
+                $data->type='email';
+               $data->save();
+
+                $data=[
+                    'subject'=>"Netel Mart: User account checking code",
+                    'body'=>'Hello,'.$user_account->name.'. Your are going create affiliates account by using your user account. Please use this code'.'<h1>'.$verify_code.'</h1>'.' to verify your identification'
+                ];
+
+                mail_template($data,$user_account->email);
+                DB::commit();
+                return response()->json([
+                    'message'=>"You have been sent a OTP to your user account phone",
+                    'type'=>"success",
+                    'status'=>Response::HTTP_CREATED,
+                ],Response::HTTP_CREATED);
 
             }else{
                 return response()->json([
                     'message'=>"User account not found",
-                    'type'=>"error",
+                    'type'=>"warning",
                     'status'=>Response::HTTP_NO_CONTENT,
                 ],Response::HTTP_OK);
             }
 
         }catch (QueryException $exception){
-
+            DB::rollBack();
+            return response()->json([
+                'message'       =>$exception->getMessage(),
+                'type'          =>"error",
+                'status' =>500
+            ],Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 }
