@@ -7,6 +7,7 @@ use App\Jobs\SendMailJob;
 use App\Models\Affiliate\Affiliator;
 use App\Models\Merchant\Merchant;
 use App\Models\Seller\Seller;
+use App\Models\User;
 use App\Models\VerificationCode;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
@@ -116,6 +117,27 @@ class GeneralController extends Controller
                     'status' =>500
                 ],Response::HTTP_UNPROCESSABLE_ENTITY);
             }
+        }
+    }
+
+    public function check_user_account(Request $request){
+        $this->validate($request,[
+            'player_number'=>'required',
+        ]);
+        try {
+            $user_account=User::where('playerid',$request->player_number)->first();
+            if (!is_null($user_account)){
+
+            }else{
+                return response()->json([
+                    'message'=>"User account not found",
+                    'type'=>"error",
+                    'status'=>Response::HTTP_NO_CONTENT,
+                ],Response::HTTP_OK);
+            }
+
+        }catch (QueryException $exception){
+
         }
     }
 }
