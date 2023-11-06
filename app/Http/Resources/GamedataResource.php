@@ -50,7 +50,7 @@ class GamedataResource extends JsonResource
                    'count_down'=>$data->count_down,
                    'board_status'=>$this->get_auth_user_board($user,$data->id)  !=null ? $this->get_auth_user_board($user,$data->id)->board_name->status : null,
                    'result_status'=>$this->get_auth_user_win($user,$data->id)  !=null ? 1 : 0,
-                   'remain_board'=>$board != remain_running_board($board->board_id,$data->id) ? : "", // current round board,
+                   'remain_board'=>$board !=null ? remain_running_board($board->board_id,$data->id)  : "", // current round board,
                ];
            }),
 

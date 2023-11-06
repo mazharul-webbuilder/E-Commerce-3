@@ -87,7 +87,7 @@ class OrderController extends Controller
             // Check if the current status is already "delivered"
             if ($currentStatus !== 'delivered') {
                 $order->status = $request->status;
-               // $order->save();
+                $order->save();
 
                 if ($request->status == 'shipping') {
                     // Send notification for shipping status
