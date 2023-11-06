@@ -1,4 +1,4 @@
-@extends('merchant.layout.app')
+@extends('affiliate.layout.app')
 @section('content')
     <section class="w-full bg-white p-3 mt-5">
         <div class="container px-2 mx-auto xl:px-5">
@@ -61,7 +61,7 @@
                 // Serialize the form data
                 const formData = UserConnectedForm.serialize();
                 $.ajax({
-                    url: '{{ route('merchant.connect.with.user.account') }}',
+                    url: '{{ route('affiliate.connect.with.user.account') }}',
                     type: 'POST',
                     data: formData,
                     dataType: 'json', // Expect JSON response from the server
@@ -112,13 +112,13 @@
                 // Serialize the form data
                 const formData = UserConnectionVerifyForm.serialize();
                 $.ajax({
-                    url: '{{ route('merchant.connect.with.user.account.verify') }}',
+                    url: '{{ route('affiliate.connect.with.user.account.verify') }}',
                     type: 'POST',
                     data: formData,
                     dataType: 'json', // Expect JSON response from the server
                     success: function (data) {
                         if (data.response === 200) {
-                            window.location.href = '{{route('merchant.connected.user.account')}}'
+                            window.location.href = '{{route('affiliate.connected.user.account')}}'
                             Toast.fire({
                                 icon: data.type,
                                 title: data.message

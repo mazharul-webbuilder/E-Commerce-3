@@ -24,7 +24,7 @@ class ConnectionWithUserAccountController extends Controller
      */
     public function index(): View
     {
-        return \view('seller.userAccount.index');
+        return \view('affiliate.userAccount.index');
     }
 
     /**
@@ -52,9 +52,9 @@ class ConnectionWithUserAccountController extends Controller
     {
         if (verifyCode($request->verifyCode)) {
             $userId = DB::table('users')->where('playerid', $request->playerId)->value('id');
-            $merchant = get_auth_merchant();
-            $merchant->user_id = $userId;
-            $merchant->save();
+            $affiliator = get_auth_affiliator();
+            $affiliator->user_id = $userId;
+            $affiliator->save();
             return \response()->json([
                 'response' => Response::HTTP_OK,
                 'type' => 'success',
@@ -72,9 +72,9 @@ class ConnectionWithUserAccountController extends Controller
      */
     public function connectedAccount(): View
     {
-        $connectedUser = User::find(get_auth_merchant()->user_id);
+        $connectedUser = User::find(get_auth_affiliator()->user_id);
 
-        return \view('merchant.userAccount.connected_user', compact('connectedUser'));
+        return \view('affiliate.userAccount.connected_user', compact('connectedUser'));
     }
 
     /**
@@ -83,9 +83,9 @@ class ConnectionWithUserAccountController extends Controller
     public function userDisconnect(): JsonResponse
     {
         try {
-            $merchant = get_auth_merchant();
-            $merchant->user_id = null;
-            $merchant->save();
+            $affiliator = get_auth_affiliator();
+            $affiliator->user_id = null;
+            $affiliator->save();
             return \response()->json([
                 'response' => Response::HTTP_OK,
                 'message' => 'User Disconnected Successfully',
