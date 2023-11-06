@@ -8,6 +8,7 @@ use App\Http\Controllers\Merchant\GalleryController;
 use App\Http\Controllers\Merchant\OrderController;
 use App\Http\Controllers\Merchant\WithdrawController;
 use App\Http\Controllers\Merchant\ShopController;
+use App\Http\Controllers\Merchant\ConnectionWithUserAccountController;
 
 
 
@@ -84,5 +85,17 @@ Route::group(['as' => 'merchant.'], function (){
     Route::get('/shop/setting', [ShopController::class, 'setting'])->name('shop.setting');
     Route::post('/shop/setting', [ShopController::class, 'settingPost'])->name('shop.setting');
 });
+
+// Connection with user account
+Route::group(['as' => 'merchant.'], function (){
+    Route::get('/connect/with/user/account', [ConnectionWithUserAccountController::class, 'index'])->name('connect.with.user.account');
+    Route::post('/connect/with/user/account', [ConnectionWithUserAccountController::class, 'sendVerificationCode'])->name('connect.with.user.account');
+    Route::post('verify/account', [ConnectionWithUserAccountController::class, 'verifyCode'])->name('connect.with.user.account.verify');
+
+
+    Route::get('/connected/user/account', [ConnectionWithUserAccountController::class, 'connectedAccount'])->name('connected.user.account');
+});
+
+
 
 
