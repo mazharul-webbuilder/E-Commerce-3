@@ -261,6 +261,11 @@ class RegisterController extends Controller
         }
     }
 
+
+    public function master_account_register(Request $request){
+
+    }
+
 }
 
 

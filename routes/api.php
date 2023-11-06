@@ -312,6 +312,7 @@ Route::group(['prefix'=>'v2'],function (){
     Route::group(['prefix'=>'general'],function (){
         Route::post('send_verification_code',[GeneralController::class,'send_verification_code']);
         Route::post('verify_email_phone',[GeneralController::class,'verify_email_phone']);
+        Route::post('check_user_account',[GeneralController::class,'check_user_account']);
     });
 
 });
