@@ -79,13 +79,13 @@
                                     {{ $loop->iteration }}
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
-                                    {{$data->rank_update_admin_store->user->name}}
+                                    {{$data->rank_update_admin_store->user?->name}}
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
-                                    {{$data->rank_update_admin_store->previous_rank->rank_name}}
+                                    {{$data->rank_update_admin_store->previous_rank?->rank_name}}
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
-                                    {{$data->rank_update_admin_store->current_rank->rank_name}}
+                                    {{$data->rank_update_admin_store->current_rank?->rank_name}}
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
                                     {{$data->commission_amount}}
