@@ -260,7 +260,7 @@ function delete_2_type_image_if_exist_latest($imageName, $folderName)
         switch ($userType) {
             case 'merchant':
                 $merchant = get_auth_merchant();
-                return isset($merchant->$merchant->user_id);
+                return isset($merchant->user_id);
             case 'seller':
                 $seller = get_auth_seller();
                 return isset($seller->user_id);
