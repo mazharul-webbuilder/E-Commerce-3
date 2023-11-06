@@ -123,13 +123,13 @@
                                 <div class="w-full p-4">
                                     <div class="flex items-center gap-x-8">
                                         <div class="font-medium">Review :	</div>
-                                        <div>80</div>
+                                        <div>{{getProductTotalReview(product: $product)}}</div>
                                     </div>
                                 </div>
                                 <div class="w-full p-4">
                                     <div class="flex items-center gap-x-8">
                                         <div class="font-medium">Rating :	</div>
-                                        <div>4.5</div>
+                                        <div>{{getProductAverageRating(product: $product)}}</div>
                                     </div>
                                 </div>
                             </div>
