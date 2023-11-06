@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\Affiliate\ConnectionWithUserAccountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Affiliate\DashboardController;
 use App\Http\Controllers\Affiliate\LoginController;
@@ -40,5 +42,14 @@ Route::group([ 'as'=>'affiliate.'],function(){
     Route::get('/withdraw/history/load', [WithdrawController::class, 'datatable'])->name('withdraw.history.load');
     Route::get('/withdraw/request', [WithdrawController::class, 'withdrawRequest'])->name('withdraw.request');
     Route::post('/withdraw/request', [WithdrawController::class, 'withdrawRequestPost'])->name('withdraw.request.post');
+
+
+// Connection with user account
+    Route::get('/connect/with/user/account', [ConnectionWithUserAccountController::class, 'index'])->name('connect.with.user.account');
+    Route::post('/connect/with/user/account', [ConnectionWithUserAccountController::class, 'sendVerificationCode'])->name('connect.with.user.account');
+    Route::post('verify/account', [ConnectionWithUserAccountController::class, 'verifyCode'])->name('connect.with.user.account.verify');
+    /*Connect Account*/
+    Route::get('/connected/user/account', [ConnectionWithUserAccountController::class, 'connectedAccount'])->name('connected.user.account');
+    Route::post('/disconnect/user/account', [ConnectionWithUserAccountController::class, 'userDisconnect'])->name('account.discount');
 
 });

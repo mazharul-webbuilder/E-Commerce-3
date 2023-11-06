@@ -226,6 +226,19 @@
                                 <li>
                                     <a href="{{route('merchant.shop.setting')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Shop Setting</a>
                                 </li>
+                                @if(!isConnectedWithUserAccount(USER['merchant']))
+                                <li>
+                                    <a href="{{route('merchant.connect.with.user.account')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        Connect With User Account
+                                    </a>
+                                </li>
+                                @else
+                                <li>
+                                    <a href="{{route('merchant.connected.user.account')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        Connected User Account
+                                    </a>
+                                </li>
+                                @endif
                             </ul>
                             <div class="py-2">
                                 <a href="{{ route('merchant.logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();"  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>

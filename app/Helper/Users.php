@@ -8,6 +8,19 @@ use Illuminate\Support\Facades\Auth;
  * frequently users related task
 */
 
+const USER = [
+    'admin' => 'admin',
+    'merchant' => 'merchant',
+    'seller' => 'seller',
+    'affiliator' => 'affiliator',
+    'shareOwner' => 'shareOwner',
+    'clubOwner' => 'clubOwner',
+];
+
+
+
+
+
 /**
  * Get Admin User
 */

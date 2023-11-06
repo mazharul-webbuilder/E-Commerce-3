@@ -4,6 +4,7 @@ use App\Mail\VerifyAccount;
 use App\Models\DueProduct;
 use App\Models\Ecommerce\Product;
 use App\Models\Seller\Seller;
+use \App\Models\VerificationCode;
 use App\Models\Merchant\Merchant;
 use App\Models\Affiliate\Affiliator;
 use Carbon\Carbon;
@@ -235,6 +236,103 @@ function delete_2_type_image_if_exist_latest($imageName, $folderName)
  }
  function mail_template($data,$to_mail){
      Mail::to($to_mail)->send(new Sendmail($data));
+ }
+ /**
+  * Get random verification code
+ */
+ if (!function_exists('getVerificationCode')) {
+     function getVerificationCode(): int
+     {
+         $verificationCode = rand(min: 100000, max:  999999);
+         if (DB::table('verification_codes')->where('verify_code', $verificationCode)->exists()) {
+             return getVerificationCode();
+         }
+         return $verificationCode;
+     }
+ }
+
+ /**
+  * Check is Merchant | Seller | Affiliator Connected with User account
+ */
+ if (!function_exists('isConnectedWithUserAccount')) {
+     function isConnectedWithUserAccount(string $userType): bool
+     {
+        switch ($userType) {
+            case 'merchant':
+                $merchant = get_auth_merchant();
+                return isset($merchant->user_id);
+            case 'seller':
+                $seller = get_auth_seller();
+                return isset($seller->user_id);
+            case 'affiliator':
+                $affiliator = get_auth_affiliator();
+                return isset($affiliator->user_id);
+        }
+        return false;
+     }
+ }
+
+ /**
+  * Send Verification Code
+ */
+ if (!function_exists('sendVerificationCode'))
+ {
+     function sendVerificationCode($request): bool
+     {
+         try {
+             $userEmail = DB::table('users')->where('playerid', $request->playerId)->value('email');
+
+             $verificationCode = getVerificationCode();
+
+             $data = [
+                 'subject' => config('app.name') . ' ' . "User Account Connect Verification Code",
+                 'body' => "<h2>Greeting From Netelmart</h2>
+                        <p>User Account connection Verification code $verificationCode</p>
+                        <p>Please don't share this code to anyone.</p>
+                        <p>Have a Good Day!</p>
+                        "
+             ];
+             mail_template(data: $data, to_mail: $userEmail);
+             DB::beginTransaction();
+             DB::table('verification_codes')->insert([
+                 'type' => 'email',
+                 'email_or_phone' => $userEmail,
+                 'verify_code' => $verificationCode,
+                 'created_at' => \Illuminate\Support\Carbon::now(),
+                 'updated_at' => \Illuminate\Support\Carbon::now(),
+             ]);
+             DB::commit();
+
+             return true;
+
+         } catch (\Exception $exception) {
+             DB::rollBack();
+             return false;
+         }
+
+     }
+ }
+
+ /**
+  * Verify Code Universal Function for this application
+ */
+ if (!function_exists('verifyCode')){
+     function verifyCode(int $verifyCode): bool
+     {
+         try {
+             DB::beginTransaction();
+             $verifyCode = VerificationCode::where('verify_code', $verifyCode)->first();
+             if (isset($verifyCode)) {
+                 $verifyCode->delete();
+                 DB::commit();
+                 return true;
+             } else {
+                 return false;
+             }
+         } catch (\Exception $exception) {
+             return false;
+         }
+     }
  }
 
 
