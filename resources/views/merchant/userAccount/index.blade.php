@@ -29,6 +29,7 @@
                     @csrf
                     <div class="mb-4">
                         <label for="email" class="block text-gray-700 text-sm font-medium">Verification code</label>
+                        <input type="hidden" name="playerId" id="setPlayerId" value="">
                         <input type="text"
                                id="verifyCode"
                                name="verifyCode"
@@ -72,6 +73,7 @@
                                 title: data.message
                             });
                             $('#submitBtn').text('Get Verification Code')
+                            $('#setPlayerId').val(data.playerId)
                             $('#VerificationCodeSentDiv').hide()
                             $('#VerifyCodeDiv').removeClass('hidden')
 

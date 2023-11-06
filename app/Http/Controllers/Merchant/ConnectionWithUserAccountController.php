@@ -38,6 +38,7 @@ class ConnectionWithUserAccountController extends Controller
             return \response()->json([
                 'response' => Response::HTTP_OK,
                 'type' => 'success',
+                'playerId' => $request->playerId,
                 'message' => 'Verification code send to user email'
             ]);
         } else {
@@ -52,6 +53,10 @@ class ConnectionWithUserAccountController extends Controller
     public function verifyCode(UserConnectCodeVerifyRequest $request): JsonResponse
     {
         if (verifyCode($request->verifyCode)) {
+            $userId = DB::table('users')->where('playerid', $request->playerId)->value('id');
+            $merchant = get_auth_merchant();
+            $merchant->user_id = $userId;
+            $merchant->save();
             return \response()->json([
                 'response' => Response::HTTP_OK,
                 'type' => 'success',

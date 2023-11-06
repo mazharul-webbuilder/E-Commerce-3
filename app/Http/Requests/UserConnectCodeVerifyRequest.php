@@ -24,7 +24,8 @@ class UserConnectCodeVerifyRequest extends FormRequest
     public function rules()
     {
         return [
-            'verifyCode' => 'required|exists:verification_codes,verify_code'
+            'verifyCode' => 'required|exists:verification_codes,verify_code',
+            'playerId' => 'required|exists:users,playerid'
         ];
     }
 }
