@@ -3,14 +3,19 @@
 namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class AdminLoginController extends Controller
 {
-
-    public function showForm(){
+    /**
+     * Show Application Admin User Login page Or Admin Dashboard
+    */
+    public function showForm(): View | RedirectResponse
+    {
         if (Auth::guard('admin')->check()) {
             return redirect()->route('dashboard');
         } else {
@@ -19,6 +24,9 @@ class AdminLoginController extends Controller
     }
 
 
+    /**
+     * Admin Auth Check
+    */
     public function auth_login(Request $request)
     {
         $request->validate([
@@ -26,6 +34,7 @@ class AdminLoginController extends Controller
             'password' => 'required',
         ]);
         $credentials = $request->only('email', 'password');
+
         if (Auth::guard('admin')->attempt($credentials)) {
 //            Alert::success('Welcome to Admin Panel.');
             return redirect()->route('dashboard');

@@ -119,6 +119,5 @@
 
 <script src="{{ asset('webend/asset/js/app.bundle.js') }}"></script>
 <script src="{{ asset('webend/asset/js/main.js') }}"></script>
-@include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
-
+@include('includes._include_toast_notification')
 </html>
