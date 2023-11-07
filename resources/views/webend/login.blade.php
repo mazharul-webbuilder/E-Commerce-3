@@ -11,17 +11,18 @@
     <link href="{{ asset('webend/asset/css/style.css') }}" rel="stylesheet">
     <title>Admin Login|{{ config('app.name') }}</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <style>
+        .error-message{
+            color: red;
+        }
+    </style>
 </head>
-
 <body class="bg-gray-50">
     <div class="mx-auto md:h-screen flex flex-col justify-center items-center px-6 pt-8 pt:mt-0">
         <a href="" class="text-2xl font-semibold flex justify-center items-center mb-8 lg:mb-10">
-
             <span class="self-center text-2xl font-bold whitespace-nowrap uppercase">{{ config('app.name') }} ADMIN
                 LOGIN</span>
         </a>
-
         <!-- Card -->
         <div class="bg-white shadow rounded-lg md:mt-0 w-full sm:max-w-screen-sm xl:p-0">
             <div class="p-6 sm:p-8 lg:p-16 space-y-8">
@@ -30,28 +31,14 @@
                         <img class="h-14 w-14 md:h-28 md:w-32" alt="LUDO" src="{{ asset('webend/logo.png') }}">
                     </a>
                 </div>
-
-                @if ($errors->any())
-                    @foreach ($errors->all() as $error)
-                        @php
-                            Alert::toast($error, 'error');
-                        @endphp
-                    @endforeach
-                @endif
-                <form class="mt-8 space-y-6" action="{{ route('auth.login') }}" method="post"
-                    enctype="multipart/form-data">
+                <form class="mt-8 space-y-6" id="AdminLoginForm">
                     @csrf
                     <div>
                         <label for="email" class="text-sm font-medium text-gray-900 block mb-2">Your email</label>
                         <input type="email" name="email" id="email"
                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 @error('email') border-red-500 @enderror"
-                            value="{{ old('email') }}" placeholder="name@company.com" required>
+                            value="{{ old('email') }}" placeholder="name@company.com">
                     </div>
-                    @error('email')
-                        <div class="text-red-500 mt-2 text-sm">
-                            {{ $message }}
-                        </div>
-                    @enderror
                     <div>
                         <label for="password" class="text-sm font-medium text-gray-900 block mb-2">Your password</label>
                         <div class="relative flex items-center">
@@ -66,12 +53,6 @@
                                 required>
                         </div>
                     </div>
-
-                    @error('password')
-                        <div class="text-red-500 mt-2 text-sm">
-                            {{ $message }}
-                        </div>
-                    @enderror
                     <div class="flex items-start">
                         <div class="flex items-center h-5">
                             <input id="remember" aria-describedby="remember" name="remember" type="checkbox"
@@ -119,6 +100,54 @@
 
 <script src="{{ asset('webend/asset/js/app.bundle.js') }}"></script>
 <script src="{{ asset('webend/asset/js/main.js') }}"></script>
-@include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
+<script>
+    $(document).ready(function (){
+        $('#AdminLoginForm').on('submit', function (e) {
+            e.preventDefault();
 
+            const AdminLoginForm = $(this);
+
+            // Clear previous error messages
+            $('.error-message').hide();
+
+            // Serialize the form data
+            const formData = AdminLoginForm.serialize();
+
+            $.ajax({
+                url: '{{ route('auth.login') }}',
+                type: 'POST',
+                data: formData,
+                dataType: 'json', // Expect JSON response from the server
+                success: function (data) {
+                    if (data.response === 200) {
+                        window.location.href = '{{route('dashboard')}}'
+                        Toast.fire({
+                            icon: data.type,
+                            title: data.message
+                        });
+                    } else if (data.response === 500) {
+                        Toast.fire({
+                            icon: data.type,
+                            title: data.message
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status === 422) {
+                        const errors = xhr.responseJSON.errors;
+
+                        // Display error messages for each input field
+                        $.each(errors, function (field, errorMessage) {
+                            const inputField = $('[name="' + field + '"]');
+                            inputField.after('<span class="error-message">' + errorMessage[0] + '</span>');
+                        });
+                    } else {
+                        console.log('An error occurred:', status, error);
+                    }
+                }
+            });
+        });
+    })
+</script>
+@include('includes._include_toast_notification')
 </html>

@@ -53,67 +53,67 @@
                         <div class="flex py-1">
                             <div class="text-lg p-1">Shop Logo : </div>
                             <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">
-                                <img src="{{$shop->logo ? asset("uploads/shop/resize/$shop->logo") : default_image()}}" alt="" height="80" width="80">
+                                <img src="{{$shop?->logo ? asset("uploads/shop/resize/$shop?->logo") : default_image()}}" alt="" height="80" width="80">
                             </div>
                         </div>
                     </div>
                     <div class="flex py-1">
                         <div class="text-lg p-1">Shop Name : </div>
-                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop->shop_name}}</div>
+                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop?->shop_name}}</div>
                     </div>
                 </div>
                 <div class="">
                     <div class="flex py-1">
                         <div class="text-lg p-1">Shop Legal Name : </div>
-                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop->legal_name}}</div>
+                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop?->legal_name}}</div>
                     </div>
                 </div>
                 <div class="">
                     <div class="flex py-1">
                         <div class="text-lg p-1">Shop Owner Name : </div>
-                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop->merchant->name}}</div>
+                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop?->merchant->name}}</div>
                     </div>
                 </div>
                 <div class="">
                     <div class="flex py-1">
                         <div class="text-lg p-1">Shop Owner Email : </div>
-                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop->merchant?->email}}</div>
+                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop?->merchant?->email}}</div>
                     </div>
                 </div>
                 <div class="">
                     <div class="flex py-1">
                         <div class="text-lg p-1">Shop Owner Phone : </div>
-                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop->merchant?->phone ? : 'Not Set'}}</div>
+                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop?->merchant?->phone ? : 'Not Set'}}</div>
                     </div>
                 </div>
                 <div class="">
                     <div class="flex py-1">
                         <div class="text-lg p-1">Shop Address : </div>
-                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop->address ? : "Not Set Yet"}}</div>
+                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop?->address ? : "Not Set Yet"}}</div>
                     </div>
                 </div>
                 <div class="">
                     <div class="flex py-1">
                         <div class="text-lg p-1">Shop Helpline : </div>
-                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop->help_line ? : "Not Set Yet"}}</div>
+                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop?->help_line ? : "Not Set Yet"}}</div>
                     </div>
                 </div>
                 <div class="">
                     <div class="flex py-1">
                         <div class="text-lg p-1">Shop Available Time : </div>
-                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop->available_time ? : "Not Set Yet"}}</div>
+                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop?->available_time ? : "Not Set Yet"}}</div>
                     </div>
                 </div>
                 <div class="">
                     <div class="flex py-1">
                         <div class="text-lg p-1">Trade License Issued : </div>
-                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop->trade_licence_issued ? : "Not Set Yet"}}</div>
+                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop?->trade_licence_issued ? : "Not Set Yet"}}</div>
                     </div>
                 </div>
                 <div class="">
                     <div class="flex py-1">
                         <div class="text-lg p-1">Trade License Expired : </div>
-                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop->trade_licence_expired ? : "Not Set Yet"}}</div>
+                        <div class="ml-5 text-lg bg-fuchsia-50	p-1 px-2 rounded">{{$shop?->trade_licence_expired ? : "Not Set Yet"}}</div>
                     </div>
                 </div>
             </section>
@@ -124,31 +124,32 @@
             </div>
             <div class="flex flex-wrap -mx-4">
                 <!-- Product 1 -->
-                @foreach($products as $product)
-                    <div class="w-full md:w-1/2 lg:w-1/4 px-4 mb-8 mt-4">
-                        <div class="max-w-sm mx-auto bg-white rounded-xl shadow-md overflow-hidden">
-                            <!-- Product Image -->
-                            <img class="h-48 w-full object-cover" src="{{asset("uploads/product/small/$product->thumbnail")}}" alt="Product Image">
+                @if(isset($products))
+                    @foreach($products as $product)
+                        <div class="w-full md:w-1/2 lg:w-1/4 px-4 mb-8 mt-4">
+                            <div class="max-w-sm mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+                                <!-- Product Image -->
+                                <img class="h-48 w-full object-cover" src="{{asset("uploads/product/small/$product->thumbnail")}}" alt="Product Image">
 
-                            <!-- Product Title -->
-                            <div class="p-4">
-                                <a href="#" class="block text-lg leading-tight font-medium text-black hover:underline">{{$product->title}}</a>
-                                <p class="mt-2 text-gray-500">
-                                    @php
-                                        $substring = substr($product->short_description, 0, 25);
-                                    @endphp
-                                    {{str_pad($substring, 40, '.', STR_PAD_RIGHT )}}
-                                </p>
-                            </div>
+                                <!-- Product Title -->
+                                <div class="p-4">
+                                    <a href="#" class="block text-lg leading-tight font-medium text-black hover:underline">{{$product->title}}</a>
+                                    <p class="mt-2 text-gray-500">
+                                        @php
+                                            $substring = substr($product->short_description, 0, 25);
+                                        @endphp
+                                        {{str_pad($substring, 40, '.', STR_PAD_RIGHT )}}
+                                    </p>
+                                </div>
 
-                            <!-- Details Button -->
-                            <div class="px-4 py-2 bg-indigo-500">
-                                <a href="{{route('merchant.product.detail', $product->id)}}" class="block text-white font-semibold text-center hover:underline">Details</a>
+                                <!-- Details Button -->
+                                <div class="px-4 py-2 bg-indigo-500">
+                                    <a href="{{route('merchant.product.detail', $product->id)}}" class="block text-white font-semibold text-center hover:underline">Details</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
-
+                    @endforeach
+                @endif
             </div>
             {{-- End Shop Product List --}}
         </div>

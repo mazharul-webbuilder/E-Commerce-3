@@ -9,6 +9,7 @@ use App\Models\Merchant\Merchant;
 use App\Models\OrderCoinHistory;
 use App\Models\Seller\Seller;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Ecommerce\Order;
@@ -22,7 +23,10 @@ class OrderController extends Controller
 {
 
 
-    public function index($type = null)
+    /**
+     * Admin Orders
+    */
+    public function index($type = null): View
     {
         if ($type !== null) {
             if ($type === ORDER_TYPE[0]) {
@@ -51,12 +55,11 @@ class OrderController extends Controller
     /**
      * Show Admin Orders Page
     */
-    public function admin_order()
+    public function admin_order(): View
     {
         $orders = Order::whereHas('order_detail', function ($query) { // here order_details is relation with Order table product has relation in orderDetails model
             $query->where('merchant_id', null);
         })->get();
-
 
         $date_range = null;
 
@@ -74,12 +77,11 @@ class OrderController extends Controller
     }
 
 
+    /**
+     * Manage Order
+    */
     public function manage_order(Request $request)
     {
-
-
-        // ===================================================================
-
         if ($request->isMethod("POST")) {
             $order = Order::find($request->order_id);
             $currentStatus = $order->status;

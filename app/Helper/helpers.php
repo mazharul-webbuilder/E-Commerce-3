@@ -408,3 +408,28 @@ if (!function_exists('calculatePercentage')) {
     }
 }
 
+if (!function_exists('getProductTotalReview')) {
+    function getProductTotalReview($product): int
+    {
+        return $product?->reviews?->count();
+    }
+}
+
+if (!function_exists('getProductAverageRating')) {
+    function getProductAverageRating($product): int|float
+    {
+        $reviews = \App\Models\Ecommerce\Review::where('product_id', $product->id)->get();
+
+        $numberOfRatings = $reviews->count();
+
+        $sumOfRatings = $reviews->sum('rating');
+
+        if ($numberOfRatings > 0) {
+            return $sumOfRatings / $numberOfRatings;
+        } else {
+            return 0;
+        }
+    }
+
+}
+
