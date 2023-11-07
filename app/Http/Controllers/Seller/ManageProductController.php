@@ -98,22 +98,22 @@ class ManageProductController extends Controller
                     $auth_user->save();
 
                     /*Distribute the Seller Product Purchase Charge below users*/
-                    $distributePercentage = AffiliateSetting::first();
+
                     // Give Company Commission
-                    CompanyCommission::create([
-                        'amount' => calculatePercentage(number: $sellerProductPurchaseCharge, percentage: $distributePercentage->company_commission),
-                        'commission_source' => COMMISSION_SOURCE['seller'],
-                    ]);
+                    companyCommission(calculatePercentage(number: $sellerProductPurchaseCharge, percentage: affiliateSetting()->company_commission),COMMISSION_SOURCE['seller']);
+
                     // Give Game Asset Commission
-                    GameAssetCommission::create([
-                        'amount' => calculatePercentage(number: $sellerProductPurchaseCharge, percentage: $distributePercentage->game_asset_commission),
-                        'commission_source' => COMMISSION_SOURCE['seller'],
-                    ]);
+                    gameAssetCommission(calculatePercentage(number: $sellerProductPurchaseCharge, percentage: affiliateSetting()->game_asset_commission),COMMISSION_SOURCE['seller']);
+
                     // Give To Seller Commission
-                    TopSellerCommission::create([
-                        'amount' => calculatePercentage(number: $sellerProductPurchaseCharge, percentage: $distributePercentage->top_seller_commission),
-                        'commission_source' => COMMISSION_SOURCE['seller'],
-                    ]);
+                    topSellerCommission(calculatePercentage(number: $sellerProductPurchaseCharge, percentage: affiliateSetting()->top_seller_commission),COMMISSION_SOURCE['seller']);
+
+                    if ($auth_user->user_id !=null){
+                        $generation_amount=calculatePercentage($sellerProductPurchaseCharge,affiliateSetting()->generation_commission);
+                        provide_generation_commission_seller($auth_user->user,$generation_amount,COIN_EARNING_SOURCE['generation_commission']);
+                    }
+
+
                     /**
                      * @TODO Generation Commission & Shareholder Commission
                     */

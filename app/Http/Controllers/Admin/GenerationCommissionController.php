@@ -25,7 +25,12 @@ class GenerationCommissionController extends Controller
             try {
                 DB::beginTransaction();
                 $generation=Generation_commission::find($request->id);
-                $generation->commission=$request->commission;
+                if ($request->type=="user"){
+                    $generation->commission=$request->commission;
+                }else{
+                    $generation->seller_commission=$request->commission;
+                }
+
                 $generation->save();
                 DB::commit();
                 return response()->json([

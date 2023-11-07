@@ -47,7 +47,12 @@
                             </th>
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
                                 <div class="text-center">
-                                    Commission (%)
+                                    User Commission (%)
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    Seller Commission (%)
                                 </div>
                             </th>
                         </tr>
@@ -62,8 +67,12 @@
                                     {{ $generation->generation_name }}
                                 </td>
                                 <td class="px-2 py-4 text-black border-r text-center">
-                                    <input type="number" value="{{ $generation->commission }}" class="w-[80px] text-center px-1 input-field_border commission_field" generation_id="{{$generation->id}}">
+                                    <input type="number" update_type="user" value="{{ $generation->commission }}" class="w-[80px] text-center px-1 input-field_border commission_field" generation_id="{{$generation->id}}">
                                     <p><span class="saving{{$generation->id}}"></span></p>
+                                </td>
+                                <td class="px-2 py-4 text-black border-r text-center">
+                                    <input type="number" update_type="seller" value="{{ $generation->seller_commission }}" class="w-[80px] text-center px-1 input-field_border commission_field_seller" generation_id="{{$generation->id}}">
+                                    <p><span class="seller_saving{{$generation->id}}"></span></p>
                                 </td>
                             </tr>
                         @endforeach
@@ -78,21 +87,33 @@
 @section('extra_js')
     <script !src="">
         $(function (){
-            $('body').on('keyup','.commission_field',function(){
+            $('body').on('keyup','.commission_field,.commission_field_seller',function(e){
+                console.log(e)
                let id=$(this).attr('generation_id')
                 let commission=$(this).val()
+                let type=$(this).attr('update_type')
 
                if(commission !==""){
-                   $('.saving'+id).text('Saving...')
+                   if (type=="user"){
+                       $('.saving'+id).text('Saving...')
+                   }else{
+                       $('.seller_saving'+id).text('Saving...')
+                   }
+
                    $.ajax({
                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                        method:"post",
                        url:"{{route('admin.update_generation_commission')}}",
-                       data:{id:id,commission:commission},
+                       data:{id:id,commission:commission,type:type},
                        success:function (response){
                            if(response.status_code===200){
                                setTimeout(function () {
-                                   $('.saving'+id).text('')
+                                   if (type=="user"){
+                                       $('.saving'+id).text('')
+                                   }else{
+                                       $('.seller_saving'+id).text('')
+                                   }
+
                                },2000)
                            }
                        }

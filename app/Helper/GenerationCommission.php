@@ -64,6 +64,31 @@ function provide_generation_commission($user,$coin,$coin_earning_source){
 }
 
 
+function provide_generation_commission_seller($user,$coin,$coin_earning_source){
+
+    $generation=$user;
+    for ($i=1;$i<=15;$i++)
+    {
+        $generation=User::where('id',$generation->parent_id)->first();
+        if (!empty($generation)){
+            if ($i===1){
+                $commission=calculate_commission(generation_commission('1st')->seller_commission,$coin);
+            }elseif ($i===2){
+                $commission=calculate_commission(generation_commission('2nd')->seller_commission,$coin);
+            }elseif ($i===3){
+                $commission=calculate_commission(generation_commission('3rd')->seller_commission,$coin);
+            }else{
+                $commission=calculate_commission(generation_commission($i.'th')->seller_commission,$coin);
+            }
+            distribute_commission($generation,$commission,$coin_earning_source);
+        }else{
+            break;
+        }
+    }
+
+}
+
+
 
 function provide_generation_commission_secound($user,$coin){
 

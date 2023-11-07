@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class AddSellerCommissionToGenerationCommissions extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('generation_commissions', function (Blueprint $table) {
+            $table->float('seller_commission',11,2)->nullable()->comment('commission will be calculated as percent (%)');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('generation_commissions', function (Blueprint $table) {
+            $table->dropColumn('seller_commission');
+        });
+    }
+}

@@ -54,13 +54,13 @@ if (!function_exists('get_auth_seller')) {
 /**
  * Get Auth Affiliator User
 */
+
 if (!function_exists('get_auth_affiliator')) {
     function get_auth_affiliator()
     {
         return Auth::guard('affiliate')->user();
     }
 }
-
 
 
 

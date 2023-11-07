@@ -43,7 +43,7 @@ const COIN_EARNING_SOURCE = [
     'club_registration_parent_commission' => 'club_registration_parent_commission', 'club_registration_owner_commission' => 'club_registration_owner_commission',
     'club_tournament_registration_owner_commission' => 'club_tournament_registration_owner_commission', 'withdraw_commission' => 'withdraw_commission',
     'game_assets' => 'game_assets', 'share_fund_history' => 'share_fund_history', 'recovery_fund' => 'recovery_fund','home_game_registration'=>'home_game_registration',
-    'home_game_asset'=>'home_game_asset','home_game_wining'=>'home_game_wining','withdraw_saving'=>'withdraw_saving'
+    'home_game_asset'=>'home_game_asset','home_game_wining'=>'home_game_wining','withdraw_saving'=>'withdraw_saving','generation_commission'=>'generation_commission'
 ];
 
 function rank_constant()
@@ -360,5 +360,7 @@ function dollar_to_other($dollar_amount){
     $data=array('total_bdt'=>$total_bdt,'total_inr'=>$total_inr);
     return $data;
 }
+
+
 
 

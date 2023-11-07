@@ -53,7 +53,8 @@
             "app/Helper/Tournament.php",
             "app/Helper/Campaign.php",
             "app/Helper/Common.php",
-            "app/Helper/Users.php"
+            "app/Helper/Users.php",
+            "app/Helper/Commission.php"
         ]
     },
     "autoload-dev": {
