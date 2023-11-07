@@ -299,7 +299,6 @@ class RegisterController extends Controller
                            ]);
                            array_push($accounts,'Seller Account');
 
-
                        }
 
                        if ($request->affiliate_account==1){
@@ -324,7 +323,7 @@ class RegisterController extends Controller
 
                        return response()->json([
                            'message'=>"Account created successfully. Please check your user account email for credentials",
-                           'type'=>"warning",
+                           'type'=>"success",
                            'status'=>Response::HTTP_NO_CONTENT,
                        ],Response::HTTP_OK);
 
@@ -336,7 +335,6 @@ class RegisterController extends Controller
                            'status'=>Response::HTTP_NO_CONTENT,
                        ],Response::HTTP_OK);
                    }
-
 
                }catch (QueryException $exception){
                    DB::commit();
