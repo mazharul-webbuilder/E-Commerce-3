@@ -31,7 +31,11 @@ class ProductController extends Controller
     }
 
 
-    public function datatable(){
+    /**
+     * Merchant Product Datatable
+    */
+    public function datatable(): JsonResponse
+    {
 
         $auth_user=Auth::guard('merchant')->user();
         $datas=Product::where('merchant_id',$auth_user->id)->orderBy('id','DESC')->get();
@@ -68,22 +72,36 @@ class ProductController extends Controller
             })
             ->addColumn('flash_deal', function ($product) {
                 return '
-                        <button href="#" data-id="'.$product->id.'"
+                        <button href="#" data-id="'.$product->id. '"
+                        style="background: #a9b2a7"
                          type="button"
                          data-toggle="modal" data-target="#flashDealModal"
-                         class="FlashDealBtn text-white bg-amber-500 hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">'
+                         class="FlashDealBtn
+                         text-black
+                         bg-amber-500
+                         transition-all
+                         ease-in-out font-medium
+                         rounded-md text-sm
+                         inline-flex items-center
+                         px-3 py-2 text-center
+                         deleteConfirmAuthor">'
                     . ($product->flash_deal == 1 ? "Yes" : "No") .
                     '</button>';
             })
             ->addColumn('control_panel', function ($product) {
                 return '
-                        <button type="button" data-id="'.$product->id.'" class="ControlPanelBtn text-white bg-emerald-500 hover:bg-sky-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                        <button type="button" data-id="'.$product->id. '"
+                        style="background: #900bd0"
+                        class="ControlPanelBtn text-white bg-emerald-500 hover:bg-sky-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                         Control
                     </button>';
             })
             ->addColumn('stock_manager', function ($product) {
                 return '
-                        <a href="'.route('merchant.stock.index',$product->id).'" type="button" class="text-white bg-fuchsia-500 hover:bg-sky-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                        <a href="'.route('merchant.stock.index',$product->id). '"
+                        type="button"
+                        style="background: #ce970b"
+                        class="text-white bg-fuchsia-500 hover:bg-sky-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                         Stock
                     </a>';
             })
@@ -96,10 +114,14 @@ class ProductController extends Controller
             ->editColumn('action', function (Product $data) {
                 return '
         <div class="flex space-x-4">
-            <a href="' . route('merchant.product.view', $data->slug) . '" type="button" class="text-white bg-teal-500 hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+            <a href="' . route('merchant.product.view', $data->slug) . '"
+                        style="background: #176c04"
+            type="button" class="text-white bg-teal-500 hover:bg-lime-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                 View
             </a>
-            <a href="' . route('merchant.product.edit', $data->id) . '" type="button" class="text-white bg-purple-500 hover:bg-purple-700 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+            <a href="' . route('merchant.product.edit', $data->id) . '" type="button"
+                        style="background: #900bd0"
+            class="text-white bg-purple-500 hover:bg-purple-700 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                 Edit
             </a>
             <button type="button" data-id="' . $data->id .'" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
