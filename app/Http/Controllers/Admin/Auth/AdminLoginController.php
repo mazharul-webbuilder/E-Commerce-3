@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -27,20 +29,29 @@ class AdminLoginController extends Controller
     /**
      * Admin Auth Check
     */
-    public function auth_login(Request $request)
+    public function auth_login(Request $request): JsonResponse
     {
         $request->validate([
-            'email' => 'required',
+            'email' => 'required|email|exists:admins,email',
             'password' => 'required',
+        ],[
+            'email.exists' => 'Email not found'
         ]);
+
         $credentials = $request->only('email', 'password');
 
         if (Auth::guard('admin')->attempt($credentials)) {
-//            Alert::success('Welcome to Admin Panel.');
-            return redirect()->route('dashboard');
+            return response()->json([
+                'response' => Response::HTTP_OK,
+                'type' => 'success',
+                'message' => 'Welcome to Admin Dashboard'
+            ]);
         } else {
-            Alert::warning('Credential not matched.')->persistent('dismiss');
-            return redirect()->route('show.login');
+            return response()->json([
+                'response' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'type' => 'error',
+                'message' => 'Credential not match'
+            ]);
         }
     }
 
