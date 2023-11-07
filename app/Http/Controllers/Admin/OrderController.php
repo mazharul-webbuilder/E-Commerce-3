@@ -18,6 +18,7 @@ use App\Models\Ecommerce\Product;
 use App\Http\Controllers\Controller;
 use App\Models\Ecommerce\Order_detail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -117,31 +118,31 @@ class OrderController extends Controller
 
                     if (!empty($order_details)) {
                         // Rest of the code for updating stock, adding coin, and sending notifications
-
                         $total_coin = 0;
                         foreach ($order_details as $order_detail) {
-                            //
-                            if (!is_null($order_detail->size_id)) {
-                                $stock = Stock::where(['product_id' => $order_detail->product_id, 'size_id' => $order_detail->size_id])
-                                    ->first();
-                                if (!is_null($stock)) {
-                                    $current_stock = $stock->quantity;
-                                    $order_stock = $order_detail->product_quantity;
-                                    $remain_stock = $current_stock - $order_stock;
-                                    $stock->quantity = $remain_stock;
-                                    $stock->save();
-                                }
+                            // stock management
+                            $stock = is_null($order_detail->size_id)
+                                ?
+                                Stock::where(['product_id' => $order_detail->product_id, 'size_id' => null])->first()
+                                :
+                                Stock::where(['product_id' => $order_detail->product_id, 'size_id' => $order_detail->size_id])->first();
+
+                            if (!is_null($stock)) {
+                                $stock->quantity = $stock->quantity - $order_detail->product_quantity;
+                                $stock->save();
                             }
+
                             // add coin
-                            if (!is_null($order_detail->product_id)) {
-                                $product = Product::find($order_detail->product_id);
-                                if (!is_null($product)) {
-
-                                    $total_coin = $total_coin + $order_detail->product_coin * $order_detail->product_quantity;
-                                }
+                            if (is_null($order_detail->seller_id)) {
+                                $paidCoin = $order_detail->product_coin;
+                            } else {
+                                $coinFromSeller = DB::table('seller_products')
+                                    ->where(['seller_id' => $order_detail->seller_id, 'product_id' => $order_detail->product_id])
+                                    ->value('coin_from_seller');
+                                $paidCoin = $order_detail->product_coin + $coinFromSeller;
                             }
+                            $total_coin += $paidCoin * $order_detail->product_quantity;
                         }
-
                         $user = User::find($order->user_id);
                         $user->paid_coin += $total_coin;
                         $user->save();

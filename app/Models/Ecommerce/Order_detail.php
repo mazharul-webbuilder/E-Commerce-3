@@ -2,6 +2,7 @@
 
 namespace App\Models\Ecommerce;
 
+use App\Models\Seller\Seller;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,6 +28,14 @@ class Order_detail extends Model
 
     public function size(){
         return $this->belongsTo(Size::class);
+    }
+
+    /**
+     * Reseller User
+     */
+    public function seller()
+    {
+        return $this->belongsTo(Seller::class);
     }
 
 }
