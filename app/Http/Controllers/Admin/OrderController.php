@@ -120,18 +120,18 @@ class OrderController extends Controller
                         // Rest of the code for updating stock, adding coin, and sending notifications
                         $total_coin = 0;
                         foreach ($order_details as $order_detail) {
-                            //
-                            if (!is_null($order_detail->size_id)) {
-                                $stock = Stock::where(['product_id' => $order_detail->product_id, 'size_id' => $order_detail->size_id])
-                                    ->first();
-                                if (!is_null($stock)) {
-                                    $current_stock = $stock->quantity;
-                                    $order_stock = $order_detail->product_quantity;
-                                    $remain_stock = $current_stock - $order_stock;
-                                    $stock->quantity = $remain_stock;
-                                    $stock->save();
-                                }
+                            // stock management
+                            $stock = is_null($order_detail->size_id)
+                                ?
+                                Stock::where(['product_id' => $order_detail->product_id, 'size_id' => null])->first()
+                                :
+                                Stock::where(['product_id' => $order_detail->product_id, 'size_id' => $order_detail->size_id])->first();
+
+                            if (!is_null($stock)) {
+                                $stock->quantity = $stock->quantity - $order_detail->product_quantity;
+                                $stock->save();
                             }
+
                             // add coin
                             if (is_null($order_detail->seller_id)) {
                                 $paidCoin = $order_detail->product_coin;
