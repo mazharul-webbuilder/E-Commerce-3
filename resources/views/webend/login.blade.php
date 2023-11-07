@@ -50,7 +50,7 @@
                             </span>
                             <input type="password" name="password" id="password" placeholder=""
                                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 @error('password') border-red-500 @enderror"
-                                >
+                                required>
                         </div>
                     </div>
                     <div class="flex items-start">
@@ -108,7 +108,7 @@
             const AdminLoginForm = $(this);
 
             // Clear previous error messages
-            $('.error-message').remove();
+            $('.error-message').hide();
 
             // Serialize the form data
             const formData = AdminLoginForm.serialize();
