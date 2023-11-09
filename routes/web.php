@@ -57,6 +57,7 @@ Route::prefix('share_owner')->group(base_path('routes/share_owner.php'));
 ====================================================*/
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
+Route::get('product_detail/{id}/{seller_or_affiliate?}/{type?}', [HomeController::class, 'product_detail'])->name('front.product_detail');
 
 /*============================================
 #Frontent Routes
@@ -66,6 +67,8 @@ Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('admin/login', [AdminLoginController::class, 'showForm'])->name('show.login');
 Route::post('/auth-login', [AdminLoginController::class, 'auth_login'])->name('auth.login');
 Route::get('/user_manage', [AdminLoginController::class, 'user_manage'])->name('login.user_manage');
+
+
 
 /*=========================================================*/
 //Common Routes

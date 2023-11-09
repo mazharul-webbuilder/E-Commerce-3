@@ -58,7 +58,7 @@ function provide_generation_commission($user,$coin,$coin_earning_source){
             distribute_commission($generation,$commission,$coin_earning_source);
         }else{
             break;
-        }
+        } 
     }
 
 }

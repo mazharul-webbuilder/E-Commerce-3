@@ -88,7 +88,7 @@ class ManageProductController extends Controller
                 return '<a href="javascript:;" data-id="'.$data->id.'" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                              Remove
                          </a>
-                         <a href="javascript:;" share_link="'.route('api.product_detail',['id' => $data->product_id,'seller_or_affiliate' => $affiliate->id,'type'=>'affiliate']).'" class="copy_link text-white bg-purple-600 hover:bg-purple-700 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                         <a href="javascript:;" share_link="'.route('front.product_detail',['id' => $data->product_id,'seller_or_affiliate' => $affiliate->id,'type'=>'affiliate']).'" class="copy_link text-white bg-purple-600 hover:bg-purple-700 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
                              Copy Link
                          </a>
                          ';

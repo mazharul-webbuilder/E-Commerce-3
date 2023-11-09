@@ -11,4 +11,8 @@ class HomeController extends Controller
     {
         return view('frontend.home');
     }
+    public function product_detail($id,$seller_or_affiliate,$type):void
+    {
+
+    }
 }
