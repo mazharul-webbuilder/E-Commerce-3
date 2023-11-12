@@ -85,7 +85,7 @@ class TournamentApiController extends Controller
 
     public function tournament_join(Request $request)
     {
-       // return auth()->user();
+      //  return auth()->user();
         $request->validate([
             'tournament_id' => 'required'
         ]);

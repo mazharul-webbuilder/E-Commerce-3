@@ -17,10 +17,6 @@ const USER = [
     'clubOwner' => 'clubOwner',
 ];
 
-
-
-
-
 /**
  * Get Admin User
 */
