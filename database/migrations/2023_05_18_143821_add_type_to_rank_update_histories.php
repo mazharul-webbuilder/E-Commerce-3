@@ -14,7 +14,7 @@ class AddTypeToRankUpdateHistories extends Migration
     public function up()
     {
         Schema::table('rank_update_histories', function (Blueprint $table) {
-            $table->enum('type',['auto_update','coin_update'])->nullable();
+            $table->enum('type',['auto_update','coin_update', 'seller_update'])->nullable();
         });
     }
 
