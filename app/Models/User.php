@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Affiliate\Affiliator;
+use App\Models\Merchant\Merchant;
+use App\Models\Seller\Seller;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -69,6 +72,21 @@ class User extends Authenticatable
         return self::where('data_applied_user_id',$this->id)->get();
     }
 
+    public function user_detail(){
+        return $this->hasOne(UserDetail::class);
+    }
+
+    public function merchant(){
+        return $this->hasOne(Merchant::class);
+    }
+
+    public function seller(){
+        return $this->hasOne(Seller::class);
+    }
+
+    public function affiliator(){
+        return $this->hasOne(Affiliator::class);
+    }
 
 
 

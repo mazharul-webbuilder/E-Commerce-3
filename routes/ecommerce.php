@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\EcommerceController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CheckoutController;
+use App\Http\Controllers\Api\UserAffiliateController;
 
 
 Route::post('merchant_register',[RegisterController::class,'merchant_register']);
@@ -33,6 +34,10 @@ Route::group(['middleware'=>'auth:api'],function (){
     Route::post('checkout',[CheckoutController::class,'checkout']);
     Route::get('get_payment',[CheckoutController::class,'get_payment']);
     Route::post('shipping_charge',[CheckoutController::class,'shipping_charge']);
+
+    // user ecommerce control
+    Route::get('user_balance',[UserAffiliateController::class,'user_balance']);
+    Route::post('money_transaction',[UserAffiliateController::class,'money_transaction']);
 });
 
 //cart api

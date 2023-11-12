@@ -33,6 +33,10 @@ const FORGET_PASSWORD_BY=[
     'clubOwner' => "clubOwner"
 ];
 
+const ECOMMERCE_BALANCE_DESTINATION=['merchant_to_user'=>'merchant_to_user','seller_to_user'=>'seller_to_user','affiliate_to_user'=>'affiliate_to_user',
+    'user_to_merchant'=>'user_to_merchant','user_to_seller'=>'user_to_seller','user_to_affiliate'=>'user_to_affiliate'
+];
+
 function default_image()
 {
     return asset('uploads/default.png');
