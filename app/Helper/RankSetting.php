@@ -9,6 +9,7 @@ use App\Models\RankUpdateDay;
 use App\Models\RankCommission;
 use App\Models\User;
 use App\Models\CoinEarningHistory;
+use Illuminate\Support\Facades\DB;
 
 const RANK_COMMISSION_COLUMN=['registration_commission','diamond_commission','betting_commission','withdraw_commission','game_asset_commission','updating_commission'];
 
@@ -161,6 +162,26 @@ function get_rank_name($rank_name,$type){
             case 5:
                 return "Controller";
         }
+}
+
+if (!function_exists('updateUserRank')) {
+    function updateUserRank(User $user, string $rankUpdatedType): void
+    {
+        $previousRank = $user->rank_id;
+
+        $user->rank_id = DB::table('ranks')->where('priority', 1)->value('id');
+        $user->next_rank_id = DB::table('ranks')->where('priority', 2)->value('id');
+        $user->save();
+
+        DB::table('rank_update_histories')->insert([
+            'user_id' => $user->id,
+            'previous_rank_id' => $previousRank,
+            'current_rank_id' => $user->rank_id,
+            'type' => $rankUpdatedType,
+            'created_at' => \Illuminate\Support\Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+    }
 }
 
 

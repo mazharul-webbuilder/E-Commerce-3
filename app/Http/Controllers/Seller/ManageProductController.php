@@ -12,6 +12,7 @@ use App\Models\SellerProduct;
 use App\Models\SellerProductBuyHistory;
 use App\Models\Settings;
 use App\Models\TopSellerCommission;
+use App\Models\User;
 use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -84,8 +85,28 @@ class ManageProductController extends Controller
 
             if (is_null($checker)){ // if product not in seller table then store it
                 DB::beginTransaction();
-                // Get Seller Product P. C. from Setting
-                $sellerProductPurchaseCharge = setting()->seller_product_purchase_charge;
+
+                // Seller Product Purchase Control
+                if (isset($auth_user->user_id)) {
+                    // VIP Product Purchase Price
+                    if ($auth_user->user->rank->priority != 0) {
+                        $sellerProductPurchaseCharge = setting()->seller_product_purchase_charge_when_user_vip;
+                    } else {
+                        $sellerProductPurchaseCharge = setting()->seller_product_purchase_charge;
+
+                        $countSellerProduct = DB::table('seller_products')->where('seller_id', $auth_user->id)->count();
+                        if ($countSellerProduct >= getAffiliateSetting()->seller_user_rank_upgrade_require_product) {
+                            $user = User::find($auth_user->user_id);
+                            if ($user->rank->priority != 1) {
+                                updateUserRank($user, 'seller_update');
+                            }
+                        }
+
+                    }
+                } else {
+                    // General Product Purchase Price
+                    $sellerProductPurchaseCharge = setting()->seller_product_purchase_charge;
+                }
 
                 // If seller has due product
                 if (isset($product_in_due_product) && $product_in_due_product->status == 1){

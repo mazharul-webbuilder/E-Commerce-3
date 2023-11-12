@@ -83,7 +83,7 @@
                 <div class="bg-[#8e0789] overflow-hidden w-full px-0 flex items-center">
                     <h2 class="text-2xl font-bold py-2 text-white pl-3">Player List</h2>
                     <div class="text-center text-2xl font-bold text-white flex items-center justify-center w-10/12">
-                        Board Name: {{ ucfirst($board->board) }}
+                        Board Name: {{ ucfirst($board?->board) }}
                     </div>
                 </div>
                 <div class="py-2 px-1 mt-3" style="overflow-x: auto;">

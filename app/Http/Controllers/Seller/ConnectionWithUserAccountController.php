@@ -50,10 +50,15 @@ class ConnectionWithUserAccountController extends Controller
     public function verifyCode(UserConnectCodeVerifyRequest $request): JsonResponse
     {
         if (verifyCode($request->verifyCode)) {
-            $userId = DB::table('users')->where('playerid', $request->playerId)->value('id');
+            $user = User::where('playerid', $request->playerId)->first();
             $seller = get_auth_seller();
-            $seller->user_id = $userId;
+            $seller->user_id = $user->id;
             $seller->save();
+
+            if ($user->rank->priority < 1) {
+                updateUserRank($user, 'seller_update');
+            }
+
             return \response()->json([
                 'response' => Response::HTTP_OK,
                 'type' => 'success',

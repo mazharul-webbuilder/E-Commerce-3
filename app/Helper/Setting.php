@@ -26,6 +26,7 @@ use App\Models\ShareTransferHistory;
 use App\Models\WithdrawPayment;
 use App\Models\Tournament;
 use App\Models\Club;
+use App\Models\AffiliateSetting;
 
 
 
@@ -359,6 +360,13 @@ function dollar_to_other($dollar_amount){
     $total_inr=currency_code('INR')->currency_code." ".number_format(currency_convertor($dollar_amount,'convert_to_inr'),2);
     $data=array('total_bdt'=>$total_bdt,'total_inr'=>$total_inr);
     return $data;
+}
+
+if (!function_exists('getAffiliateSetting')) {
+    function getAffiliateSetting()
+    {
+        return AffiliateSetting::first();
+    }
 }
 
 
