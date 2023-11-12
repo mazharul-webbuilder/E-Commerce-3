@@ -52,7 +52,10 @@ class GameController extends Controller
     public function playerlist($id)
     {
         $board = Roundludoboard::find($id);
-        $player = Playerinboard::where('board_id', $board->id)->first();
+        $player = null;
+        if (isset($board)) {
+            $player = Playerinboard::where('board_id', $board->id)->first();
+        }
         return view('webend.player_list', compact('player', 'board'));
     }
     /**
