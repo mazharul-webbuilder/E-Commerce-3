@@ -38,6 +38,7 @@ Route::group(['middleware'=>'auth:api'],function (){
     // user ecommerce control
     Route::get('user_balance',[UserAffiliateController::class,'user_balance']);
     Route::post('money_transaction',[UserAffiliateController::class,'money_transaction']);
+    Route::get('ecommerce_affiliate_transaction',[UserAffiliateController::class,'ecommerce_affiliate_transaction']);
 });
 
 //cart api
