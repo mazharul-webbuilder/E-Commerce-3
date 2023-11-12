@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 
 class User extends Authenticatable
@@ -88,9 +89,10 @@ class User extends Authenticatable
         return $this->hasOne(Affiliator::class);
     }
 
-
-
-
+    public function userDetail(): HasOne
+    {
+        return $this->hasOne(UserDetail::class);
+    }
 
 
 }
