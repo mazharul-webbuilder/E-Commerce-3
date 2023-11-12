@@ -12,6 +12,7 @@ use App\Models\SellerProduct;
 use App\Models\SellerProductBuyHistory;
 use App\Models\Settings;
 use App\Models\TopSellerCommission;
+use App\Models\User;
 use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -92,6 +93,17 @@ class ManageProductController extends Controller
                         $sellerProductPurchaseCharge = setting()->seller_product_purchase_charge_when_user_vip;
                     } else {
                         $sellerProductPurchaseCharge = setting()->seller_product_purchase_charge;
+
+                        $countSellerProduct = DB::table('seller_products')->where('seller_id', $auth_user->id)->count();
+                        if ($countSellerProduct >= getAffiliateSetting()->seller_user_rank_upgrade_require_product) {
+                            $user = User::find($auth_user->user_id);
+                            if ($user->rank->priority != 1) {
+                                $user->rank_id = DB::table('ranks')->where('priority', 1)->value('id');
+                                $user->next_rank_id = DB::table('ranks')->where('priority', 2)->value('id');
+                                $user->save();
+                            }
+                        }
+
                     }
                 } else {
                     // General Product Purchase Price
