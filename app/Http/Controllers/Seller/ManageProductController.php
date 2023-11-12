@@ -98,20 +98,7 @@ class ManageProductController extends Controller
                         if ($countSellerProduct >= getAffiliateSetting()->seller_user_rank_upgrade_require_product) {
                             $user = User::find($auth_user->user_id);
                             if ($user->rank->priority != 1) {
-                                $previousRank = $user->rank_id;
-
-                                $user->rank_id = DB::table('ranks')->where('priority', 1)->value('id');
-                                $user->next_rank_id = DB::table('ranks')->where('priority', 2)->value('id');
-                                $user->save();
-
-                                DB::table('rank_update_histories')->insert([
-                                    'user_id' => $auth_user->user_id,
-                                    'previous_rank_id' => $previousRank,
-                                    'current_rank_id' => $user->rank_id,
-                                    'type' => 'seller_update',
-                                    'created_at' => Carbon::now(),
-                                    'updated_at' => Carbon::now(),
-                                ]);
+                                updateUserRank($user, 'seller_update');
                             }
                         }
 
