@@ -44,10 +44,12 @@ Route::prefix('ecommerce')->group(base_path('routes/ecommerce.php'));
 
 Route::post('/test', [TournamentApiController::class, 'test']);
 
+Route::post('user_register',[LoginController::class,'user_register']);
 Route::post('/login-step-1', [LoginController::class, 'login_step_one']);
 Route::post('/login-step-2', [LoginController::class, 'otp_verification']);
 Route::post('/login-step-3', [LoginController::class, 'user_info']);
 Route::post('/gmail-login', [LoginController::class, 'gmail_Login']);
+Route::post('/user_manual_login', [LoginController::class, 'user_manual_login']);
 Route::post('/free-2p-complete', [Free_two_playerController::class, 'two_player_game_complete']);
 Route::post('/free-3p-complete', [Free_three_playerController::class, 'three_player_game_complete']);
 Route::post('/free-4p-complete', [Free4playerController::class, 'game_complete']);

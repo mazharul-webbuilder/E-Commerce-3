@@ -7,17 +7,23 @@ use App\Models\Ecommerce\Cart;
 use App\Models\Free2pgame;
 use App\Models\Free3pgame;
 use App\Models\Free4playergame;
+use App\Models\Seller\Seller;
 use App\Models\Settings;
 use App\Models\User;
 use App\Models\Rank;
+use App\Models\UserDetail;
 use App\Models\UserDevice;
 use App\Models\VersionUpdate;
 use Carbon\Carbon;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\GmailSend;
+use Illuminate\Support\Str;
 use Mail;
 use Laravel\Passport\RefreshToken;
 use Laravel\Passport\Token;
@@ -29,6 +35,93 @@ class LoginController extends Controller
     //    public function login(){
     //        return redirect()->route('club_owner.login.show');
     //    }
+
+    public function user_register(Request $request){
+        if ($request->isMethod("post")){
+            $validator = Validator::make($request->all(),[
+                'name'          =>'required|string',
+                'email'         =>'required|email|unique:users',
+                'password'      =>'required|min:4|confirmed',
+                'avatar'        =>'nullable|mimes:jpeg,png,jpg',
+            ]);
+            try {
+                if (!$validator->fails()){
+
+                    $user = User::create([
+                        'playerid' =>  rand(10000000, 99999999),
+                        'email' => $request->email,
+                        'name' => $request->name,
+                        'password'=>bcrypt($request->password),
+                        'last_login' => Carbon::now(),
+                        'free_coin' => Settings::first()->free_login_coin,
+                        'paid_coin' => 0, //test perpose
+                        'free_diamond' => Settings::first()->free_login_diamond,
+                        'rank_id' => Rank::where('priority', 0)->first()->id,
+                        'next_rank_id' => Rank::where('priority', 1)->first()->id,
+                        'last_rank_update_date' => Carbon::now()->format('Y-m-d H:m:s'),
+                    ]);
+                    UserDetail::create([
+                        'user_id'=>$user->id,
+                        'ecommerce_balance'=>0
+                    ]);
+
+                    $success = $user;
+                    Auth::login($user);
+                    $success['token'] =  Auth::user()->createToken('MyApp')->accessToken;
+                    return response()->json(['type' => "verified-user", 'message' => "Your Account Creation successfully done!.", 'data' => $success]);
+
+                }else {
+
+                    return response()->json([
+                        'message'       =>$validator->errors()->first(),
+                        'type'          =>"error",
+                        'status' =>422
+                    ],Response::HTTP_UNPROCESSABLE_ENTITY);
+                }
+
+            }catch (QueryException $exception){
+                return response()->json([
+                    'message'       =>$exception->getMessage(),
+                    'type'          =>"error",
+                    'status' =>500
+                ],Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+        }
+    }
+
+    public function user_manual_login(Request $request)
+    {
+
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        $data = User::where('email', $request->email)
+            ->first();
+
+        if (!is_null($data)) {
+            $data = [
+                'email' => $request->email,
+                'password' => $request->password
+            ];
+
+            if (auth()->attempt($data)) {
+                $user=auth()->user();
+                $user['token'] = auth()->user()->createToken('MyApp')->accessToken;
+                return response()->json(['type' => "verified-user", 'message' => "Your Account Creation successfully done!.", 'data' => $user]);
+            } else {
+                return response()->json(['type' => "error", 'message' => "Credential not match!.", 'status' =>200]);
+            }
+
+        }else{
+            return response()->json([
+                'message' => 'account not fount',
+                'status'=>Response::HTTP_BAD_REQUEST,
+                'type'=>'error'
+            ], Response::HTTP_OK);
+        }
+    }
 
     public function login_step_one(Request $request)
     {
@@ -343,6 +436,10 @@ class LoginController extends Controller
                     'rank_id' => Rank::where('priority', 0)->first()->id,
                     'next_rank_id' => Rank::where('priority', 1)->first()->id,
                     'last_rank_update_date' => Carbon::now()->format('Y-m-d H:m:s'),
+                ]);
+                UserDetail::create([
+                    'user_id'=>$newuser->id,
+                    'ecommerce_balance'=>0
                 ]);
                 if ($newuser) {
                     $success = $newuser;
