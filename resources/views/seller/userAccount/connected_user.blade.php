@@ -1,5 +1,14 @@
 @extends('seller.layout.app')
 @section('content')
+    <style>
+        #dataTable tbody > tr {
+            height: 60px;
+        }
+        #dataTable tbody > tr > td {
+            color: black;
+            text-align: center;
+        }
+    </style>
     <section class="w-full bg-white p-3 mt-5">
         <div class="bg-white rounded-lg p-4 shadow-md">
             <h1 class="text-2xl font-semibold mb-4">User Details</h1>
@@ -38,6 +47,7 @@
                 Disconnect Account
             </button>
         </div>
+        @include('includes._ecommerce_balance_transfer_history_datatable')
     </section>
 
 
@@ -74,6 +84,41 @@
                     }
                 })
             })
+        })
+    </script>
+    {{--Show Seller Transfer Hisotory--}}
+    <script>
+        $(document).ready(function (){
+            $("#dataTable").DataTable({
+                processing: true,
+                responsive: true,
+                serverSide: true,
+                ordering: false,
+                pagingType: "full_numbers",
+                ajax: '{{ route('seller.balance.transfer.history', [get_auth_seller()->user_id]) }}',
+                columns: [
+                    { data: 'DT_RowIndex',name:'DT_RowIndex' },
+                    { data: 'amount',name:'amount' },
+                    {
+                        data: 'type',
+                        name: 'type',
+                        render: function (data) {
+                            return data.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                        }
+                    },
+                    {
+                        data: 'destination',
+                        name:'destination',
+                        render: function (data) {
+                            return data.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                        }
+                    },
+                ],
+                language : {
+                    processing: 'Processing'
+                },
+
+            });
         })
     </script>
 @endsection
