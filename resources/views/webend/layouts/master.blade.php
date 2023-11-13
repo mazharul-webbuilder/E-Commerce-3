@@ -1417,6 +1417,15 @@
                                     <span class="ml-3 group-hover:text-white transition duration-150">Currency</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ route('ecommerce.users.balance.transfer.history') }}"
+                                   class="{{ Route::is('ecommerce.users.balance.transfer.history') ? 'bg-blue-500' : '' }}
+                                   text-lg text-white font-normal rounded-lg flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">
+                                <i
+                                        class="fas fa-list text-white group-hover:text-white transition duration-75"></i>
+                                    <span class="ml-3 group-hover:text-white transition duration-150">Balance Transfer History</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Admin\AdvertisementController;
 use App\Http\Controllers\Admin\Auth\AdminLoginController;
+use App\Http\Controllers\EcommerceBalanceTransferHisotoryController;
 use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Admin\CurrencyController;
 use App\Http\Controllers\Admin\DiamondPackageController;
@@ -621,6 +622,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
         Route::get('load/datatable', [ManageSellerController::class, 'datatable'])->name('recharge.history.load');
         Route::post('recharge/status/update', [ManageSellerController::class, 'statusUpdate'])->name('recharge.history.status update');
     });
+
+    /*Ecommerce all users Balance Transfer History*/
+    Route::get('/ecommerce/users/balance/transfer/history', [EcommerceBalanceTransferHisotoryController::class, 'index'])->name('ecommerce.users.balance.transfer.history');
+    Route::get('/ecommerce/users/balance/t/datatable', [EcommerceBalanceTransferHisotoryController::class, 'datatable'])->name('ecommerce.users.balance.transfer.history.datatable');
 
 });
 
