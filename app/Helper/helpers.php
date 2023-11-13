@@ -21,6 +21,7 @@ use App\Models\Merchant\Merchant;
 use App\Models\Ecommerce\Product;
 use App\Models\Seller\Seller;
 use App\Models\Affiliate\Affiliator;
+use App\Models\EcommerceBalanceTransfer;
 use App\Models\AdvertisementSetting;
 
 
@@ -430,6 +431,19 @@ if (!function_exists('getProductAverageRating')) {
             return 0;
         }
     }
+}
 
+/**
+ * This below function return Ecommerce Balance Transfer History
+*/
+if (!function_exists('getEcommerceBalanceTransferHistory')){
+    function getEcommerceBalanceTransferHistory(int $userId, string $destination1, string $destination2)
+    {
+        return EcommerceBalanceTransfer::where('user_id', $userId)
+            ->Where(function ($query) use ($destination1, $destination2){
+                $query->where('destination', $destination1)
+                    ->orWhere('destination', $destination2);
+            })->get();
+    }
 }
 

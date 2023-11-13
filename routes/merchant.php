@@ -8,6 +8,7 @@ use App\Http\Controllers\Merchant\GalleryController;
 use App\Http\Controllers\Merchant\OrderController;
 use App\Http\Controllers\Merchant\WithdrawController;
 use App\Http\Controllers\Merchant\ShopController;
+use App\Http\Controllers\Merchant\BalanceTransferController;
 use App\Http\Controllers\Merchant\ConnectionWithUserAccountController;
 
 
@@ -94,6 +95,8 @@ Route::group(['as' => 'merchant.'], function (){
     /*Connect Account*/
     Route::get('/connected/user/account', [ConnectionWithUserAccountController::class, 'connectedAccount'])->name('connected.user.account');
     Route::post('/disconnect/user/account', [ConnectionWithUserAccountController::class, 'userDisconnect'])->name('account.discount');
+    /*Balance Transfer history to user*/
+    Route::get('/get/merchant/balance/transfer/history/{userId}', [BalanceTransferController::class, 'datatable'])->name('balance.transfer.history');
 });
 
 

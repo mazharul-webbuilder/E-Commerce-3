@@ -1,5 +1,14 @@
 @extends('merchant.layout.app')
 @section('content')
+    <style>
+        #dataTable tbody > tr {
+            height: 60px;
+        }
+        #dataTable tbody > tr > td {
+            color: black;
+            text-align: center;
+        }
+    </style>
     <section class="w-full bg-white p-3 mt-5">
         <div class="bg-white rounded-lg p-4 shadow-md">
             <h1 class="text-2xl font-semibold mb-4">User Details</h1>
@@ -38,6 +47,39 @@
                 Disconnect Account
             </button>
         </div>
+        <div class="border border-[#8e0789] rounded-md mt-5 mb-8">
+            <div class="bg-[#8e0789] overflow-hidden w-full px-0 flex items-center">
+                <h2 class="text-2xl font-bold py-2 text-white pl-3">Transfer History</h2>
+            </div>
+            <div class="py-2 px-1 mt-3" style="overflow-x: auto;">
+                <table class="text-sm text-left text-white border-l border-r" id="dataTable" style=" width: 100%;">
+                    <thead class="text-xs text-white uppercase bg-amber-600">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                            <div class="text-center">
+                                S/N
+                            </div>
+                        </th>
+                        <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                            <div class="text-center">
+                                Amount
+                            </div>
+                        </th>
+                        <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                            <div class="text-center">
+                                Type
+                            </div>
+                        </th>
+                        <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                            <div class="text-center">
+                                Destination
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
     </section>
 
 
@@ -74,6 +116,41 @@
                     }
                 })
             })
+        })
+    </script>
+    {{--Show Seller Transfer Hisotory--}}
+    <script>
+        $(document).ready(function (){
+            $("#dataTable").DataTable({
+                processing: true,
+                responsive: true,
+                serverSide: true,
+                ordering: false,
+                pagingType: "full_numbers",
+                ajax: '{{ route('merchant.balance.transfer.history', [get_auth_merchant()->user_id]) }}',
+                columns: [
+                    { data: 'DT_RowIndex',name:'DT_RowIndex' },
+                    { data: 'amount',name:'amount' },
+                    {
+                        data: 'type',
+                        name: 'type',
+                        render: function (data) {
+                            return data.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                        }
+                    },
+                    {
+                        data: 'destination',
+                        name:'destination',
+                        render: function (data) {
+                            return data.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                        }
+                    },
+                ],
+                language : {
+                    processing: 'Processing'
+                },
+
+            });
         })
     </script>
 @endsection
