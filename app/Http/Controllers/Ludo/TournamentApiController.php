@@ -139,6 +139,7 @@ class TournamentApiController extends Controller
                                             if ($round_number > 1) {
 
                                                 $round = Gameround::where('game_id', $game->id)->where('round_no', 1)->first();
+
                                             } else {
                                                 $round = Gameround::where('game_id', $game->id)->first();
                                             }
@@ -282,8 +283,8 @@ class TournamentApiController extends Controller
             'game_id' => 'required|numeric',
             'round_id' => 'required|numeric',
             'room_id' => 'required',
-            //            'board_number' => 'required',
         ]);
+
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->all()]);
         }

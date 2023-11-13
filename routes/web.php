@@ -78,7 +78,12 @@ Route::get('{type}/reset/password', [ForgetPasswordController::class, 'passwordR
 Route::post('password/reset', [ForgetPasswordController::class, 'passwordResetPost'])->name('password.reset.post');
 /*=========================================================*/
 
-//Route::get('/login', [LoginController::class, 'login'])->name('login');
+Route::get('/login', function (){
+    [
+        'message'=>'Unaunthenticated',
+        'status'=>401
+    ];
+})->name('login');
 
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
