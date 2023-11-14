@@ -286,7 +286,6 @@ class RegisterController extends Controller
                                'user_id'=>$user->id,
                            ]);
                            array_push($accounts,'Merchant Account');
-
                        }
 
                        if ($request->seller_account==1){

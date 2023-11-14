@@ -169,6 +169,10 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/tournament-round-join', [TournamentApiController::class, 'round_join']);
     Route::post('/tournament-round-join_update', [TournamentApiController::class, 'round_join_old']);
     Route::post('/tournament-round-diamond-use', [TournamentApiController::class, 'round_diamond_use']);
+    Route::post('/track_winner', [TournamentApiController::class, 'track_winner']);
+    Route::post('/get_track_winner', [TournamentApiController::class, 'get_track_winner']);
+
+
 
     Route::get('/tournament-bidding', [TournamentApiController::class, 'game_in_bidding']);
     Route::post('/tournament-bidding-by-player', [TournamentApiController::class, 'bided_to_player']);
