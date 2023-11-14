@@ -67,6 +67,11 @@
                                     Current Price
                                 </div>
                             </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    Ordered Item
+                                </div>
+                            </th>
 
                             <th scope="col" class="px-4 py-3">
                                 <div class="text-center">
@@ -83,6 +88,7 @@
                                 <td class="text-center"><img src="{{asset("/uploads/product/small/{$orderDetail->product->thumbnail}")}}" height="50" width="50" alt="{{default_image()}}"></td>
                                 <td>{{$orderDetail?->product?->title}}</td>
                                 <td>{{$orderDetail?->product?->current_price}}</td>
+                                <td>{{$orderDetail?->product_quantity}}</td>
                                 <td><a href="{{route('seller.product.view', $orderDetail->product->id)}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Details</a></td>
                             </tr>
                         @endforeach
