@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\UserConnectRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserConnectRequest extends FormRequest
@@ -17,6 +18,22 @@ class UserConnectRequest extends FormRequest
     }
 
     /**
+     * Get Request User
+    */
+    private function getRequestUserType(): ?string
+    {
+        if (auth()->guard('merchant')->check()){
+            return 'merchant';
+        } elseif (auth()->guard('seller')->check()){
+            return 'seller';
+        } elseif (auth()->guard('affiliate')->check()){
+            return 'affiliate';
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
@@ -24,7 +41,7 @@ class UserConnectRequest extends FormRequest
     public function rules()
     {
         return [
-            'playerId' => 'required|exists:users,playerid'
+            'playerId' => ['required', 'exists:users,playerid', new UserConnectRule($this->getRequestUserType())]
         ];
     }
 
