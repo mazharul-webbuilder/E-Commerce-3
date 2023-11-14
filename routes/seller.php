@@ -69,5 +69,6 @@ Route::group([ 'as'=>'seller.'],function(){
     Route::prefix('order/')->group(function (){
         Route::get('all', [OrderController::class, 'index'])->name('orders');
         Route::get('datatable', [OrderController::class, 'datatable'])->name('order.load');
+        Route::get('products/{id}', [OrderController::class, 'orderedProducts'])->name('ordered.products');
     });
 });

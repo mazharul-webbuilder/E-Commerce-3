@@ -43,11 +43,22 @@ class OrderController extends Controller
                 return Carbon::parse($sellerOrder->created_at)->format('d-m-Y');
             })
             ->addColumn('view_my_products', function ($sellerOrder){
-                return '<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" data-id="'.$sellerOrder->id.'">
+                return '<a href="'.route('seller.ordered.products', $sellerOrder->id).'"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             View Ordered Products
-                        </button>';
+                        </a>';
             })
             ->rawColumns(['product_quantity', 'order_date', 'view_my_products'])
             ->make('true');
+    }
+
+    /**
+     * Ordered Product of Seller
+    */
+    public function orderedProducts($id): View
+    {
+        $order = Order::find($id);
+
+        return \view('seller.order.ordered_products', compact('order'));
     }
 }
