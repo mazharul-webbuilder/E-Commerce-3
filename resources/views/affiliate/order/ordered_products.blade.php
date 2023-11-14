@@ -81,7 +81,7 @@
                         </tr>
                         </thead>
                         <tbody class="text-black">
-                        @foreach($order->seller_order_detail as $orderDetail)
+                        @foreach($order->affiliator_order_detail as $orderDetail)
                             <tr>
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$orderDetail?->product?->merchant->name}}</td>
