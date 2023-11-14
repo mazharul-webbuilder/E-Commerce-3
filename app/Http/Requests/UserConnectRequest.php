@@ -22,15 +22,13 @@ class UserConnectRequest extends FormRequest
     */
     private function getRequestUserType(): ?string
     {
-        if (auth()->guard('merchant')->check()){
-            return 'merchant';
-        } elseif (auth()->guard('seller')->check()){
-            return 'seller';
-        } elseif (auth()->guard('affiliate')->check()){
-            return 'affiliate';
-        } else {
-            return null;
+        $guards = ['merchant', 'seller', 'affiliate'];
+        foreach ($guards as $guard) {
+            if (auth()->guard($guard)->check()) {
+                return $guard;
+            }
         }
+        return null;
     }
 
     /**
