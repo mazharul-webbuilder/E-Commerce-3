@@ -8,6 +8,7 @@ use App\Http\Controllers\Seller\ManageProductController;
 use App\Http\Controllers\Seller\RechargeController;
 use App\Http\Controllers\Seller\WithdrawController;
 use App\Http\Controllers\Seller\BalanceTransferController;
+use App\Http\Controllers\Seller\OrderController;
 
 
 Route::group([ 'as'=>'seller.'],function(){
@@ -63,4 +64,10 @@ Route::group([ 'as'=>'seller.'],function(){
     Route::post('/disconnect/user/account', [ConnectionWithUserAccountController::class, 'userDisconnect'])->name('account.discount');
     /*Balance Transfer history to user*/
     Route::get('/get/seller/balance/transfer/history/{userId}', [BalanceTransferController::class, 'datatable'])->name('balance.transfer.history');
+
+    /*Order Module*/
+    Route::prefix('order/')->group(function (){
+        Route::get('all', [OrderController::class, 'index'])->name('orders');
+        Route::get('datatable', [OrderController::class, 'datatable'])->name('order.load');
+    });
 });
