@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\GamedataResource;
 use App\Http\Resources\Roundjoindeatils;
 use App\Http\Resources\TournamentResource;
+use App\Http\Resources\TranckWinnerResource;
 use App\Models\Biding_details;
 use App\Models\CoinUseHistory;
 use App\Models\Diamond_uses;
@@ -20,6 +21,8 @@ use App\Models\RegisterToOfferTournament;
 use App\Models\Roundludoboard;
 use App\Models\RoundSettings;
 use App\Models\Tournament;
+use App\Models\TrackRoomCode;
+use App\Models\TrackWinner;
 use App\Models\User;
 use App\Models\WithdrawHistory;
 use Illuminate\Support\Str;
@@ -43,10 +46,91 @@ class TournamentApiController extends Controller
     public $auth_user = null;
     public $winning_position = ['first_bonus_point', 'second_bonus_point', 'third_bonus_point', 'fourth_bonus_point'];
 
+
+    public function track_winner(Request $request){
+
+        $this->validate($request,[
+            'room_code'=>'required',
+        ]);
+
+        $check_room_code=TrackRoomCode::where('room_code',$request->room_code)->first();
+
+        if (!is_null($check_room_code)){
+            $check_winner=TrackWinner::where('track_room_code_id',$check_room_code->id)
+                ->where('position',$request->position)
+                ->first();
+                if (!is_null($check_winner)){
+                    $check_winner->user_id=$request->user_id;
+                    $check_winner->save();
+                }else{
+
+                    $winner=new TrackWinner();
+                    $winner->track_room_code_id=$check_room_code->id;
+                    $winner->user_id=$request->user_id;
+                    $winner->position=$request->position;
+                    $winner->type=$request->type;
+                    $winner->save();
+                }
+
+                return response()->json([
+                    'message'=>"Successfully stored",
+                    'status'=>Response::HTTP_OK,
+                ],Response::HTTP_OK);
+
+        }else{
+
+            $data=new TrackRoomCode();
+            $data->room_code=$request->room_code;
+            $data->save();
+
+            if ($request->has("user_id"))
+            {
+
+               $winner=new TrackWinner();
+               $winner->track_room_code_id=$data->id;
+               $winner->user_id=$request->user_id;
+               $winner->position=$request->position;
+               $winner->type=$request->type;
+               $winner->save();
+            }
+
+            return response()->json([
+                'message'=>"Successfully stored",
+                'status'=>Response::HTTP_OK,
+            ],Response::HTTP_OK);
+
+        }
+    }
+
+    public function get_track_winner(Request $request){
+
+        $this->validate($request,[
+            'room_code'=>'required',
+        ]);
+
+        try {
+            $datas=TrackRoomCode::where('room_code',$request->room_code)->first();
+           $datas= TranckWinnerResource::make($datas);
+            return response()->json([
+                'datas'=>$datas,
+                'status'=>Response::HTTP_OK,
+            ],Response::HTTP_OK);
+
+        }catch (Exception $exception){
+
+            return response()->json([
+                'message'=>$exception->getMessage(),
+                'status'=>Response::HTTP_INTERNAL_SERVER_ERROR,
+            ],Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
     public function index()
     {
         $tournaments = Tournament::latest()->get();
         return  view('webend.tournament', compact('tournaments'));
+
     }
 
     public function game_sub_type($id)
