@@ -7,6 +7,7 @@ use App\Http\Controllers\Affiliate\LoginController;
 use App\Http\Controllers\Affiliate\ManageProductController;
 use App\Http\Controllers\Affiliate\WithdrawController;
 use App\Http\Controllers\Affiliate\BalanceTransferController;
+use App\Http\Controllers\Affiliate\OrderController;
 
 Route::group([ 'as'=>'affiliate.'],function(){
 
@@ -54,5 +55,12 @@ Route::group([ 'as'=>'affiliate.'],function(){
     Route::post('/disconnect/user/account', [ConnectionWithUserAccountController::class, 'userDisconnect'])->name('account.discount');
     /*Balance Transfer history to user*/
     Route::get('/get/affiliator/balance/transfer/history/{userId}', [BalanceTransferController::class, 'datatable'])->name('balance.transfer.history');
+
+    /*Order Module*/
+    Route::prefix('order/')->group(function (){
+        Route::get('all', [OrderController::class, 'index'])->name('orders');
+        Route::get('datatable', [OrderController::class, 'datatable'])->name('order.load');
+        Route::get('products/{id}', [OrderController::class, 'orderedProducts'])->name('ordered.products');
+    });
 
 });

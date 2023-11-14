@@ -31,7 +31,7 @@ class OrderController extends Controller
     public function datatable():JsonResponse
     {
         $sellerOrders = Order::with('order_detail')->whereHas('order_detail', function ($query){
-            $query->where('sell_type', 'seller');
+            $query->where('sell_type', 'seller')->where('seller_id', auth()->guard('seller')->user()->id);
         })->get();
 
         return DataTables::of($sellerOrders)
