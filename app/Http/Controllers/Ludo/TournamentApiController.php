@@ -1059,9 +1059,10 @@ class TournamentApiController extends Controller
                         $player->save();
                         $user = User::find($request->looser);
 
-                        provide_winning_prize($tournament, $user, $round_settings->looser);
+
                         //===here complete game round====
                         $this->complete_game_detail_info_final($ludo_board,$player);
+                        provide_winning_prize($tournament, $user, $round_settings->looser);
 
                         $user->win_balance += $round_settings->fourth_bonus_point;
                         $user->save();
@@ -1100,7 +1101,7 @@ class TournamentApiController extends Controller
 
                                 $player = Playerinboard::where('tournament_id', $ludo_board->tournament_id)->where('game_id', $ludo_board->game_id)->where('round_id', $ludo_board->round_id)->where('board_id', $ludo_board->id)->update(['status' => 2]);
                             }
-                            provide_winning_prize($tournament, $user, $round_settings->first_bonus_point);
+                           // provide_winning_prize($tournament, $user, $round_settings->first_bonus_point);
                             bidding_result($ludo_board->id);
                            // DB::commit();
                             return api_response('success', 'Congratulations, You are the winner!', $player, 200);
@@ -1126,7 +1127,7 @@ class TournamentApiController extends Controller
                                 }
                                 $player = Playerinboard::where('tournament_id', $ludo_board->tournament_id)->where('game_id', $ludo_board->game_id)->where('round_id', $ludo_board->round_id)->where('board_id', $ludo_board->id)->update(['status' => 2]);
                             }
-                            provide_winning_prize($tournament, $user, $round_settings->second_bonus_point);
+                           // provide_winning_prize($tournament, $user, $round_settings->second_bonus_point);
                            // DB::commit();
                             return api_response('success', 'Congratulations, You are the Second winner!', $player, 200);
                         }
@@ -1156,6 +1157,7 @@ class TournamentApiController extends Controller
                           //  DB::commit();
                             return api_response('success', 'Congratulations, You are the Third winner!', $player, 200);
                         }
+                        //===========================
                         if (($player->fourth_winner == null) && ($request->looser != null)) {
                             $player->fourth_winner = User::find($request->looser)->id;
                             $player->save();
@@ -1296,7 +1298,7 @@ class TournamentApiController extends Controller
                                 }
                                 $player = Playerinboard::where('tournament_id', $ludo_board->tournament_id)->where('game_id', $ludo_board->game_id)->where('round_id', $ludo_board->round_id)->where('board_id', $ludo_board->id)->update(['status' => 2]);
                             }
-                            provide_winning_prize($tournament, $user, $round_settings->first_bonus_point);
+                          //  provide_winning_prize($tournament, $user, $round_settings->first_bonus_point);
                             bidding_result($ludo_board->id);
                            // DB::commit();
                             return api_response('success', 'Congratulations, You are the winner!', $player, 200);
