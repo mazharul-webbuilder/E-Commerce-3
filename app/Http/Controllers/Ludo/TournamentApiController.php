@@ -984,7 +984,7 @@ class TournamentApiController extends Controller
 
             if ($ludo_board != null) {
                 $tournament = Tournament::find($ludo_board->tournament_id);
-                DB::beginTransaction();
+               // DB::beginTransaction();
                 // for final round of 4 player tournament  start
                 $round_settings = RoundSettings::where('tournament_id', $ludo_board->tournament_id)->where('round_type', $ludo_board->round->round_no)->first();
 
@@ -1007,7 +1007,7 @@ class TournamentApiController extends Controller
                             $this->rank_commission_distribution_common_function($request->first_winner,$round_settings->first_bonus_point,RANK_COMMISSION_COLUMN[4]);
                         }
                        // bidding_result($ludo_board->id);
-                        DB::commit();
+                      //  DB::commit();
                         return api_response('success', 'Congratulations, You are the winner!', $player, 200);
                     } elseif (($player->first_winner != null) && ($player->first_winner == $request->first_winner)) {
                         return api_response('success', 'You already declared as a first winner!.', $player, 200);
@@ -1027,7 +1027,7 @@ class TournamentApiController extends Controller
                         {
                             $this->rank_commission_distribution_common_function($request->second_winner,$round_settings->second_bonus_point,RANK_COMMISSION_COLUMN[4]);
                         }
-                       DB::commit();
+                       //DB::commit();
                         return api_response('success', 'Congratulations, You are the Second winner!', $player, 200);
                     } elseif (($player->second_winner != null) && ($player->second_winner == $request->second_winner)) {
 
@@ -1049,7 +1049,7 @@ class TournamentApiController extends Controller
                             $this->rank_commission_distribution_common_function($request->third_winner,$round_settings->third_bonus_point,RANK_COMMISSION_COLUMN[4]);
                         }
 
-                        DB::commit();
+                       // DB::commit();
                         return api_response('success', 'Congratulations, You are the Third winner!', $player, 200);
                     } elseif (($player->third_winner != null) && ($player->third_winner == $request->third_winner)) {
                         return api_response('success', 'You already declared as a Third winner!.', $player, 200);
@@ -1066,7 +1066,7 @@ class TournamentApiController extends Controller
                         $user->win_balance += $round_settings->fourth_bonus_point;
                         $user->save();
 
-                        DB::commit();
+                       // DB::commit();
                         return api_response('success', 'Opps, You loose the game!', $player, 200);
                     } elseif (($player->fourth_winner != null) && ($player->fourth_winner == $request->looser)) {
                         return api_response('success', 'You already declared as a looser!.', $player, 200);
@@ -1103,7 +1103,7 @@ class TournamentApiController extends Controller
                                 $player = Playerinboard::where('tournament_id', $ludo_board->tournament_id)->where('game_id', $ludo_board->game_id)->where('round_id', $ludo_board->round_id)->where('board_id', $ludo_board->id)->update(['status' => 2]);
                             }
                             bidding_result($ludo_board->id);
-                            DB::commit();
+                           // DB::commit();
                             return api_response('success', 'Congratulations, You are the winner!', $player, 200);
                         }
                         if (($player->second_winner == null) && ($request->second_winner != null)) {
@@ -1163,9 +1163,7 @@ class TournamentApiController extends Controller
                             $player->save();
                             $user = User::find($request->looser);
                             provide_winning_prize($tournament, $user, $round_settings->fourth_bonus_point);
-
                             $user->save();
-
                             //$this->send_prize_to_winner($user->id,$tournament->id,$round_settings->round_type,$this->winning_position[3]);
                             if (($player->first_winner != null) && ($player->second_winner != null)  && ($player->third_winner != null)  && ($player->fourth_winner != null)) {
                                 $ludo_board->status = 2;
