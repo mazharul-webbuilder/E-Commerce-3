@@ -615,13 +615,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
         Route::post('status/change/affiliator', [AffiliatorWithdrawController::class, 'statusUpdate'])->name('status.change.affiliate');
     });
     /*Ecommerce Withdraw End*/
+    /*Start All Withdraw*/
+    Route::get('all/withdraw', [WithdrawController::class, 'index'])->name('admin.all.withdraw');
+    Route::get('all/withdraw/datatable', [WithdrawController::class, 'datatable'])->name('admin.all.withdraw.datatable');
+    /*End All Withdraw*/
     Route::group(['prefix' => 'currency'], function () {
         Route::get('/', [CurrencyController::class, 'index'])->name('currency.index');
         Route::get('edit/{id}', [CurrencyController::class, 'edit'])->name('currency.edit');
         Route::post('update', [CurrencyController::class, 'update'])->name('currency.update');
     });
 
-    /*Seller Balance Rechare History*/
+    /*Seller Balance Recharge History*/
     Route::group(['prefix' => 'seller/', 'as' => 'admin.seller.'], function (){
         Route::get('recharge/history', [ManageSellerController::class, 'index'])->name('balance.history');
         Route::get('load/datatable', [ManageSellerController::class, 'datatable'])->name('recharge.history.load');
