@@ -112,6 +112,12 @@ if (!function_exists('api_response')){
     }
 }
 
+if (!function_exists('api_notification')){
+    function api_notification($message_info){
+        return response()->json($message_info);
+    }
+}
+
 //    for round diamond use and condition  start
 if (!function_exists('round_diamond')) {
     function round_diamond($player, $tournament_id, $round_type, $game_id, $round_id)    {

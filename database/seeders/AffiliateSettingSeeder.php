@@ -22,6 +22,7 @@ class AffiliateSettingSeeder extends Seeder
                 'game_asset_commission' => 10,
                 'top_seller_commission' => 30,
                 'share_holder_commission' => 15,
+                'seller_user_rank_upgrade_require_product'=>1,
                 'updated_at' => Carbon::now(),
                 'created_at' => Carbon::now()
 

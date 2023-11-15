@@ -930,7 +930,42 @@ class TournamentApiController extends Controller
     }
 
 
+ protected function complete_game_detail_info($ludo_board,$player)
+ {
+     if (($player->first_winner != null) && ($player->second_winner != null)  && ($player->third_winner != null)  && ($player->fourth_winner != null)) {
 
+         $ludo_board->status = 2;
+         $ludo_board->save();
+         $player->status = 2;
+         $player->save();
+
+         $remain_boards_to_completed = Roundludoboard::where('round_id', $ludo_board->round_id)->where('status', 1)->get();
+            // when all board will finished then game round will be finished
+         if (count($remain_boards_to_completed) == 0) {
+             Gameround::find($ludo_board->round_id)->update([
+                 'status' => 2,
+                 'round_end_time' => Carbon::now(),
+             ]);
+         }
+
+         $remain_game_round_to_completed = Gameround::where('game_id', $ludo_board->game_id)->where('status', 1)->get();
+         // when all game round will finished then game  will be finished
+         if (count($remain_game_round_to_completed) == 0) {
+             Game::find($ludo_board->game_id)->update(['status' => 2]);
+         }
+         $player = Playerinboard::where('tournament_id', $ludo_board->tournament_id)->where('game_id', $ludo_board->game_id)
+             ->where('round_id', $ludo_board->round_id)->where('board_id', $ludo_board->id)->update(['status' => 2]);
+     }
+ }
+
+ protected function  rank_commission_distribution_common_function($winner,$coin)
+ {
+     $win_user = User::find($winner);
+     $this->coin = $coin;
+     $type = RANK_COMMISSION_COLUMN[4];
+     $this->auth_user = $win_user;
+     $this->rank_commission_distribution($win_user, $type, COIN_EARNING_SOURCE['tournament_winning']);
+}
     //    Tournament round complete api start
     public function tournament_round_complete(Request $request)
     {
@@ -949,76 +984,62 @@ class TournamentApiController extends Controller
         try {
 
             $ludo_board = Roundludoboard::where('board', $request->room_id)->where('status', '!=', 2)->first();
-            //  return $ludo_board;
+             // return $ludo_board;
 
             if ($ludo_board != null) {
                 $tournament = Tournament::find($ludo_board->tournament_id);
-                DB::beginTransaction();
+               // DB::beginTransaction();
                 //     for final round of 4 player tournament  start
                 $round_settings = RoundSettings::where('tournament_id', $ludo_board->tournament_id)->where('round_type', $ludo_board->round->round_no)->first();
 
-                $player = Playerinboard::where('tournament_id', $ludo_board->tournament_id)->where('game_id', $ludo_board->game_id)->where('round_id', $ludo_board->round_id)->where('board_id', $ludo_board->id)->first();
-                //return $player;
+                $player = Playerinboard::where('tournament_id', $ludo_board->tournament_id)->where('game_id', $ludo_board->game_id)
+                    ->where('round_id', $ludo_board->round_id)->where('board_id', $ludo_board->id)->first();
+
                 if ($ludo_board->round->round_no == 'final') {
 
                     if (($player->first_winner == null) && ($request->first_winner != null)) {
 
-                        $player->first_winner = User::find($request->first_winner)->id;
+                       // dd($request->all());
 
+                        $player->first_winner = $request->first_winner;
                         $player->save();
-
                         $user = User::find($request->first_winner);
+
+                        //===here complete game round====
+                        $this->complete_game_detail_info($ludo_board,$player);
 
                         provide_winning_prize($tournament, $user, $round_settings->first_bonus_point);
 
+                        $this->rank_commission_distribution_common_function($request->first_winner,$round_settings->first_bonus_point,RANK_COMMISSION_COLUMN[4]);
 
-                        if ($tournament->game_type == 1) {
+                        if ($tournament->game_type == 1)
+                        {
                             $win_user = User::find($request->first_winner);
                             $this->coin = $round_settings->first_bonus_point;
                             $type = RANK_COMMISSION_COLUMN[4];
                             $this->auth_user = $win_user;
-
                             $this->rank_commission_distribution($win_user, $type, COIN_EARNING_SOURCE['tournament_winning']);
 
                         }
-                        //  game asset distribution function end here
 
-                        if (($player->first_winner != null) && ($player->second_winner != null)  && ($player->third_winner != null)  && ($player->fourth_winner != null)) {
-
-                            $ludo_board->status = 2;
-                            $ludo_board->save();
-                            $player->status = 2;
-                            $player->save();
-
-                            $running_boards = Roundludoboard::where('round_id', $ludo_board->round_id)->where('status', 1)->get();
-
-                            if (count($running_boards) > 0) {
-                            } else {
-                                $round = Gameround::find($ludo_board->round_id)->update([
-                                    'status' => 2,
-                                    'round_end_time' => Carbon::now(),
-                                ]);
-                            }
-                            $complete_game = Gameround::where('game_id', $ludo_board->game_id)->where('status', 1)->get();
-                            if (count($complete_game) > 0) {
-                            } else {
-                                Game::find($ludo_board->game_id)->update(['status' => 2]);
-                            }
-                            $player = Playerinboard::where('tournament_id', $ludo_board->tournament_id)->where('game_id', $ludo_board->game_id)->where('round_id', $ludo_board->round_id)->where('board_id', $ludo_board->id)->update(['status' => 2]);
-                        }
-                        bidding_result($ludo_board->id);
+                       // bidding_result($ludo_board->id);
                         DB::commit();
                         return api_response('success', 'Congratulations, You are the winner!', $player, 200);
                     } elseif (($player->first_winner != null) && ($player->first_winner == $request->first_winner)) {
                         return api_response('success', 'You already declared as a first winner!.', $player, 200);
                     }
                     if (($player->second_winner == null) && ($request->second_winner != null)) {
-                        $player->second_winner = User::find($request->second_winner)->id;
+
+                        $player->second_winner = $request->second_winner;
                         $player->save();
                         $user = User::find($request->second_winner);
-                        provide_winning_prize($tournament, $user, $round_settings->second_bonus_point);
 
+                        //===here complete game round====
+                        $this->complete_game_detail_info($ludo_board,$player);
+
+                        provide_winning_prize($tournament, $user, $round_settings->second_bonus_point);
                         // Add game  asset distribution
+
                         if ($tournament->game_type == 1) {
                             $win_user = User::find($request->second_winner);
                             $this->coin = $round_settings->second_bonus_point;
@@ -1027,40 +1048,22 @@ class TournamentApiController extends Controller
                             $this->rank_commission_distribution($win_user, $type, COIN_EARNING_SOURCE['tournament_winning']);
 
                         }
-                        // game asset distribution function start here
-
-                        //  game asset distribution function end here
-                        if (($player->first_winner != null) && ($player->second_winner != null)  && ($player->third_winner != null)  && ($player->fourth_winner != null)) {
-                            $ludo_board->status = 2;
-                            $ludo_board->save();
-                            $player->status = 2;
-                            $player->save();
-                            $complete_board = Roundludoboard::where('round_id', $ludo_board->round_id)->where('status', 1)->get();
-                            if (count($complete_board) > 0) {
-                            } else {
-                                $round = Gameround::find($ludo_board->round_id)->update([
-                                    'status' => 2,
-                                    'round_end_time' => Carbon::now(),
-                                ]);
-                            }
-                            $complete_game = Gameround::where('game_id', $ludo_board->game_id)->where('status', 1)->get();
-                            if (count($complete_game) > 0) {
-                            } else {
-                                Game::find($ludo_board->game_id)->update(['status' => 2]);
-                            }
-                            $player = Playerinboard::where('tournament_id', $ludo_board->tournament_id)->where('game_id', $ludo_board->game_id)->where('round_id', $ludo_board->round_id)->where('board_id', $ludo_board->id)->update(['status' => 2]);
-                        }
-                        DB::commit();
+                       DB::commit();
                         return api_response('success', 'Congratulations, You are the Second winner!', $player, 200);
                     } elseif (($player->second_winner != null) && ($player->second_winner == $request->second_winner)) {
+
                         return api_response('success', 'You already declared as a Second winner!.', $player, 200);
                     }
                     if (($player->third_winner == null) && ($request->third_winner != null)) {
-                        $player->third_winner = User::find($request->third_winner)->id;
+
+                        $player->third_winner = $request->third_winner;
                         $player->save();
                         $user = User::find($request->third_winner);
-                        provide_winning_prize($tournament, $user, $round_settings->third_bonus_point);
 
+                        //===here complete game round====
+                        $this->complete_game_detail_info($ludo_board,$player);
+
+                        provide_winning_prize($tournament, $user, $round_settings->third_bonus_point);
                         // game assets distribution
                         if ($tournament->game_type == 1) {
                             $win_user = User::find($request->third_winner);
@@ -1070,61 +1073,23 @@ class TournamentApiController extends Controller
                             $this->rank_commission_distribution($win_user, $type, COIN_EARNING_SOURCE['tournament_winning']);
 
                         }
-                        /// board status close
-                        if (($player->first_winner != null) && ($player->second_winner != null)  && ($player->third_winner != null)  && ($player->fourth_winner != null)) {
-                            $ludo_board->status = 2;
-                            $ludo_board->save();
-                            $player->status = 2;
-                            $player->save();
-                            $complete_board = Roundludoboard::where('round_id', $ludo_board->round_id)->where('status', 1)->get();
-                            if (count($complete_board) > 0) {
-                            } else {
-                                $round = Gameround::find($ludo_board->round_id)->update([
-                                    'status' => 2,
-                                    'round_end_time' => Carbon::now(),
-                                ]);
-                            }
-                            $complete_game = Gameround::where('game_id', $ludo_board->game_id)->where('status', 1)->get();
-                            if (count($complete_game) > 0) {
-                            } else {
-                                Game::find($ludo_board->game_id)->update(['status' => 2]);
-                            }
-                            $player = Playerinboard::where('tournament_id', $ludo_board->tournament_id)->where('game_id', $ludo_board->game_id)->where('round_id', $ludo_board->round_id)->where('board_id', $ludo_board->id)->update(['status' => 2]);
-                        }
                         DB::commit();
                         return api_response('success', 'Congratulations, You are the Third winner!', $player, 200);
                     } elseif (($player->third_winner != null) && ($player->third_winner == $request->third_winner)) {
                         return api_response('success', 'You already declared as a Third winner!.', $player, 200);
                     }
                     if (($player->fourth_winner == null) && ($request->looser != null)) {
-                        $player->fourth_winner = User::find($request->looser)->id;
+                        $player->fourth_winner = $request->looser;
                         $player->save();
                         $user = User::find($request->looser);
+                        //===here complete game round====
+                        $this->complete_game_detail_info($ludo_board,$player);
+
                         $user->win_balance += $round_settings->fourth_bonus_point;
                         $user->save();
+
                         provide_winning_prize($tournament, $user, $round_settings->third_bonus_point);
 
-
-                        if (($player->first_winner != null) && ($player->second_winner != null)  && ($player->third_winner != null)  && ($player->fourth_winner != null)) {
-                            $ludo_board->status = 2;
-                            $ludo_board->save();
-                            $player->status = 2;
-                            $player->save();
-                            $complete_board = Roundludoboard::where('round_id', $ludo_board->round_id)->where('status', 1)->get();
-                            if (count($complete_board) > 0) {
-                            } else {
-                                $round = Gameround::find($ludo_board->round_id)->update([
-                                    'status' => 2,
-                                    'round_end_time' => Carbon::now(),
-                                ]);
-                            }
-                            $complete_game = Gameround::where('game_id', $ludo_board->game_id)->where('status', 1)->get();
-                            if (count($complete_game) > 0) {
-                            } else {
-                                Game::find($ludo_board->game_id)->update(['status' => 2]);
-                            }
-                            $player = Playerinboard::where('tournament_id', $ludo_board->tournament_id)->where('game_id', $ludo_board->game_id)->where('round_id', $ludo_board->round_id)->where('board_id', $ludo_board->id)->update(['status' => 2]);
-                        }
                         DB::commit();
                         return api_response('success', 'Opps, You loose the game!', $player, 200);
                     } elseif (($player->fourth_winner != null) && ($player->fourth_winner == $request->looser)) {
@@ -1187,7 +1152,7 @@ class TournamentApiController extends Controller
                                 }
                                 $player = Playerinboard::where('tournament_id', $ludo_board->tournament_id)->where('game_id', $ludo_board->game_id)->where('round_id', $ludo_board->round_id)->where('board_id', $ludo_board->id)->update(['status' => 2]);
                             }
-                            DB::commit();
+                           // DB::commit();
                             return api_response('success', 'Congratulations, You are the Second winner!', $player, 200);
                         }
                         if (($player->third_winner == null) && ($request->third_winner != null)) {
@@ -1214,7 +1179,7 @@ class TournamentApiController extends Controller
                                 }
                                 $player = Playerinboard::where('tournament_id', $ludo_board->tournament_id)->where('game_id', $ludo_board->game_id)->where('round_id', $ludo_board->round_id)->where('board_id', $ludo_board->id)->update(['status' => 2]);
                             }
-                            DB::commit();
+                          //  DB::commit();
                             return api_response('success', 'Congratulations, You are the Third winner!', $player, 200);
                         }
                         if (($player->fourth_winner == null) && ($request->looser != null)) {
@@ -1278,7 +1243,7 @@ class TournamentApiController extends Controller
                                 }
                                 $player = Playerinboard::where('tournament_id', $ludo_board->tournament_id)->where('game_id', $ludo_board->game_id)->where('round_id', $ludo_board->round_id)->where('board_id', $ludo_board->id)->update(['status' => 2]);
                             }
-                            DB::commit();
+                          //  DB::commit();
                             return api_response('success', 'Opps, You loose the game!', $player, 200);
                         }
                     } //========================end 4p section===================================
@@ -1360,7 +1325,7 @@ class TournamentApiController extends Controller
                                 $player = Playerinboard::where('tournament_id', $ludo_board->tournament_id)->where('game_id', $ludo_board->game_id)->where('round_id', $ludo_board->round_id)->where('board_id', $ludo_board->id)->update(['status' => 2]);
                             }
                             bidding_result($ludo_board->id);
-                            DB::commit();
+                           // DB::commit();
 
 
                             return api_response('success', 'Congratulations, You are the winner!', $player, 200);
@@ -1439,7 +1404,7 @@ class TournamentApiController extends Controller
                                     }
                                     $player = Playerinboard::where('tournament_id', $ludo_board->tournament_id)->where('game_id', $ludo_board->game_id)->where('round_id', $ludo_board->round_id)->where('board_id', $ludo_board->id)->update(['status' => 2]);
                                 }
-                                DB::commit();
+                               // DB::commit();
                                 return api_response('success', 'Opps, You loose the game!', $player, 200);
                             }
                         }
@@ -1450,7 +1415,7 @@ class TournamentApiController extends Controller
                 }
             }
         } catch (\Exception $ex) {
-            DB::rollBack();
+           // DB::rollBack();
             return api_response('error', 'Something went a wrong', $ex->getMessage(), 200);
         }
     }
