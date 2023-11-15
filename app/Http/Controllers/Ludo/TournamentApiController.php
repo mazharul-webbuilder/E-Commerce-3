@@ -1373,10 +1373,12 @@ class TournamentApiController extends Controller
                                     }
                                     $player = Playerinboard::where('tournament_id', $ludo_board->tournament_id)->where('game_id', $ludo_board->game_id)->where('round_id', $ludo_board->round_id)->where('board_id', $ludo_board->id)->update(['status' => 2]);
                                 }
-                                provide_winning_prize($tournament, $user, $round_settings->fourth_bonus_point);
+
                                // DB::commit();
                                 return api_response('success', 'Opps, You loose the game!', $player, 200);
                             }
+
+                            provide_winning_prize($tournament, $user, $round_settings->fourth_bonus_point);
                         }
                         //  for 2p player game round without  final end
                     }
