@@ -80,16 +80,22 @@ class WithdrawController extends Controller
             ->addColumn('bank_detail', function ($withdraw){
                 /*Get Bank Details Array Banking or Mobile Banking*/
                 $banking_details = (array) json_decode($withdraw->bank_detail, true);
+                $bankName = array_key_exists('bank_name', $banking_details) ? $banking_details['bank_name'] : null;
+                $bankHolderName = array_key_exists('bank_holder_name', $banking_details) ? $banking_details['bank_holder_name'] : null;
+                $bankAccountNumber = array_key_exists('bank_account_number', $banking_details) ? $banking_details['bank_account_number'] : null;
+                $branchName = array_key_exists('bank_branch_name', $banking_details) ? $banking_details['bank_branch_name'] : null;
+                $routeNumber = array_key_exists('bank_route_number', $banking_details) ? $banking_details['bank_route_number'] : null;
+                $swiftCode = array_key_exists('bank_swift_code', $banking_details) ? $banking_details['bank_swift_code'] : null;
 
                 switch ($withdraw->balance_send_type){
                     case "Banking":
                         return '
-                            <p class="py-1">Bank Name: '.$banking_details['bank_name'].'</p>
-                            <p class="py-1">Account Holder Name: '.$banking_details['bank_holder_name'].'</p>
-                            <p class="py-1">Account Number: '.$banking_details['bank_account_number'].'</p>
-                            <p class="py-1">Branch Name: '.$banking_details['bank_branch_name'].'</p>
-                            <p class="py-1">Routing Number: '.$banking_details['bank_route_number'].'</p>
-                            <p class="py-1">Swift Code: '.$banking_details['bank_swift_code'].'</p>
+                            <p class="py-1">Bank Name: '.$bankName.'</p>
+                            <p class="py-1">Account Holder Name: '.$bankHolderName.'</p>
+                            <p class="py-1">Account Number: '.$bankAccountNumber.'</p>
+                            <p class="py-1">Branch Name: '.$branchName.'</p>
+                            <p class="py-1">Routing Number: '.$routeNumber.'</p>
+                            <p class="py-1">Swift Code: '.$swiftCode.'</p>
                         ';
                     case "Mobile Banking":
                         return '
