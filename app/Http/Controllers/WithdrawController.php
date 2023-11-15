@@ -21,14 +21,17 @@ class WithdrawController extends Controller
     */
     public function index(): View
     {
-        return \view('webend.ecommerce.withdraw.all-user.index');
+        $date_range = null;
+
+        return \view('webend.ecommerce.withdraw.all-user.index', compact('date_range'));
     }
 
     /**
      * Load Data
      */
-    public function datatable(): JsonResponse
+    public function datatable(Request $request): JsonResponse
     {
+
         $withdraw_lists = WithdrawHistory::all();
 
         $userType = null;

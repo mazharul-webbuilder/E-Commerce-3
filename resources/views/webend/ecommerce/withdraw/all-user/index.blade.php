@@ -1,4 +1,16 @@
 @extends('webend.layouts.master')
+@section('extra_css')
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <style>
+        .date-range {
+            width: 240px;
+            padding: 4px 20px;
+            border: 2px solid purple;
+            border-radius: 9px;
+            font-weight: 700;
+        }
+    </style>
+@endsection
 @section('content')
     <style>
         #dataTable tbody > tr {
@@ -11,6 +23,7 @@
     </style>
     <section class="w-full bg-white p-3 mt-5">
         <div class="container px-2 mx-auto xl:px-5">
+
             <!-- start menu -->
             <div class="mt-4">
                 <ol class="flex items-center space-x-1 md:space-x-3 flex-wrap">
@@ -46,7 +59,45 @@
                 </div>
                 <br>
                 <div class="py-2 px-1" style="overflow-x: auto;">
-                    <table class="text-sm text-left text-white border-l border-r" id="dataTable"
+                    <div class="p-2">
+                        <span><a href="javascript:void(0)"
+                                 class="bg-purple-600 active:bg-blue-500 p-2 text-white rounded filter-btn" filter="all">All</a></span>
+                        <span><a href="javascript:void(0)"
+                                 class="bg-purple-600 p-2 text-white rounded filter-btn" filter="merchant">Merchant</a></span>
+                        <span><a href="javascript:void(0)"
+                                 class="bg-purple-600 p-2 text-white rounded filter-btn" filter="seller">Seller</a></span>
+                        <span><a href="javascript:void(0)"
+                                 class="bg-purple-600 p-2 text-white rounded filter-btn" filter="affiliator">Affiliator</a></span>
+                        <span><a href="javascript:void(0)"
+                                 class="bg-purple-600 p-2 text-white rounded filter-btn" filter="shareOwner">Share Owner</a></span>
+                        <span><a href="javascript:void(0)"
+                                 class="bg-purple-600 p-2 text-white rounded filter-btn" filter="normalUser">Normal User</a></span>
+                        <span>
+                            <input type="text" name="daterange" value="" class="date-range" />
+
+                        </span>
+                        @if ($date_range != null)
+                            <span class="dark:text-blue-500">Searching Date: {{ $date_range }}</span>
+                        @endif
+                        <form id="search_order_by_date" action="{{ route('order.search_by_date') }}" method="POST"
+                              style="display: none">
+                            @csrf
+                            <input type="text" name="start_date" value="" class="start_date">
+                            <input type="text" name="end_date" value="" class="end_date">
+                        </form>
+
+                        <br><br>
+                        <h2 class="text-2xl"><strong>Total Orders: 220</strong></h2>
+
+
+                    </div>
+                    <form id="search_order_by_date" action="{{ route('order.search_by_date') }}" method="POST"
+                          style="display: none">
+                        @csrf
+                        <input type="text" name="start_date" value="" class="start_date">
+                        <input type="text" name="end_date" value="" class="end_date">
+                    </form>
+                    <table class="text-sm text-left text-white border-l border-r dataTable2" id="dataTable"
                            style=" width: 100%;">
                         <thead class="text-xs text-white uppercase bg-amber-600">
                         <tr>
@@ -112,31 +163,54 @@
     </section>
 @endsection
 @section('extra_js')
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script>
         $(document).ready(function (){
-            /*Load Datatable*/
-            var table = $("#dataTable").DataTable({
-                processing: true,
-                responsive: true,
-                serverSide: true,
-                ordering: false,
-                pagingType: "full_numbers",
-                ajax: '{{ route('admin.all.withdraw.datatable') }}',
-                columns: [
-                    { data: 'DT_RowIndex',name:'DT_RowIndex' },
-                    { data: 'user_name',name:'user_name' },
-                    { data: 'user_type',name:'user_type' },
-                    { data: 'withdraw_balance',name:'withdraw_balance'},
-                    { data: 'charge',name:'charge'},
-                    { data: 'balance_send_type',name:'balance_send_type'},
-                    { data: 'bank_detail',name:'bank_detail'},
-                    { data: 'user_received_balance',name:'user_received_balance'},
-                    { data: 'status',name:'status'},
-                ],
-                language : {
-                    processing: 'Processing'
-                },
-            });
+
+            var filter="all"
+            getDatatable(filter)
+
+            $('body').on('click','.filter-btn', function (){
+
+                filter = $(this).attr('filter')
+                getDatatable(filter)
+            })
+
+            function getDatatable(filter){
+                var table = $('#dataTable').DataTable();
+                table.destroy()
+                var table=$("#dataTable").DataTable({
+
+                    processing: true,
+                    responsive: true,
+                    serverSide: true,
+                    ordering: false,
+                    pagingType: "full_numbers",
+                    ajax: {
+                        url: '{{route('admin.all.withdraw.datatable')}}',
+                        method: 'get',
+                        data: {
+                            filter: filter
+                        }
+                    },
+                    columns: [
+                        { data: 'DT_RowIndex',name:'DT_RowIndex' },
+                        { data: 'user_name',name:'user_name' },
+                        { data: 'user_type',name:'user_type' },
+                        { data: 'withdraw_balance',name:'withdraw_balance'},
+                        { data: 'charge',name:'charge'},
+                        { data: 'balance_send_type',name:'balance_send_type'},
+                        { data: 'bank_detail',name:'bank_detail'},
+                        { data: 'user_received_balance',name:'user_received_balance'},
+                        { data: 'status',name:'status'},
+                    ],
+                    language : {
+                        processing: 'Processing'
+                    },
+                });
+
+            }
             /*Change Withdraw Status*/
             $('body').on('change','.status-select', function (){
                 let status = $(this).val()
@@ -186,4 +260,48 @@
             })
         })
     </script>
+    <script !src="">
+        $(function() {
+
+            $('input[name="daterange"]').daterangepicker({
+                opens: 'right',
+                maxDate: new Date()
+            }, function(start, end, label) {
+
+                $('.start_date').val(start.format('YYYY-MM-DD'))
+                $('.end_date').val(end.format('YYYY-MM-DD'))
+                setInterval(() => {
+                    $('#search_order_by_date').submit()
+                }, 1000)
+
+            });
+
+            $("body").on('change', '#manage_order', function(e) {
+                //e.preventDefault()
+                let order_id = $(this).attr('order_id');
+                let status = $(this).val();
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    method: "post",
+                    url: $(this).attr('data-action'),
+                    data: {
+                        order_id: order_id,
+                        status: status
+                    },
+                    success: function(response) {
+                        swal({
+                            title: response.type,
+                            text: response.message,
+                            icon: response.type,
+                            timer: 5000,
+                            // buttons: true,
+                        })
+                    }
+                })
+            })
+        })
+    </script>
+
 @endsection

@@ -15,6 +15,8 @@ const USER = [
     'affiliator' => 'affiliator',
     'shareOwner' => 'shareOwner',
     'clubOwner' => 'clubOwner',
+    'normalUser' => 'normalUser',
+    'all' => 'all'
 ];
 
 /**
