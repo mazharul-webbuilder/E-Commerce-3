@@ -930,7 +930,7 @@ class TournamentApiController extends Controller
     }
 
 
- protected function complete_game_detail_info($ludo_board,$player)
+ protected function complete_game_detail_info_final($ludo_board,$player)
  {
      if (($player->first_winner != null) && ($player->second_winner != null)  && ($player->third_winner != null)  && ($player->fourth_winner != null))
      {
@@ -999,7 +999,7 @@ class TournamentApiController extends Controller
                         $player->save();
                         $user = User::find($request->first_winner);
                         //===here complete game round====
-                        $this->complete_game_detail_info($ludo_board,$player);
+                        $this->complete_game_detail_info_final($ludo_board,$player);
                         provide_winning_prize($tournament, $user, $round_settings->first_bonus_point);
                         // commission distribution
                         if ($tournament->game_type == 1)
@@ -1019,7 +1019,8 @@ class TournamentApiController extends Controller
                         $user = User::find($request->second_winner);
 
                         //===here complete game round====
-                        $this->complete_game_detail_info($ludo_board,$player);
+                        $this->complete_game_detail_info_final($ludo_board,$player);
+
                         provide_winning_prize($tournament, $user, $round_settings->second_bonus_point);
                         // commission distribution
                         if ($tournament->game_type == 1)
@@ -1039,7 +1040,7 @@ class TournamentApiController extends Controller
                         $user = User::find($request->third_winner);
 
                         //===here complete game round====
-                        $this->complete_game_detail_info($ludo_board,$player);
+                        $this->complete_game_detail_info_final($ludo_board,$player);
 
                         provide_winning_prize($tournament, $user, $round_settings->third_bonus_point);
 
@@ -1060,7 +1061,7 @@ class TournamentApiController extends Controller
 
                         provide_winning_prize($tournament, $user, $round_settings->third_bonus_point);
                         //===here complete game round====
-                        $this->complete_game_detail_info($ludo_board,$player);
+                        $this->complete_game_detail_info_final($ludo_board,$player);
 
                         $user->win_balance += $round_settings->fourth_bonus_point;
                         $user->save();
