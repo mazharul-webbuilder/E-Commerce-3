@@ -8,6 +8,7 @@ use App\Http\Requests\UserConnectRequest;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
@@ -21,8 +22,11 @@ class ConnectionWithUserAccountController extends Controller
     /**
      * Display Connect with user account page
      */
-    public function index(): View
+    public function index(): View|RedirectResponse
     {
+        if (isset(get_auth_seller()->user_id)){
+            return redirect()->route('seller.connected.user.account');
+        }
         return \view('seller.userAccount.index');
     }
 

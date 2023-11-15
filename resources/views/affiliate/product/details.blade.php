@@ -178,7 +178,7 @@
                                             <div class="w-full p-4">
 
                                                 <div class="flex items-center">
-                                                    <div class="font-medium">{{ $stock->size->name }}</div>
+                                                    <div class="font-medium">{{ $stock?->size?->name }}</div>
                                                 </div>
 
                                             </div>

@@ -29,6 +29,15 @@ class Order extends Model
         return $this->hasMany(Order_detail::class);
     }
 
+    public function seller_order_detail()
+    {
+        return $this->hasMany(Order_detail::class, 'order_id')->where('sell_type', 'seller');
+    }
+    public function affiliator_order_detail()
+    {
+        return $this->hasMany(Order_detail::class, 'order_id')->where('sell_type', 'affiliate');
+    }
+
     public function products()
     {
 

@@ -1365,44 +1365,57 @@
                                     class=" @if (
                                                 Request::routeIs('ecommerce.withdraw.list.merchant') ||
                                             Request::routeIs('ecommerce.withdraw.list.seller') ||
-                                            Request::routeIs('ecommerce.withdraw.list.affiliator'))
+                                            Request::routeIs('ecommerce.withdraw.list.seller') ||
+                                            Request::routeIs('admin.all.withdraw'))
                                             @else
                                              hidden
                                              @endif  py-2 bg-blue-900 rounded p-1">
                                     <li>
-                                        <a href="{{ route('ecommerce.withdraw.list.merchant')}}"
+                                        <a href="{{ route('admin.all.withdraw')}}"
                                         class="block px-1.5 py-2 mt-2 font-semibold rounded-lg text-white md:mt-0 focus:text-gray-900 hover:bg-blue-500 group
-                                            @if(Request::routeIs('ecommerce.withdraw.list.merchant')) bg-blue-500
+                                            @if(Request::routeIs('admin.all.withdraw')) bg-blue-500
                                             @else
                                             @endif focus:outline-none focus:shadow-outline">
                                             <i
                                                 class="fas fa-th text-white group-hover:text-white transition duration-75"></i>
                                             <span
-                                                class="group-hover:text-white font-normal transition duration-150">Merchant</span>
+                                                class="group-hover:text-white font-normal transition duration-150">All Withdraw</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="{{ route('ecommerce.withdraw.list.seller') }}"
-                                           class="block px-1.5 py-2 mt-2 font-semibold rounded-lg text-white md:mt-0 focus:text-gray-900 hover:bg-blue-500 group
-                                            @if (Request::routeIs('ecommerce.withdraw.list.seller')) bg-blue-500
-                                             @else @endif active:bg-blue-500 focus:outline-none focus:shadow-outline">
-                                            <i
-                                                class="fas fa-th text-white group-hover:text-white transition duration-75"></i>
-                                            <span
-                                                class="group-hover:text-white font-normal transition duration-150">Seller</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('ecommerce.withdraw.list.affiliator') }}"
-                                           class="block px-1.5 py-2 mt-2 font-semibold rounded-lg text-white md:mt-0 focus:text-gray-900 hover:bg-blue-500 group
-                                            @if (Request::routeIs('ecommerce.withdraw.list.affiliator')) bg-blue-500
-                                             @else @endif active:bg-blue-500 focus:outline-none focus:shadow-outline">
-                                            <i
-                                                class="fas fa-th text-white group-hover:text-white transition duration-75"></i>
-                                            <span
-                                                class="group-hover:text-white font-normal transition duration-150">Affiliate</span>
-                                        </a>
-                                    </li>
+{{--                                    <li>--}}
+{{--                                        <a href="{{ route('ecommerce.withdraw.list.merchant')}}"--}}
+{{--                                        class="block px-1.5 py-2 mt-2 font-semibold rounded-lg text-white md:mt-0 focus:text-gray-900 hover:bg-blue-500 group--}}
+{{--                                            @if(Request::routeIs('ecommerce.withdraw.list.merchant')) bg-blue-500--}}
+{{--                                            @else--}}
+{{--                                            @endif focus:outline-none focus:shadow-outline">--}}
+{{--                                            <i--}}
+{{--                                                class="fas fa-th text-white group-hover:text-white transition duration-75"></i>--}}
+{{--                                            <span--}}
+{{--                                                class="group-hover:text-white font-normal transition duration-150">Merchant</span>--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+{{--                                    <li>--}}
+{{--                                        <a href="{{ route('ecommerce.withdraw.list.seller') }}"--}}
+{{--                                           class="block px-1.5 py-2 mt-2 font-semibold rounded-lg text-white md:mt-0 focus:text-gray-900 hover:bg-blue-500 group--}}
+{{--                                            @if (Request::routeIs('ecommerce.withdraw.list.seller')) bg-blue-500--}}
+{{--                                             @else @endif active:bg-blue-500 focus:outline-none focus:shadow-outline">--}}
+{{--                                            <i--}}
+{{--                                                class="fas fa-th text-white group-hover:text-white transition duration-75"></i>--}}
+{{--                                            <span--}}
+{{--                                                class="group-hover:text-white font-normal transition duration-150">Seller</span>--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+{{--                                    <li>--}}
+{{--                                        <a href="{{ route('ecommerce.withdraw.list.affiliator') }}"--}}
+{{--                                           class="block px-1.5 py-2 mt-2 font-semibold rounded-lg text-white md:mt-0 focus:text-gray-900 hover:bg-blue-500 group--}}
+{{--                                            @if (Request::routeIs('ecommerce.withdraw.list.affiliator')) bg-blue-500--}}
+{{--                                             @else @endif active:bg-blue-500 focus:outline-none focus:shadow-outline">--}}
+{{--                                            <i--}}
+{{--                                                class="fas fa-th text-white group-hover:text-white transition duration-75"></i>--}}
+{{--                                            <span--}}
+{{--                                                class="group-hover:text-white font-normal transition duration-150">Affiliate</span>--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
                                 </ul>
                             </li>
                             {{--Withdraw End--}}
@@ -1415,6 +1428,15 @@
                                 <i
                                         class="fas fa-list text-white group-hover:text-white transition duration-75"></i>
                                     <span class="ml-3 group-hover:text-white transition duration-150">Currency</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('ecommerce.users.balance.transfer.history') }}"
+                                   class="{{ Route::is('ecommerce.users.balance.transfer.history') ? 'bg-blue-500' : '' }}
+                                   text-lg text-white font-normal rounded-lg flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">
+                                <i
+                                        class="fas fa-list text-white group-hover:text-white transition duration-75"></i>
+                                    <span class="ml-3 group-hover:text-white transition duration-150">Balance Transfer History</span>
                                 </a>
                             </li>
                         </ul>

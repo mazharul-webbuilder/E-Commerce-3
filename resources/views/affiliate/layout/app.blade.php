@@ -182,7 +182,7 @@
                 <!-- mobile menu button end -->
                 <!-- logo start -->
                 <div class="text-xl font-bold ml-1 md:ml-16 flex items-center">
-                    <a href="{{ route('seller.dashboard') }}" class="cursor-pointer">
+                    <a href="{{ route('affiliate.dashboard') }}" class="cursor-pointer">
                         <img class="h-8 sm:h-20 w-10 sm:w-full" alt="LUDO" @if(setting()->game_logo != null)  src="{{ asset(setting()->game_logo) }}" @else src="{{ asset('webend/logo.png') }}" @endif>
                     </a>
                     <h1 class="hidden lg:block lg:ml-32 font-semibold text-white">Affiliate </h1>
@@ -220,7 +220,7 @@
                                 <li>
                                     <a href="{{route('affiliate.profile')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
                                 </li>
-                                @if(!isConnectedWithUserAccount(USER['seller']))
+                                @if(!isConnectedWithUserAccount(USER['affiliator']))
                                     <li>
                                         <a href="{{route('affiliate.connect.with.user.account')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                             Connect With User Account
@@ -261,7 +261,7 @@
                 <div class="flex-1 px-3 bg-[#1b1b9b] divide-y space-y-1">
                     <ul class="space-y-2 pb-6" id="sidenavExample">
                         <li>
-                            <a href="{{ route('affiliate.dashboard') }}" class="text-lg text-white font-normal rounded-lg {{ Request::routeIs('seller.dashboard') ? 'bg-blue-500' : '' }} flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">
+                            <a href="{{ route('affiliate.dashboard') }}" class="text-lg text-white font-normal rounded-lg {{ Request::routeIs('affiliate.dashboard') ? 'bg-blue-500' : '' }} flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">
                                 <svg class="w-6 h-6 text-white group-hover:text-white transition duration-75 " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
                                 <span class="ml-3 group-hover:text-white transition duration-150">Dashboard</span>
                             </a>
@@ -277,6 +277,12 @@
                             <a href="{{route('affiliate.product.shop')}}" class="text-lg text-white font-normal rounded-lg  flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">
                                 <i class="fas fa-trophy text-white group-hover:text-white transition duration-75"></i>
                                 <span class="ml-3 group-hover:text-white transition duration-150">Shop</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{route('affiliate.orders')}}" class="text-lg text-white font-normal rounded-lg  flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">
+                                <i class="fas fa-trophy text-white group-hover:text-white transition duration-75"></i>
+                                <span class="ml-3 group-hover:text-white transition duration-150">Orders</span>
                             </a>
                         </li>
                         <li>

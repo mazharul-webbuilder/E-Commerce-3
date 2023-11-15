@@ -10,9 +10,6 @@ use App\Models\ProductCommission;
 use App\Models\SellerProduct;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Ecommerce\Unit;
-use App\Models\Ecommerce\Category;
-use  App\Models\Ecommerce\SubCategory;
 use Illuminate\Support\Facades\DB;
 
 class Product extends Model
@@ -124,8 +121,5 @@ class Product extends Model
             ]);
         });
     }
-
-
-
 
 }
