@@ -56,6 +56,11 @@ class WithdrawController extends Controller
 
         $userType = null;
 
+        if (isset($request->startDate) & isset($request->endDate)) {
+           $withdraw_lists = WithdrawHistory::whereDate('created_at', '>=', $request->startDate)
+               ->whereDate('created_at', '<=', $request->endDate)->get();
+        }
+
         return DataTables::of($withdraw_lists)
             ->addIndexColumn()
             ->addColumn('user_name', function ($withdraw) use (&$userType){

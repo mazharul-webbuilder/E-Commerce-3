@@ -72,31 +72,24 @@
                                  class="bg-purple-600 p-2 text-white rounded filter-btn" filter="shareOwner">Share Owner</a></span>
                         <span><a href="javascript:void(0)"
                                  class="bg-purple-600 p-2 text-white rounded filter-btn" filter="normalUser">Normal User</a></span>
-{{--                        <span>--}}
-{{--                            <input type="text" name="daterange" value="" class="date-range" />--}}
+                        <span>
+                            <input type="text" name="daterange" value="" class="date-range" />
+                        </span>
+                        {{--Show Date Span--}}
+                        <span class="dark:text-blue-500 hidden">Searching Date: {{ $date_range }}</span>
+                        {{--End Show Date--}}
 
-{{--                        </span>--}}
-                        @if ($date_range != null)
-                            <span class="dark:text-blue-500">Searching Date: {{ $date_range }}</span>
-                        @endif
-                        <form id="search_order_by_date" action="{{ route('order.search_by_date') }}" method="POST"
-                              style="display: none">
-                            @csrf
-                            <input type="text" name="start_date" value="" class="start_date">
-                            <input type="text" name="end_date" value="" class="end_date">
-                        </form>
+                        {{--Take Date Input--}}
+                        <input type="text" id="startDate" name="start_date" value="" class="start_date">
+                        <input type="text" id="endDate" name="end_date" value="" class="end_date">
+                        {{--End Take Date Input--}}
 
                         <br><br>
                         <h2 class="text-2xl"><strong>Total Withdraw: {{\App\Models\WithdrawHistory::count()}}</strong></h2>
 
 
                     </div>
-                    <form id="search_order_by_date" action="{{ route('order.search_by_date') }}" method="POST"
-                          style="display: none">
-                        @csrf
-                        <input type="text" name="start_date" value="" class="start_date">
-                        <input type="text" name="end_date" value="" class="end_date">
-                    </form>
+
                     <table class="text-sm text-left text-white border-l border-r dataTable2" id="dataTable"
                            style=" width: 100%;">
                         <thead class="text-xs text-white uppercase bg-amber-600">
@@ -168,16 +161,22 @@
     <script>
         $(document).ready(function (){
 
+            /*Default Load*/
             var filter="all"
             getDatatable(filter)
-
+            /*On click filter button*/
             $('body').on('click','.filter-btn', function (){
-
                 filter = $(this).attr('filter')
-                getDatatable(filter)
+                getDatatable(filter )
             })
-
-            function getDatatable(filter){
+            /*Filter by Date*/
+            $('body').on('click', '.applyBtn', function (){
+                startDate = $('#startDate').val()
+                endDate = $('#endDate').val()
+                getDatatable('all', startDate, endDate)
+            })
+            /*Get withdraw Datatable function*/
+            function getDatatable(filter, startDate=null, endDate=null){
                 var table = $('#dataTable').DataTable();
                 table.destroy()
                 var table=$("#dataTable").DataTable({
@@ -191,7 +190,9 @@
                         url: '{{route('admin.all.withdraw.datatable')}}',
                         method: 'get',
                         data: {
-                            filter: filter
+                            filter: filter,
+                            startDate: startDate,
+                            endDate: endDate
                         }
                     },
                     columns: [
