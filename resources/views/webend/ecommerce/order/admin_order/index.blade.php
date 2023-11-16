@@ -36,7 +36,7 @@
                                 clip-rule="evenodd"></path>
                         </svg>
                         <div class="flex items-center">
-                            <span class="ml-1 font-medium text-gray-500 md:ml-2 dark:text-gray-400">Admin Order</span>
+                            <span class="ml-1 font-medium text-gray-500 md:ml-2 dark:text-gray-400">Orders</span>
                         </div>
                     </li>
                 </ol>
@@ -45,7 +45,7 @@
             <!-- end menu -->
             <div class="border border-[#8e0789] rounded-md mt-5">
                 <div class="bg-[#8e0789] overflow-hidden w-full px-0 flex items-center">
-                    <h2 class="text-2xl font-bold py-2 text-white pl-3">Admin Order List</h2>
+                    <h2 class="text-2xl font-bold py-2 text-white pl-3">Order List</h2>
                 </div>
                 <div class="py-2 px-1 mt-3" style="overflow-x: auto;">
                     <div class="p-2">

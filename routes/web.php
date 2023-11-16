@@ -597,6 +597,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     });
     /*Admin Own Order*/
     Route::get('/admin/own/order', [OrderController::class, 'admin_order'])->name('admin.order');
+    /*Merchant Order*/
+    Route::get('/merchant/order', [MerchantOrderController::class, 'merchantOrder'])->name('merchant.order');
+
 
     /*Ecommerce Withdraw Start*/
     Route::group(['prefix' => 'ecommerce/withdraw/', 'as' => 'ecommerce.withdraw.'], function (){

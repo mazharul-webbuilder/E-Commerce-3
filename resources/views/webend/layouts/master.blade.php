@@ -1336,6 +1336,17 @@
                                                 class="group-hover:text-white font-normal transition duration-150">Admin Orders</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="{{ route('admin.order') }}"
+                                           class="block px-1.5 py-2 mt-2 font-semibold rounded-lg text-white md:mt-0 focus:text-gray-900 hover:bg-blue-500 group
+                                            @if (Request::routeIs('admin.order') || Request::routeIs('admin.order')) bg-blue-500
+                                             @else @endif active:bg-blue-500 focus:outline-none focus:shadow-outline">
+                                            <i
+                                                class="fas fa-th text-white group-hover:text-white transition duration-75"></i>
+                                            <span
+                                                class="group-hover:text-white font-normal transition duration-150">Merchant Orders</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                             {{--Order End--}}
