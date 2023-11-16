@@ -44,15 +44,6 @@
                                 </div>
                             </div>
 
-
-                            <div class="w-full">
-                                <div class="w-full">
-                                    <h4 class="mb-2 font-medium text-zinc-700">Priority</h4>
-                                    <input min="1" placeholder="Enter Priority" name="priority"  id="priority" class=" w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="number">
-                                    <span class="priority text-red-400"></span>
-                                </div>
-                            </div>
-
                             <div class="w-full">
                                 <div class="w-full">
                                     <h4 class="mb-2 font-medium text-zinc-700">Image (300x250)px</h4>
@@ -81,7 +72,7 @@
                                 <select name="type" class="account_type w-full h-12 pl-4 pr-10 cursor-pointer bg-white border border-gray-300 rounded-md appearance-none text-zinc-700 focus:outline-none">
                                     <option value="" selected disabled>--Select Type--</option>
                                     @foreach(PAYMENT_TYPE as $data)
-                                       <option value="{{$data}}" >{{$data}}</option>
+                                        <option value="{{$data}}" >{{$data}}</option>
                                     @endforeach
                                 </select>
                                 <span class="type text-red-400"></span>
@@ -90,23 +81,23 @@
 
                         <div class="mobile_baking_area hidden">
                             <div class="flex flex-col md:flex-row justify-between gap-3">
+                                <div class="w-full">
                                     <div class="w-full">
-                                        <div class="w-full">
-                                            <h4 class="mb-2 font-medium text-zinc-700">Mobile Account Number</h4>
-                                            <input placeholder="Enter account number" name="account_number"
-                                                   class="account_number w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text">
+                                        <h4 class="mb-2 font-medium text-zinc-700">Mobile Account Number</h4>
+                                        <input placeholder="Enter account number" name="account_number"
+                                               class="account_number w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text">
 
-                                        </div>
                                     </div>
+                                </div>
 
+                                <div class="w-full">
                                     <div class="w-full">
-                                        <div class="w-full">
-                                            <h4 class="mb-2 font-medium text-zinc-700">Reference Number</h4>
-                                            <input placeholder="Enter reference number " name="ref_number"
-                                                   class="ref_number w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text">
+                                        <h4 class="mb-2 font-medium text-zinc-700">Reference Number</h4>
+                                        <input placeholder="Enter reference number " name="ref_number"
+                                               class="ref_number w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="text">
 
-                                        </div>
                                     </div>
+                                </div>
                             </div>
                         </div>
 
@@ -157,9 +148,9 @@
                                     </div>
                                 </div>
 
-                        </div>
+                            </div>
 
-                    </div>
+                        </div>
 
                         <div class="payment_gateway_area hidden ">
                             <div class="flex flex-col md:flex-row justify-between gap-3">
@@ -205,110 +196,110 @@
         $(document).ready(function (){
 
             $('body').on('change','.account_type',function (){
-                    let type=$(this).val()
-                    if(type=='Mobile Banking'){
+                let type=$(this).val()
+                if(type=='Mobile Banking'){
 
 
-                        $('.mobile_baking_area').removeClass('hidden')
-                        $('.baking_area').addClass('hidden')
-                        $('.paytm_area').addClass('hidden')
-                        $('.payment_gateway_area').addClass('hidden')
+                    $('.mobile_baking_area').removeClass('hidden')
+                    $('.baking_area').addClass('hidden')
+                    $('.paytm_area').addClass('hidden')
+                    $('.payment_gateway_area').addClass('hidden')
 
-                        //mobile banking detail
-                        $('.account_number').prop('required',true)
-                        $('.ref_number').prop('required',true)
+                    //mobile banking detail
+                    $('.account_number').prop('required',true)
+                    $('.ref_number').prop('required',true)
 
-                        //bank detail
-                        $('.bank_holder_name').prop('required',false)
-                        $('.bank_name').prop('required',false)
-                        $('.bank_account_number').prop('required',false)
-                        $('.bank_branch_name').prop('required',false)
-                        $('.bank_route_number').prop('required',false)
-                        $('.bank_swift_code').prop('required',false)
+                    //bank detail
+                    $('.bank_holder_name').prop('required',false)
+                    $('.bank_name').prop('required',false)
+                    $('.bank_account_number').prop('required',false)
+                    $('.bank_branch_name').prop('required',false)
+                    $('.bank_route_number').prop('required',false)
+                    $('.bank_swift_code').prop('required',false)
 
-                        // gateway detail
-                          $('.online_email').prop('required',false)
+                    // gateway detail
+                    $('.online_email').prop('required',false)
 
-                        // paytm detail
-                        $('.code_or_number').prop('required',false)
+                    // paytm detail
+                    $('.code_or_number').prop('required',false)
 
 
-                    }else if(type=='Banking'){
+                }else if(type=='Banking'){
 
-                        $('.baking_area').removeClass('hidden')
-                        $('.mobile_baking_area').addClass('hidden')
-                        $('.paytm_area').addClass('hidden')
-                        $('.payment_gateway_area').addClass('hidden')
+                    $('.baking_area').removeClass('hidden')
+                    $('.mobile_baking_area').addClass('hidden')
+                    $('.paytm_area').addClass('hidden')
+                    $('.payment_gateway_area').addClass('hidden')
 
-                        //mobile banking detail
-                        $('.account_number').prop('required',false)
-                        $('.ref_number').prop('required',false)
+                    //mobile banking detail
+                    $('.account_number').prop('required',false)
+                    $('.ref_number').prop('required',false)
 
-                        //bank detail
-                        $('.bank_holder_name').prop('required',true)
-                        $('.bank_name').prop('required',true)
-                        $('.bank_account_number').prop('required',true)
-                        $('.bank_branch_name').prop('required',true)
-                        $('.bank_route_number').prop('required',true)
-                        $('.bank_swift_code').prop('required',true)
+                    //bank detail
+                    $('.bank_holder_name').prop('required',true)
+                    $('.bank_name').prop('required',true)
+                    $('.bank_account_number').prop('required',true)
+                    $('.bank_branch_name').prop('required',true)
+                    $('.bank_route_number').prop('required',true)
+                    $('.bank_swift_code').prop('required',true)
 
-                        // gateway detail
-                        $('.online_email').prop('required',false)
+                    // gateway detail
+                    $('.online_email').prop('required',false)
 
-                        // paytm detail
-                        $('.code_or_number').prop('required',false)
+                    // paytm detail
+                    $('.code_or_number').prop('required',false)
 
                 }else if(type=='Paytm'){
 
-                        $('.paytm_area').removeClass('hidden')
-                        $('.mobile_baking_area').addClass('hidden')
-                        $('.baking_area').addClass('hidden')
-                        $('.payment_gateway_area').addClass('hidden')
+                    $('.paytm_area').removeClass('hidden')
+                    $('.mobile_baking_area').addClass('hidden')
+                    $('.baking_area').addClass('hidden')
+                    $('.payment_gateway_area').addClass('hidden')
 
-                        //mobile banking detail
-                        $('.account_number').prop('required',false)
-                        $('.ref_number').prop('required',false)
+                    //mobile banking detail
+                    $('.account_number').prop('required',false)
+                    $('.ref_number').prop('required',false)
 
-                        //bank detail
-                        $('.bank_holder_name').prop('required',false)
-                        $('.bank_name').prop('required',false)
-                        $('.bank_account_number').prop('required',false)
-                        $('.bank_branch_name').prop('required',false)
-                        $('.bank_route_number').prop('required',false)
-                        $('.bank_swift_code').prop('required',false)
+                    //bank detail
+                    $('.bank_holder_name').prop('required',false)
+                    $('.bank_name').prop('required',false)
+                    $('.bank_account_number').prop('required',false)
+                    $('.bank_branch_name').prop('required',false)
+                    $('.bank_route_number').prop('required',false)
+                    $('.bank_swift_code').prop('required',false)
 
-                        // gateway detail
-                        $('.online_email').prop('required',false)
+                    // gateway detail
+                    $('.online_email').prop('required',false)
 
-                        // paytm detail
-                        $('.code_or_number').prop('required',true)
+                    // paytm detail
+                    $('.code_or_number').prop('required',true)
 
-                    }else if(type=='Payment Gateway'){
+                }else if(type=='Payment Gateway'){
 
-                        $('.payment_gateway_area').removeClass('hidden')
-                        $('.mobile_baking_area').addClass('hidden')
-                        $('.baking_area').addClass('hidden')
-                        $('.paytm_area').addClass('hidden')
+                    $('.payment_gateway_area').removeClass('hidden')
+                    $('.mobile_baking_area').addClass('hidden')
+                    $('.baking_area').addClass('hidden')
+                    $('.paytm_area').addClass('hidden')
 
-                        //mobile banking detail
-                        $('.account_number').prop('required',false)
-                        $('.ref_number').prop('required',false)
+                    //mobile banking detail
+                    $('.account_number').prop('required',false)
+                    $('.ref_number').prop('required',false)
 
-                        //bank detail
-                        $('.bank_holder_name').prop('required',false)
-                        $('.bank_name').prop('required',false)
-                        $('.bank_account_number').prop('required',false)
-                        $('.bank_branch_name').prop('required',false)
-                        $('.bank_route_number').prop('required',false)
-                        $('.bank_swift_code').prop('required',false)
+                    //bank detail
+                    $('.bank_holder_name').prop('required',false)
+                    $('.bank_name').prop('required',false)
+                    $('.bank_account_number').prop('required',false)
+                    $('.bank_branch_name').prop('required',false)
+                    $('.bank_route_number').prop('required',false)
+                    $('.bank_swift_code').prop('required',false)
 
-                        // gateway detail
-                        $('.online_email').prop('required',true)
+                    // gateway detail
+                    $('.online_email').prop('required',true)
 
-                        // paytm detail
-                        $('.code_or_number').prop('required',false)
+                    // paytm detail
+                    $('.code_or_number').prop('required',false)
 
-                    }
+                }
             })
 
 
@@ -362,11 +353,6 @@
                                 $('.account_number').html(response.responseJSON.errors.account_number)
                             }else{
                                 $('.account_number').html('')
-                            }
-                            if (response.responseJSON.errors.hasOwnProperty('priority')) {
-                                $('.priority').html(response.responseJSON.errors.priority)
-                            }else{
-                                $('.priority').html('')
                             }
                         }
                         $(".submit_button").text("Add").prop('disabled', false)

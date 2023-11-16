@@ -44,15 +44,6 @@
                                 </div>
                             </div>
 
-
-                            <div class="w-full">
-                                <div class="w-full">
-                                    <h4 class="mb-2 font-medium text-zinc-700">Priority</h4>
-                                    <input value="{{$payment->priority}}" min="1" placeholder="Enter Priority" name="priority"  id="priority" class=" w-full h-12 px-4 border border-gray-300 rounded-md text-zinc-700 focus:outline-none" type="number">
-                                    <span class="priority text-red-400"></span>
-                                </div>
-                            </div>
-
                             <div class="w-full">
                                 <div class="w-full">
                                     <h4 class="mb-2 font-medium text-zinc-700">Image (300x250)px</h4>

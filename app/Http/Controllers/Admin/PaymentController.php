@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ecommerce\Payment;
-use App\Models\Ecommerce\Product;
-use App\Models\Ecommerce\Review_coin;
 use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -44,7 +42,6 @@ class PaymentController extends Controller
             'image' => 'required|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'type'=>'required',
             'payment_method_id' => 'required|integer',
-            'priority'=>'required|unique:payments,priority'
         ]);
         if ($request->isMethod('POST'))
         {
@@ -75,7 +72,6 @@ class PaymentController extends Controller
                 $payment->payment_name      = $request->payment_name;
                 $payment->type              = $request->type;
                 $payment->payment_method_id  = $request->payment_method_id;
-                $payment->priority          = $request->priority;
 
                 $payment->account_detail=json_encode(['bank_holder_name'=>$request->bank_holder_name,
                 'bank_account_number'=>$request->bank_account_number,'bank_name'=>$request->bank_name,
@@ -127,7 +123,6 @@ class PaymentController extends Controller
             'type'=>'required',
             'status'=>'required',
             'payment_method_id' => 'required|integer',
-            'priority'=>'required|unique:payments,priority,'.$payment->id,
         ]);
 
         if ($request->isMethod("POST")){
@@ -136,7 +131,6 @@ class PaymentController extends Controller
                 $payment->payment_name=$request->payment_name;
                 $payment->type=$request->type;
                 $payment->payment_method_id=$request->payment_method_id;
-                $payment->priority= $request->priority;
                 $payment->status=$request->status;
 
                 if($request->hasFile('image')){
