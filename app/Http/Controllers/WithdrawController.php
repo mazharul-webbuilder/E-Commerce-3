@@ -6,7 +6,7 @@ use App\Models\WithdrawHistory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
 
 class WithdrawController extends Controller
@@ -31,8 +31,28 @@ class WithdrawController extends Controller
      */
     public function datatable(Request $request): JsonResponse
     {
+        $withdraw_lists = null;
 
-        $withdraw_lists = WithdrawHistory::all();
+        switch($request->filter){
+            case 'all':
+                $withdraw_lists = WithdrawHistory::all();
+                break;
+            case 'merchant':
+                $withdraw_lists = WithdrawHistory::where('merchant_id', '!=', null)->get();
+                break;
+            case 'seller':
+                $withdraw_lists = WithdrawHistory::where('seller_id', '!=', null)->get();
+                break;
+            case 'affiliator':
+                $withdraw_lists = WithdrawHistory::where('affiliator_id', '!=', null)->get();
+                break;
+            case 'shareOwner':
+                $withdraw_lists = WithdrawHistory::where('share_owner_id', '!=', null)->get();
+                break;
+            case 'normalUser':
+                $withdraw_lists = WithdrawHistory::where('user_id', '!=', null)->get();
+                break;
+        }
 
         $userType = null;
 
