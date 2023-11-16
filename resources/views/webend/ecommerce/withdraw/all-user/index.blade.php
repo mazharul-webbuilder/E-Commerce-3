@@ -72,10 +72,10 @@
                                  class="bg-purple-600 p-2 text-white rounded filter-btn" filter="shareOwner">Share Owner</a></span>
                         <span><a href="javascript:void(0)"
                                  class="bg-purple-600 p-2 text-white rounded filter-btn" filter="normalUser">Normal User</a></span>
-                        <span>
-                            <input type="text" name="daterange" value="" class="date-range" />
+{{--                        <span>--}}
+{{--                            <input type="text" name="daterange" value="" class="date-range" />--}}
 
-                        </span>
+{{--                        </span>--}}
                         @if ($date_range != null)
                             <span class="dark:text-blue-500">Searching Date: {{ $date_range }}</span>
                         @endif
@@ -87,7 +87,7 @@
                         </form>
 
                         <br><br>
-                        <h2 class="text-2xl"><strong>Total Orders: 220</strong></h2>
+                        <h2 class="text-2xl"><strong>Total Withdraw: {{\App\Models\WithdrawHistory::count()}}</strong></h2>
 
 
                     </div>
