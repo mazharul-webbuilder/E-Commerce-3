@@ -26,11 +26,77 @@ class ProductController extends Controller
 {
     public function index(): View
     {
-        $products = Product::where('admin_id', '!=' , null)->latest()->get();
+//        $products = Product::where('admin_id', '!=' , null)->latest()->get();
 
         $count_deal = Product::where(['status'=>1,'flash_deal'=>1])->count();
 
-        return view('webend.ecommerce.product.index',compact('products','count_deal'));
+        return view('webend.ecommerce.product.index',compact('count_deal'));
+    }
+
+    /**
+     * Admin Product Datatable
+    */
+    public function adminProductDatatable()
+    {
+        $adminProducts = Product::where('admin_id', '!=', null)->get();
+
+        return DataTables::of($adminProducts)
+            ->addIndexColumn()
+            ->addColumn('thumbnail', function ($product){
+                return '<img style="width: 150px;height: 60px" src="'.asset('uploads/product/small/'.$product->thumbnail) .'">';
+            })
+            ->addColumn('stock', function ($product){
+                return $product?->stocks->sum('quantity');
+            })
+            ->addColumn('status', function ($product){
+                return '<select data-action="'. route('product_status_update') . '" product_id="'. $product->id . '" name="status"
+                            class="change_product_status w-full h-6 h-10 pl-2 pr-2 cursor-pointer bg-white border border-gray-300 rounded-md appearance-none text-zinc-700 focus:outline-none">
+                            <option value="1"'.($product->status==1 ? 'selected' : '').'> Publish</option>
+                            <option value="0"'. ($product->status==0 ? 'selected' : '') .'> Unpublish</option>
+                        </select>';
+            })
+            ->addColumn('flash_deal', function ($product){
+                return '<a  data-te-toggle="modal" data-te-target="#exampleModalDeal" data-te-ripple-init data-te-ripple-color="light"
+                data-action="'.route('get_product_deal').'" product_id="'.$product->id.'" href="javascript:void(0)"
+                class="flash_deal_product_status flash_deal_status'.$product->id.'
+                text-white bg-red-500 hover:bg-sky-500 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 py-2 text-center">
+                '.($product->flash_deal==1 ? 'Yes' : 'No').'</a>';
+            })
+            ->addColumn('control_panel', function ($product){
+                return ' <a  data-te-toggle="modal" data-te-target="#exampleModalControl" data-te-ripple-init data-te-ripple-color="light"
+                data-action="'.route('show_product_status').'" product_id="'.$product->id.'" href="javascript:void(0)"
+                class="show_product_status text-white bg-purple-400 hover:bg-sky-500 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 py-2 text-center">
+                <i class="fas fa-solid fa-tag px-2"></i>
+                Control
+            </a>';
+            })
+            ->addColumn('stock_management', function ($product){
+                return '<a href="'.route('stock.index',$product->id).'" class="text-white bg-pink-400 hover:bg-sky-500 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 py-2 text-center">
+                <i class="fas fa-solid fa-warehouse px-2"></i>
+                Stock
+            </a>';
+            })
+            ->addColumn('action', function ($product){
+                return '<div class="flex space-x-2">
+                        <a href="'.route('gallery.index',$product->id).'" class="text-white bg-blue-400 hover:bg-sky-500 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 py-2 text-center">
+                            <i class="fas fa-solid fa-images px-2"></i>
+                            Gallery
+                        </a>
+                        <a href="'.route('product.product_detail',$product->slug).'" class="text-white bg-indigo-400  hover:bg-sky-500 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 py-2 text-center">
+                            <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg>
+                            View
+                        </a>
+                        <a href="'.route('product.edit',$product->id)  .'" class="text-white bg-sky-400 hover:bg-sky-500 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 py-2 text-center">
+                            <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg>
+                            Edit
+                        </a>
+                        <a href="javascriptL:;" data-action="'.route('product.delete').'"  item_id="'.$product->id.'" type="button" class="delete_item text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor">
+                            <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                            Delete
+                        </a>
+                        </div>';
+            })
+        ->rawColumns(['thumbnail', 'status', 'flash_deal', 'control_panel', 'stock_management', 'action'])->make('true');
     }
 
     /**

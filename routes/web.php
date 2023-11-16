@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Admin\AdvertisementController;
 use App\Http\Controllers\Admin\Auth\AdminLoginController;
-use App\Http\Controllers\EcommerceBalanceTransferHisotoryController;
 use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Admin\CurrencyController;
 use App\Http\Controllers\Admin\DiamondPackageController;
@@ -33,7 +32,6 @@ use App\Http\Controllers\Admin\WithdrawPaymentController;
 use App\Http\Controllers\Ludo\CampaignController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BrandController;
-use App\Http\Controllers\ForgetPasswordController;
 use App\Http\Controllers\Admin\ManageSellerController;
 use App\Http\Controllers\Admin\MerchantWithdrawController;
 use App\Http\Controllers\Admin\SellerWithdrawController;
@@ -517,6 +515,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     // Product route
     Route::group(['prefix' => 'product'], function () {
         Route::get('/', [ProductController::class, 'index'])->name('product.index');
+        Route::get('/admin/datatable', [ProductController::class, 'adminProductDatatable'])->name('product.datatable');
         Route::get('/of/merchants', [ProductController::class, 'merchantsProduct'])->name('product.merchant');
         Route::get('/datatable/merchant', [ProductController::class, 'merchantsProductDatatable'])->name('product.merchant.datatable');
         Route::get('/status/update/merchant', [ProductController::class, 'merchantsProductStatusUpdate'])->name('product.merchant.status.update');
