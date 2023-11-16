@@ -651,8 +651,10 @@ public function product_status_update(Request $request)
         }
     }
 
+    /**
+     * View Product Sale History Page
+    */
     public function product_sale_history(){
-
         $sale_histories=Order_detail::whereHas('order',function ($query){
             $query->where('status','delivered');
         })->get();
