@@ -71,7 +71,7 @@
                                 <select name="payment_method_id" class="account_type w-full h-12 pl-4 pr-10 cursor-pointer bg-white border border-gray-300 rounded-md appearance-none text-zinc-700 focus:outline-none">
                                     <option value="" selected disabled>--Select Type--</option>
                                     @foreach($payment_methods as $payment_method)
-                                        <option value="{{isset($payment_method->id) ?? ''}}" {{$payment_method->id == $payment->paymentMethod->id ? 'selected' : ''}}>{{ $payment_method->payment_method_name }}</option>
+                                        <option value="{{$payment_method->id}}" {{$payment->payment_method_id==$payment_method->id ? 'selected' : ''}}>{{ $payment_method->payment_method_name }}</option>
                                     @endforeach
                                 </select>
                                 <span class="type text-red-400"></span>
