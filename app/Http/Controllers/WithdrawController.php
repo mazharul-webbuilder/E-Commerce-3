@@ -127,8 +127,8 @@ class WithdrawController extends Controller
                         ';
                     case "Mobile Banking":
                         return '
-                            <p class="py-1">Account Number: '.$banking_details['mobile_account_number'].'</p>
-                            <p class="py-1">Reference: '.$banking_details['ref_number'].'</p>
+                            <p class="py-1">Account Number: '.(array_key_exists('mobile_account_number', $banking_details) ? $banking_details['mobile_account_number'] : null).'</p>
+                            <p class="py-1">Reference: '.(array_key_exists('ref_number', $banking_details) ? $banking_details['ref_number']: null).'</p>
                         ';
                 }
             })
