@@ -691,7 +691,7 @@ class TournamentApiController extends Controller
     //    This function for entry game  start
     public function game_entry(Request $request)
     {
-       //  return auth()->user()->id;
+        // return auth()->user()->id;
         $validator = Validator::make($request->all(), [
             'tournament_id' => 'required'
         ]);

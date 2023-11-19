@@ -22,7 +22,6 @@ class GamedataResource extends JsonResource
             ->orWhere('player_two',Auth::user()->id)->orWhere('player_three',Auth::user()->id)
             ->orWhere('player_four',Auth::user()->id)->first();
 
-
         $user=auth()->user();
 
        return [
@@ -48,6 +47,15 @@ class GamedataResource extends JsonResource
                    'created_at'=>$data->created_at,
                    'updated_at'=>$data->updated_at,
                    'count_down'=>$data->count_down,
+                   'my_board_group_id'=>$this->get_auth_user_board($user,$data->id) !=null ? $this->get_auth_user_board($user,$data->id)->id : null,
+
+                   'my_board_group_members'=>$this->get_auth_user_board($user,$data->id) !=null ? [
+                       'player_one'=>$this->get_auth_user_board($user,$data->id)->player_one,
+                       'player_two'=>$this->get_auth_user_board($user,$data->id)->player_two,
+                       'player_three'=>$this->get_auth_user_board($user,$data->id)->player_three,
+                       'player_four'=>$this->get_auth_user_board($user,$data->id)->player_four,
+                   ] : null,
+
                    'board_status'=>$this->get_auth_user_board($user,$data->id)  !=null ? $this->get_auth_user_board($user,$data->id)->board_name->status : null,
                    'result_status'=>$this->get_auth_user_win($user,$data->id)  !=null ? 1 : 0,
                    'remain_board'=>$board !=null ? remain_running_board($board->board_id,$data->id)  : "", // current round board,
