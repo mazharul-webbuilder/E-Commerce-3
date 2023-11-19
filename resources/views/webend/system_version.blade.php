@@ -82,7 +82,18 @@
 
 
                     },
-                    error:function(response){
+                    error: function (xhr, status, error) {
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+
+                            // Display error messages for each input field
+                            $.each(errors, function (field, errorMessage) {
+                                const inputField = $('[name="' + field + '"]');
+                                inputField.after('<span class="error-message text-red-600">' + errorMessage[0] + '</span>');
+                            });
+                        } else {
+                            console.log('An error occurred:', status, error);
+                        }
                     }
                 });
             });

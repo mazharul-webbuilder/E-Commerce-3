@@ -65,12 +65,19 @@ class DashboardController extends Controller
     }
 
     public function system_version(){
-        $data=VersionUpdate::latest()->first();
+        $data = VersionUpdate::latest()->first();
 
         return view('webend.system_version',compact('data'));
     }
 
+    /**
+     * Application Version Control
+    */
     public function version_update(Request $request){
+        $request->validate([
+            'id' => ['required'],
+            'version_name' => ['required', 'alpha_num']
+        ]);
         if ($request->isMethod("post")){
             try {
                 DB::beginTransaction();

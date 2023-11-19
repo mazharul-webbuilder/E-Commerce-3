@@ -71,7 +71,8 @@
                         @endif
 
                         <br><br>
-                        <h2 class="text-2xl"><strong>Total Orders: {{ count($orders) }}</strong></h2>
+                        <h4 class="text-2xl"><strong>Total Orders: {{ count($orders) }}</strong></h4>
+                        <h4 class="text-2xl"><strong>Sub Total: {{ $orders->sum('sub_total') }}</strong></h4>
 
 
                     </div>
