@@ -99,25 +99,33 @@
                     swal("Do you want to add more coin?", {
                         content: "input",
                     }).then((value) => {
-                        if (value !="") {
-                            $.ajax({
-                                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                url: $(this).attr('data-action'),
-                                method: 'post',
-                                data: {additional_coin:value},
-                                success: function (data) {
-                                    swal({
-                                        title: 'Good job!',
-                                        text: data.message,
-                                        icon: data.type,
-                                        timer: 5000,
-                                    })
 
-                                    $("#dataTableAuthor").load(" #dataTableAuthor")
-                                }
+                        if (value !=null) {
+                          if (value.length !== 0 ){
+                              $.ajax({
+                                  headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                  url: $(this).attr('data-action'),
+                                  method: 'post',
+                                  data: {additional_coin:value},
+                                  success: function (data) {
+                                      swal({
+                                          title: 'Good job!',
+                                          text: data.message,
+                                          icon: data.type,
+                                          timer: 5000,
+                                      })
 
-
-                            });
+                                      $("#dataTableAuthor").load(" #dataTableAuthor")
+                                  }
+                              });
+                          }else{
+                              swal({
+                                  title: 'Invalid value',
+                                  text: "Please provide extra amount",
+                                  icon: "error",
+                                  timer: 5000,
+                              })
+                          }
                         }else{
                             swal({
                                 title: 'Something wrong',
