@@ -572,35 +572,7 @@
                                             </a>
                                         </li>
                                     </ul>
-                            </li>
-
-                            <li>
-                                <a href="{{ route('withdraw.index') }}"
-                                    class="text-lg text-white font-normal rounded-lg flex items-center {{ Request::routeIs('withdraw.index') ? 'bg-blue-500' : '' }} p-2 hover:bg-blue-500 group active:bg-blue-500">
-                                    <i
-                                        class="fas fa-trophy text-white group-hover:text-white transition duration-75"></i>
-                                    <span class="ml-3 group-hover:text-white transition duration-150">Withdrawal
-                                        History</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="{{ route('withdraw.saving') }}"
-                                   class="text-lg text-white font-normal rounded-lg flex items-center {{ Request::routeIs('withdraw.saving') ? 'bg-blue-500' : '' }} p-2 hover:bg-blue-500 group active:bg-blue-500">
-                                    <i
-                                        class="fas fa-trophy text-white group-hover:text-white transition duration-75"></i>
-                                    <span class="ml-3 group-hover:text-white transition duration-150">Withdrawal
-                                        Saving</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="{{ route('withdraw_payment.index') }}"
-                                    class="text-lg text-white font-normal rounded-lg {{ Request::routeIs('withdraw_payment.index') ? 'bg-blue-500' : '' }} flex items-center p-2 hover:bg-blue-500 group active:bg-blue-500">
-                                    <i class="fas fa-solid fa-gem"></i>
-                                    <span class="ml-3 group-hover:text-white transition duration-150">Withdraw
-                                        Payment</span>
-                                </a>
+                                </button>
                             </li>
                             <li>
                                 <a href="{{ route('admin.general_setting') }}"
@@ -1374,9 +1346,9 @@
                                 </button>
                                 <ul id="dropdown-example-12"
                                     class=" @if (
-                                                Request::routeIs('ecommerce.withdraw.list.merchant') ||
-                                            Request::routeIs('ecommerce.withdraw.list.seller') ||
-                                            Request::routeIs('ecommerce.withdraw.list.seller') ||
+                                                Request::routeIs('withdraw.index') ||
+                                            Request::routeIs('withdraw.saving') ||
+                                            Request::routeIs('withdraw_payment.index') ||
                                             Request::routeIs('admin.all.withdraw'))
                                             @else
                                              hidden
@@ -1393,6 +1365,43 @@
                                                 class="group-hover:text-white font-normal transition duration-150">All Withdraw</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="{{ route('withdraw.index')}}"
+                                        class="block px-1.5 py-2 mt-2 font-semibold rounded-lg text-white md:mt-0 focus:text-gray-900 hover:bg-blue-500 group
+                                            @if(Request::routeIs('withdraw.index')) bg-blue-500
+                                            @else
+                                            @endif focus:outline-none focus:shadow-outline">
+                                            <i
+                                                class="fas fa-th text-white group-hover:text-white transition duration-75"></i>
+                                            <span
+                                                class="group-hover:text-white font-normal transition duration-150">Withdrawal History</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('withdraw.saving')}}"
+                                        class="block px-1.5 py-2 mt-2 font-semibold rounded-lg text-white md:mt-0 focus:text-gray-900 hover:bg-blue-500 group
+                                            @if(Request::routeIs('withdraw.saving')) bg-blue-500
+                                            @else
+                                            @endif focus:outline-none focus:shadow-outline">
+                                            <i
+                                                class="fas fa-th text-white group-hover:text-white transition duration-75"></i>
+                                            <span
+                                                class="group-hover:text-white font-normal transition duration-150">Withdrawal Saving</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('withdraw_payment.index')}}"
+                                        class="block px-1.5 py-2 mt-2 font-semibold rounded-lg text-white md:mt-0 focus:text-gray-900 hover:bg-blue-500 group
+                                            @if(Request::routeIs('withdraw_payment.index')) bg-blue-500
+                                            @else
+                                            @endif focus:outline-none focus:shadow-outline">
+                                            <i
+                                                class="fas fa-th text-white group-hover:text-white transition duration-75"></i>
+                                            <span
+                                                class="group-hover:text-white font-normal transition duration-150">Withdrawal Payment</span>
+                                        </a>
+                                    </li>
+
 {{--                                    <li>--}}
 {{--                                        <a href="{{ route('ecommerce.withdraw.list.merchant')}}"--}}
 {{--                                        class="block px-1.5 py-2 mt-2 font-semibold rounded-lg text-white md:mt-0 focus:text-gray-900 hover:bg-blue-500 group--}}

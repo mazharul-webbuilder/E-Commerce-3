@@ -11,6 +11,7 @@ use App\Http\Resources\Referrallist;
 use App\Models\UserDevice;
 use App\Models\UserReferralBonus;
 use Carbon\Carbon;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -26,9 +27,10 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         $users = User::latest()->get();
+
         return  view('webend.user.user', compact('users'));
     }
 
