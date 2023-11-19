@@ -618,8 +618,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     });
     /*Ecommerce Withdraw End*/
     /*Start All Withdraw*/
-    Route::get('all/withdraw', [WithdrawController::class, 'index'])->name('admin.all.withdraw');
-    Route::get('all/withdraw/datatable', [WithdrawController::class, 'datatable'])->name('admin.all.withdraw.datatable');
+    Route::get('all/withdraw', [WithdrawHistoryController::class, 'allWithdraw'])->name('admin.all.withdraw');
+    Route::get('all/withdraw/datatable', [WithdrawHistoryController::class, 'allWithdrawDatatable'])->name('admin.all.withdraw.datatable');
     /*End All Withdraw*/
     Route::group(['prefix' => 'currency'], function () {
         Route::get('/', [CurrencyController::class, 'index'])->name('currency.index');
