@@ -70,21 +70,19 @@
                     contentType: false,
                     processData: false,
                     success:function(data){
-
-                            swal({
-                                title: 'Good job!',
-                                text: data.message,
-                                icon: data.type,
-                                timer: 5000,
-                            })
-                            $(".submit_button").text("Update").prop('disabled', false)
-
-
-
+                        $('.error-message').addClass('hidden')
+                        swal({
+                            title: 'Good job!',
+                            text: data.message,
+                            icon: data.type,
+                            timer: 5000,
+                        })
+                        $(".submit_button").text("Update").prop('disabled', false)
                     },
                     error: function (xhr, status, error) {
                         if (xhr.status === 422) {
                             const errors = xhr.responseJSON.errors;
+                            $(".submit_button").text("Update").prop('disabled', false)
 
                             // Display error messages for each input field
                             $.each(errors, function (field, errorMessage) {

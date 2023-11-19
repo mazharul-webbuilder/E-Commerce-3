@@ -76,7 +76,7 @@ class DashboardController extends Controller
     public function version_update(Request $request){
         $request->validate([
             'id' => ['required'],
-            'version_name' => ['required', 'alpha_num']
+            'version_name' => ['required', 'regex:/^[A-Za-z0-9-]+$/']
         ]);
         if ($request->isMethod("post")){
             try {
