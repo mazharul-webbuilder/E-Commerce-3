@@ -19,7 +19,7 @@
                     </li>
                 </ol>
             </div>
-            @if($datas->sum('commission_amount')>0)
+            @if($datas->sum('commission_amount')==0)
                 <div class="flex justify-start p-1">
                     <a disabled href="javascript:;"  data-action="{{route('shareholder.distribute_share_holder_fund')}}" class="distribution_button text-white bg-blue-700 hover:bg-blue-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center">
                         Distribution Commission
