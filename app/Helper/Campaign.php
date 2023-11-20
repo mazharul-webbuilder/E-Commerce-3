@@ -14,7 +14,8 @@ const SHARE_HOLDER_INCOME_SOURCE=[
     'diamond_use'            =>'diamond_use',
     'bidding'                =>'bidding',
     'club_registration'      =>'club_registration',
-    'diamond_partner'        =>'diamond_partner'
+    'diamond_partner'        =>'diamond_partner',
+    'seller_product_add'     =>'seller_product_add'
 ];
 const CAMPAIGN_POSITION_CONSTRAIN_TITLE=[
     'vip'            =>'vip',
@@ -40,17 +41,22 @@ const COMMISSION_SOURCE = [
     'clubOwner' => 'clubOwner'
 ];
 
-function share_holder_fund_history($income_source_type,$coin){
+function share_holder_fund_history($income_source_type,$coin)
+{
+
     $income_source=ShareHolderIncomeSource::where('constrain_title',$income_source_type)->first();
+
     if ($income_source->commission_type==1){
         if ($income_source_type==SHARE_HOLDER_INCOME_SOURCE['club_registration']){
             $total_commission=$coin;
         }else {
             $total_commission=($income_source->commission*$coin)/100;
+
         }
     }else{
         $total_commission=$coin*$income_source->commission;
     }
+    //return $total_commission;
     ShareHolderFundHistory::create([
         'income_source_id'=>$income_source->id,
         'commission_amount'=>$total_commission,

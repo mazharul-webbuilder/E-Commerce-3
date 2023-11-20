@@ -71,15 +71,16 @@ class ManageProductController extends Controller
      * Store Merchant reseller allow product
      * to seller products
      */
-    public function add_to_store(Request $request): JsonResponse
+    public function add_to_store(Request $request)
     {
+     $auth_user = get_auth_seller();
         try {
-            $auth_user = get_auth_seller();
 
             /*Get Product From DB*/
             $product = Product::find($request->item_id);
 
             $checker = SellerProduct::where(['seller_id'=>$auth_user->id,'product_id'=> $product->id])->first();
+
 
             $product_in_due_product = DueProduct::where(['seller_id' => $auth_user->id, 'status' => 1])->first();
 
@@ -118,7 +119,7 @@ class ManageProductController extends Controller
                     $auth_user->balance -= $sellerProductPurchaseCharge;
                     $auth_user->save();
 
-                    /*Distribute the Seller Product Purchase Charge below users*/
+
 
                     // Give Company Commission
                     companyCommission(calculatePercentage(number: $sellerProductPurchaseCharge, percentage: affiliateSetting()->company_commission),COMMISSION_SOURCE['seller']);
@@ -128,11 +129,15 @@ class ManageProductController extends Controller
 
                     // Give To Seller Commission
                     topSellerCommission(calculatePercentage(number: $sellerProductPurchaseCharge, percentage: affiliateSetting()->top_seller_commission),COMMISSION_SOURCE['seller']);
-
-                    if ($auth_user->user_id !=null){
+                    // Provide Generation commission
+                    if ($auth_user->user_id !=null)
+                    {
                         $generation_amount=calculatePercentage($sellerProductPurchaseCharge,affiliateSetting()->generation_commission);
                         provide_generation_commission_seller($auth_user->user,$generation_amount,COIN_EARNING_SOURCE['generation_commission']);
                     }
+                    // shareholder fund history
+
+                    share_holder_fund_history(SHARE_HOLDER_INCOME_SOURCE['seller_product_add'], $sellerProductPurchaseCharge);
 
 
                     /**
