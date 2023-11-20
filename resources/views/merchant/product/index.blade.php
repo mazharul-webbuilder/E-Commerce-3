@@ -36,7 +36,21 @@
             <div class="border border-[#8e0789] rounded-md mt-5 mb-8">
                 <div class="bg-[#8e0789] overflow-hidden w-full px-0 flex items-center">
                     <h2 class="text-2xl font-bold py-2 text-white pl-3">Product List</h2>
+                </div>
+                <div class="py-2 px-1 mt-3 flex" style="overflow-x: auto;">
+                    <div class="p-2">
+                        <span id="published">
+                            <a href="javascript:void(0)" class="bg-blue-700 active:bg-blue-500 p-2 text-white rounded active:red">
+                                Published
+                            </a>
+                        </span>
 
+                        <span class="ml-5" id="unpublished">
+                            <a href="javascript:void(0)" class="bg-cyan-600 active:bg-blue-500 p-2 text-white rounded active:red">
+                                Unpublished
+                            </a>
+                        </span>
+                    </div>
                 </div>
 
                 <div class="py-2 px-1 mt-3" style="overflow-x: auto;">
@@ -162,6 +176,23 @@
                 dateFormat: "dd-mm-yy" // Date format (day-month-year)
             });
         });
+    </script>
+    <script>
+        $(document).ready(function (){
+            /*Published*/
+            $('#published').on('click', function (){
+                getProductDatatable('published')
+            })
+            /*Unpublished*/
+            $('#unpublished').on('click', function (){
+                getProductDatatable('unpublished')
+            })
+        })
+
+        /*Datatable GET*/
+        function getProductDatatable(filter = 'all'){
+
+        }
     </script>
 
 
