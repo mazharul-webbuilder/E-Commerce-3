@@ -53,6 +53,13 @@ class OrderController extends Controller
                 })->get();
             }
         }
+        if (isset($request->startDate) & isset($request->endDate)) {
+            $orders = Order::whereHas('merchant_order_detail', function ($query) use ($auth_user){
+                $query->where('merchant_id', $auth_user->id);
+            })
+                ->whereDate('created_at', '>=', $request->startDate)
+                ->whereDate('created_at', '<=', $request->endDate)->get();
+        }
         return DataTables::of($orders)
             ->addIndexColumn()
             ->editColumn('grand_total',function(Order $order) use($auth_user){

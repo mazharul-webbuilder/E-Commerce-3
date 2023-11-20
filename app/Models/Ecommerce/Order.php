@@ -28,6 +28,10 @@ class Order extends Model
     {
         return $this->hasMany(Order_detail::class);
     }
+    public function merchant_order_detail()
+    {
+        return $this->hasMany(Order_detail::class, 'order_id')->where('merchant_id', '!=', null);
+    }
 
     public function seller_order_detail()
     {

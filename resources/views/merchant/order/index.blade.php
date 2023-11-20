@@ -61,12 +61,11 @@
                         @endif
                     </div>
                 </div>
-                <form id="search_order_by_date" action="{{ route('order.search_by_date') }}" method="POST"
-                      style="display: none">
-                    @csrf
-                    <input type="text" name="start_date" value="" class="start_date">
-                    <input type="text" name="end_date" value="" class="end_date">
-                </form>
+                {{--Date Input--}}
+                <input type="text" name="startDate" id="startDate" value="" class="start_date">
+                <input type="text" name="endDate" id="endDate" value="" class="end_date">
+                {{--Date Input--}}
+
 
                 <div class="py-2 px-1 mt-3" style="overflow-x: auto;">
                     <table class="text-sm text-left text-white border-l border-r" id="dataTable" style=" width: 100%;">
@@ -143,32 +142,6 @@
                 }, 1000)
 
             });
-
-            // $("body").on('change', '#manage_order', function(e) {
-            //     //e.preventDefault()
-            //     let order_id = $(this).attr('order_id');
-            //     let status = $(this).val();
-            //     $.ajax({
-            //         headers: {
-            //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //         },
-            //         method: "post",
-            //         url: $(this).attr('data-action'),
-            //         data: {
-            //             order_id: order_id,
-            //             status: status
-            //         },
-            //         success: function(response) {
-            //             swal({
-            //                 title: response.type,
-            //                 text: response.message,
-            //                 icon: response.type,
-            //                 timer: 5000,
-            //                 // buttons: true,
-            //             })
-            //         }
-            //     })
-            // })
         })
     </script>
 
@@ -215,6 +188,12 @@
             $('.OrderFilterBtn').on('click', function (){
                 const filter = $(this).attr('filter')
                 getMerchantOrderDatatable(filter)
+            })
+            /*Filter by Date*/
+            $('body').on('click', '.applyBtn', function (){
+                let startDate = $('#startDate').val()
+                let endDate = $('#endDate').val()
+                getMerchantOrderDatatable('all', startDate, endDate)
             })
         })
     </script>
