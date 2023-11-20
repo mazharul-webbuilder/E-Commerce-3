@@ -135,7 +135,7 @@
                 { data: 'current_price',name:'current_price'},
                 { data: 'previous_price',name:'previous_price'},
                 { data: 'current_coin',name:'current_coin'},
-                { data: 'status',name:'status'},
+                { data: 'status',name:'status', orderable: false},
                 { data: 'flash_deal',name:'flash_deal', orderable: false},
                 { data: 'control_panel',name:'control_panel', orderable: false},
                 { data: 'stock_manager',name:'stock_manager', orderable: false},
