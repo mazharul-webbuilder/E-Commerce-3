@@ -51,8 +51,6 @@ class CartController extends Controller
                 }
             }
 
-
-
             if (is_null($cart)){
 
                 $data=new Cart();

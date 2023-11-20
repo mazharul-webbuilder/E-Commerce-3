@@ -50,7 +50,13 @@ class ShareHolderIncomeSourceSeed extends Seeder
                 'commission'=>10,
                 'commission_type'=>2,
                 'constrain_title'=>SHARE_HOLDER_INCOME_SOURCE['diamond_partner'],
-             ]
+             ],
+            [
+                'income_source_name'=>'Seller Product Add',
+                'commission'=>15,
+                'commission_type'=>1,
+                'constrain_title'=>SHARE_HOLDER_INCOME_SOURCE['seller_product_add'],
+            ]
         ]);
     }
 }
