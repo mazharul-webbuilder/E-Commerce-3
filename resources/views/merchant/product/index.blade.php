@@ -135,35 +135,6 @@
 
 @section('extra_js')
     <script>
-        var table = $("#dataTable").DataTable({
-            processing: true,
-            responsive: true,
-            serverSide: true,
-            ordering: true,
-            pagingType: "full_numbers",
-            ajax: '{{ route('merchant.product.load') }}',
-            columns: [
-                { data: 'DT_RowIndex',name:'DT_RowIndex' },
-                { data: 'thumbnail',name:'thumbnail', orderable: false},
-                { data: 'title',name:'title'},
-                { data: 'current_price',name:'current_price'},
-                { data: 'previous_price',name:'previous_price'},
-                { data: 'current_coin',name:'current_coin'},
-                { data: 'status',name:'status', orderable: false},
-                { data: 'flash_deal',name:'flash_deal', orderable: false},
-                { data: 'control_panel',name:'control_panel', orderable: false},
-                { data: 'stock_manager',name:'stock_manager', orderable: false},
-                { data: 'gallery',name:'gallery', orderable: false},
-                { data: 'action',name:'action', orderable: false},
-            ],
-
-            language : {
-                processing: 'Processing'
-            },
-
-        });
-    </script>
-    <script>
         $(function() {
             // Initialize the datepickers with appropriate date formats
             $("#startDatePicker").datepicker({
@@ -179,6 +150,9 @@
     </script>
     <script>
         $(document).ready(function (){
+            /*Page On Load*/
+            getProductDatatable('all')
+            /*End Page On load*/
             /*Published*/
             $('#published').on('click', function (){
                 getProductDatatable('published')
@@ -191,7 +165,40 @@
 
         /*Datatable GET*/
         function getProductDatatable(filter = 'all'){
+            $('#dataTable').DataTable().destroy()
+            $("#dataTable").DataTable({
+                processing: true,
+                responsive: true,
+                serverSide: true,
+                ordering: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: '{{route('merchant.product.load')}}',
+                    method: 'get',
+                    data: {
+                        filter: filter
+                    }
+                },
+                columns: [
+                    { data: 'DT_RowIndex',name:'DT_RowIndex' },
+                    { data: 'thumbnail',name:'thumbnail', orderable: false},
+                    { data: 'title',name:'title'},
+                    { data: 'current_price',name:'current_price'},
+                    { data: 'previous_price',name:'previous_price'},
+                    { data: 'current_coin',name:'current_coin'},
+                    { data: 'status',name:'status', orderable: false},
+                    { data: 'flash_deal',name:'flash_deal', orderable: false},
+                    { data: 'control_panel',name:'control_panel', orderable: false},
+                    { data: 'stock_manager',name:'stock_manager', orderable: false},
+                    { data: 'gallery',name:'gallery', orderable: false},
+                    { data: 'action',name:'action', orderable: false},
+                ],
 
+                language : {
+                    processing: 'Processing'
+                },
+
+            });
         }
     </script>
 
