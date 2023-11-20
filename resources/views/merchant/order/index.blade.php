@@ -222,7 +222,7 @@
                 },
                 success: function (data) {
                     $('#totalOrder').text('Total Order ' + data.totalOrder)
-                    $('#subTotal').text('Sub Total ' + data.subTotal)
+                    // $('#subTotal').text('Sub Total ' + data.subTotal)
                 }
             })
         }

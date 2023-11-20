@@ -120,7 +120,7 @@ class OrderController extends Controller
             return response()->json([
                 'response' => Response::HTTP_OK,
                'totalOrder' =>  $orders->count(),
-               'subTotal' =>  $orders->sum('sub_total'),
+//               'subTotal' =>  $orders->sum('sub_total'),
             ]);
         } else{
             return response()->json();
