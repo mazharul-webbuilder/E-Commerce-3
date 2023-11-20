@@ -1059,7 +1059,6 @@ class TournamentApiController extends Controller
                         $player->save();
                         $user = User::find($request->looser);
 
-
                         //===here complete game round====
                         $this->complete_game_detail_info_final($ludo_board,$player);
                         provide_winning_prize($tournament, $user, $round_settings->looser);
