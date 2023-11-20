@@ -1060,8 +1060,10 @@ class TournamentApiController extends Controller
                         $user = User::find($request->looser);
 
                         //===here complete game round====
+
                         $this->complete_game_detail_info_final($ludo_board,$player);
-                        provide_winning_prize($tournament, $user, $round_settings->looser);
+                        provide_winning_prize($tournament, $user, $round_settings->fourth_bonus_point);
+
 
                         $user->win_balance += $round_settings->fourth_bonus_point;
                         $user->save();
