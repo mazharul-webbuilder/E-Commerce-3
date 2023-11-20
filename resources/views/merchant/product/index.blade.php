@@ -1,11 +1,9 @@
 @extends('merchant.layout.app')
 @section('extra_css')
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-{{--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>--}}
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 @endsection
 @section('content')
-
     <section class="w-full bg-white p-3 mt-5">
         <div class="container px-2 mx-auto xl:px-5">
             <!-- start menu -->
@@ -127,22 +125,22 @@
             processing: true,
             responsive: true,
             serverSide: true,
-            ordering: false,
+            ordering: true,
             pagingType: "full_numbers",
             ajax: '{{ route('merchant.product.load') }}',
             columns: [
                 { data: 'DT_RowIndex',name:'DT_RowIndex' },
-                { data: 'thumbnail',name:'thumbnail'},
+                { data: 'thumbnail',name:'thumbnail', orderable: false},
                 { data: 'title',name:'title'},
                 { data: 'current_price',name:'current_price'},
                 { data: 'previous_price',name:'previous_price'},
                 { data: 'current_coin',name:'current_coin'},
                 { data: 'status',name:'status'},
-                { data: 'flash_deal',name:'flash_deal'},
-                { data: 'control_panel',name:'control_panel'},
-                { data: 'stock_manager',name:'stock_manager'},
-                { data: 'gallery',name:'gallery'},
-                { data: 'action',name:'action' },
+                { data: 'flash_deal',name:'flash_deal', orderable: false},
+                { data: 'control_panel',name:'control_panel', orderable: false},
+                { data: 'stock_manager',name:'stock_manager', orderable: false},
+                { data: 'gallery',name:'gallery', orderable: false},
+                { data: 'action',name:'action', orderable: false},
             ],
 
             language : {
