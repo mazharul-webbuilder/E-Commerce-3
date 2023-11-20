@@ -62,11 +62,20 @@
                     </div>
                 </div>
                 {{--Date Input--}}
-                <input type="text" name="startDate" id="startDate" value="" class="start_date">
-                <input type="text" name="endDate" id="endDate" value="" class="end_date">
+                <div class="pl-5">
+                   <input type="text" name="startDate" id="startDate" value="" class="start_date">
+                    <input type="text" name="endDate" id="endDate" value="" class="end_date">
+                </div>
                 {{--Date Input--}}
 
-
+                {{--Meta Report--}}
+                <div class="pl-5">
+                    {{--Total Order--}}
+                    <h2 id="totalOrder" class="pb-2"></h2>
+                    {{--Sub Total--}}
+                    <h2 id="subTotal"></h2>
+                </div>
+                {{--End Meta Report--}}
                 <div class="py-2 px-1 mt-3" style="overflow-x: auto;">
                     <table class="text-sm text-left text-white border-l border-r" id="dataTable" style=" width: 100%;">
                         <thead class="text-xs text-white uppercase bg-amber-600">
@@ -183,18 +192,39 @@
     <script>
         /*On Load*/
         getMerchantOrderDatatable();
+        /*Order meta info*/
+        getOrderMetaInfo('all')
         /*Filter*/
         $(document).ready(function (){
             $('.OrderFilterBtn').on('click', function (){
                 const filter = $(this).attr('filter')
                 getMerchantOrderDatatable(filter)
+                /*Order meta info*/
+                getOrderMetaInfo(filter)
+
             })
             /*Filter by Date*/
             $('body').on('click', '.applyBtn', function (){
                 let startDate = $('#startDate').val()
                 let endDate = $('#endDate').val()
                 getMerchantOrderDatatable('all', startDate, endDate)
+                /*Order meta info*/
+                getOrderMetaInfo('date')
             })
         })
+
+        function getOrderMetaInfo(filter) {
+            $.ajax({
+                url: '{{route('merchant.order.meta.info')}}',
+                method: 'GET',
+                data: {
+                    filter: filter
+                },
+                success: function (data) {
+                    $('#totalOrder').text('Total Order ' + data.totalOrder)
+                    $('#subTotal').text('Sub Total ' + data.subTotal)
+                }
+            })
+        }
     </script>
 @endsection

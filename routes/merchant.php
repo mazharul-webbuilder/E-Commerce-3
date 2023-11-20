@@ -71,6 +71,7 @@ Route::group(['prefix' => 'order', 'as' => 'merchant.'], function () {
     Route::get('/',[OrderController::class,'index'])->name('order.index');
     Route::get('order_load',[OrderController::class,'datatable'])->name('order.load');
     Route::get('/details/{id}',[OrderController::class,'details'])->name('order.details');
+    Route::get('/get/meta/info',[OrderController::class,'orderMetaInfo'])->name('order.meta.info');
 });
 
 // Withdraw

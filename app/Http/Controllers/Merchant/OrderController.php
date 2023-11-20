@@ -9,6 +9,7 @@ use App\Models\Ecommerce\Product;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Yajra\DataTables\DataTables;
@@ -94,5 +95,35 @@ class OrderController extends Controller
         $orderDetails = Order_detail::where('order_id', $id)->where('merchant_id', Auth::guard('merchant')->id())->get();
 
         return view('merchant.order.details', compact('orderDetails'));
+    }
+
+    /**
+     * Get Order Meta Info
+    */
+    public function orderMetaInfo(Request $request): JsonResponse
+    {
+        $auth_user = get_auth_merchant();
+
+        $filter = ['all', 'pending', 'processing', 'shipping', 'delivered', 'declined'];
+
+        if (in_array($request->filter, $filter)) {
+            if ($request->filter == 'all') {
+                $orders = Order::whereHas('order_detail', function ($query) use ($auth_user) {
+                    $query->where('merchant_id',$auth_user->id);
+                })->get();
+            } else {
+                $orders = Order::whereHas('order_detail', function ($query) use ($auth_user, $request) {
+                    $query->where('merchant_id',$auth_user->id)->where('status', $request->filter);
+                })->get();
+            }
+
+            return response()->json([
+                'response' => Response::HTTP_OK,
+               'totalOrder' =>  $orders->count(),
+               'subTotal' =>  $orders->sum('sub_total'),
+            ]);
+        } else{
+            return response()->json();
+        }
     }
 }
