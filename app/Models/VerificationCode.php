@@ -9,4 +9,9 @@ class VerificationCode extends Model
 {
     use HasFactory;
     protected $guarded=[];
+
+    public function scopeVerifycode($query,$verify_code)
+    {
+        return $query->where('verify_code',$verify_code);
+    }
 }
