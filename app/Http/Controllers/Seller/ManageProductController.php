@@ -8,6 +8,7 @@ use App\Models\CompanyCommission;
 use App\Models\DueProduct;
 use App\Models\Ecommerce\Product;
 use App\Models\GameAssetCommission;
+use App\Models\Seller\Seller;
 use App\Models\SellerProduct;
 use App\Models\SellerProductBuyHistory;
 use App\Models\Settings;
@@ -73,117 +74,84 @@ class ManageProductController extends Controller
      */
     public function add_to_store(Request $request)
     {
-     $auth_user = get_auth_seller();
         try {
+            $seller = get_auth_seller();
 
-            /*Get Product From DB*/
-            $product = Product::find($request->item_id);
+            $product = Product::find($request->input('item_id'));
 
-            $checker = SellerProduct::where(['seller_id'=>$auth_user->id,'product_id'=> $product->id])->first();
+            $isProductExist = DB::table('seller_products')->where(['seller_id' => $seller->id, 'product_id' => $product->id])->exists();
 
-
-            $product_in_due_product = DueProduct::where(['seller_id' => $auth_user->id, 'status' => 1])->first();
-
-            if (is_null($checker)){ // if product not in seller table then store it
+            //If Product not exist insert the product
+            if (!$isProductExist) {
+                // Product purchase charge
+                $sellerProductPurchaseCharge = null;
+                // Number of Product in seller store
+                $numberOfProduct = DB::table('seller_products')->count();
+                // Check seller has due product
+                $dueProduct = DueProduct::where(['seller_id' => $seller->id, 'status' => 1])->first();
                 DB::beginTransaction();
 
-                // Seller Product Purchase Control
-                if (isset($auth_user->user_id)) {
-                    // VIP Product Purchase Price
-                    if ($auth_user->user->rank->priority != 0) {
+                if (isset($dueProduct) && $dueProduct->status == 1){
+                    $dueProduct->status = 0;
+                    $dueProduct->save();
+                } else { // No due product, check for balance
+                    if ($numberOfProduct >= getAffiliateSetting()->seller_user_rank_upgrade_require_product) {
                         $sellerProductPurchaseCharge = setting()->seller_product_purchase_charge_when_user_vip;
                     } else {
                         $sellerProductPurchaseCharge = setting()->seller_product_purchase_charge;
-
-                        $countSellerProduct = DB::table('seller_products')->where('seller_id', $auth_user->id)->count();
-                        if ($countSellerProduct >= getAffiliateSetting()->seller_user_rank_upgrade_require_product) {
-                            $user = User::find($auth_user->user_id);
-                            if ($user->rank->priority != 1) {
-                                updateUserRank($user, 'seller_update');
-                            }
-                        }
-
                     }
-                } else {
-                    // General Product Purchase Price
-                    $sellerProductPurchaseCharge = setting()->seller_product_purchase_charge;
-                }
+                    // Check balance
+                    if ($seller->balance > $sellerProductPurchaseCharge) {
+                        $seller->balance -= $sellerProductPurchaseCharge;
+                        $seller->save();
 
-                // If seller has due product
-                if (isset($product_in_due_product) && $product_in_due_product->status == 1){
-                    $product_in_due_product->status = 0;
-                    $product_in_due_product->save();
-                }
-                // If no due product, balance will deduct
-                elseif ($auth_user->balance >= $sellerProductPurchaseCharge ) {
-                    $auth_user->balance -= $sellerProductPurchaseCharge;
-                    $auth_user->save();
+                        // Distribute commission
+                    $this->distributeCommission($sellerProductPurchaseCharge, $seller);
 
-
-
-                    // Give Company Commission
-                    companyCommission(calculatePercentage(number: $sellerProductPurchaseCharge, percentage: affiliateSetting()->company_commission),COMMISSION_SOURCE['seller']);
-
-                    // Give Game Asset Commission
-                    gameAssetCommission(calculatePercentage(number: $sellerProductPurchaseCharge, percentage: affiliateSetting()->game_asset_commission),COMMISSION_SOURCE['seller']);
-
-                    // Give To Seller Commission
-                    topSellerCommission(calculatePercentage(number: $sellerProductPurchaseCharge, percentage: affiliateSetting()->top_seller_commission),COMMISSION_SOURCE['seller']);
-                    // Provide Generation commission
-                    if ($auth_user->user_id !=null)
-                    {
-                        $generation_amount=calculatePercentage($sellerProductPurchaseCharge,affiliateSetting()->generation_commission);
-                        provide_generation_commission_seller($auth_user->user,$generation_amount,COIN_EARNING_SOURCE['generation_commission']);
+                        /*Insert Record Into Seller Product Buy History*/
+                        SellerProductBuyHistory::create([
+                            'seller_id' => $seller->id,
+                            'merchant_id' => $product->merchant_id,
+                            'product_id' => $request->item_id,
+                            'amount' => $sellerProductPurchaseCharge,
+                        ]);
+                    } else {
+                        DB::rollBack();
+                        return response()->json([
+                            'data'=>'Insufficient Balance Or No Due Product Left.',
+                            'type'=>'warning',
+                            'status'=>201
+                        ]);
                     }
-                    // shareholder fund history
-
-                    share_holder_fund_history(SHARE_HOLDER_INCOME_SOURCE['seller_product_add'], $sellerProductPurchaseCharge);
-
-
-                    /**
-                     * @TODO Generation Commission & Shareholder Commission
-                    */
-
-                    /*Insert Record Into Seller Product Buy History*/
-                    SellerProductBuyHistory::create([
-                        'seller_id' => $auth_user->id,
-                        'merchant_id' => $product->merchant_id,
-                        'product_id' => $request->item_id,
-                        'amount' => $sellerProductPurchaseCharge,
-                    ]);
-                } else {
-                    return response()->json([
-                        'data'=>'Insufficient Balance Or No Due Product Left.',
-                        'type'=>'warning',
-                        'status'=>201
-                    ],Response::HTTP_OK);
                 }
-                $data=new SellerProduct();
-                $data->seller_id=$auth_user->id;
-                $data->product_id=$request->item_id;
-                $data->seller_price = $product->current_price; // Set Default Price
-                $data->coin_from_merchant = $product->current_coin; // Set merchant product current coin
-                $data->save();
+                /*Insert Product*/
+                DB::table('seller_products')->insert([
+                    'seller_id' => $seller->id,
+                    'product_id'=> $request->item_id,
+                    'seller_price' => $product->current_price, // Set Default Price
+                    'coin_from_merchant' => $product->current_coin, // Set merchant product current coin
+                ]);
+                /*Update Seller Connected User RANK*/
+                if (isset($seller->user_id)) {
+                    $this->updateConnectedUserRank($seller, $numberOfProduct);
+                }
                 DB::commit();
                 return response()->json([
                     'data'=>'Successfully added',
                     'type'=>'success',
                     'status'=>200
                 ]);
-            }else{
+            } else {
+                DB::rollBack();
                 return response()->json([
                     'data'=>'You have already added',
                     'type'=>'warning',
                     'status'=>201
                 ]);
             }
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             DB::rollBack();
-            return response()->json([
-                'data'=>$exception->getMessage(),
-                'type'=>'error',
-                'status'=>500
-            ],Response::HTTP_INTERNAL_SERVER_ERROR);
+            return \response()->json();
         }
     }
 
@@ -324,6 +292,50 @@ class ManageProductController extends Controller
         $product = Product::find($id);
 
         return  view('seller.product.merchant-product-details', compact('product'));
+    }
+
+    /**
+     * Distribute commission to
+     * company
+     * gameasset
+     * topseller
+     * generation
+     * shareholder
+    */
+    private function distributeCommission(int|float $sellerProductPurchaseCharge, $seller): void
+    {
+        // Give Company Commission
+        companyCommission(calculatePercentage(number: $sellerProductPurchaseCharge, percentage: affiliateSetting()->company_commission),COMMISSION_SOURCE['seller']);
+
+        // Give Game Asset Commission
+        gameAssetCommission(calculatePercentage(number: $sellerProductPurchaseCharge, percentage: affiliateSetting()->game_asset_commission),COMMISSION_SOURCE['seller']);
+
+        // Give To Seller Commission
+        topSellerCommission(calculatePercentage(number: $sellerProductPurchaseCharge, percentage: affiliateSetting()->top_seller_commission),COMMISSION_SOURCE['seller']);
+        // Provide Generation commission
+        if ($seller->user_id !=null)
+        {
+            $generation_amount=calculatePercentage($sellerProductPurchaseCharge,affiliateSetting()->generation_commission);
+            provide_generation_commission_seller($seller->user,$generation_amount,COIN_EARNING_SOURCE['generation_commission']);
+        }
+        // shareholder fund history
+
+        share_holder_fund_history(SHARE_HOLDER_INCOME_SOURCE['seller_product_add'], $sellerProductPurchaseCharge);
+    }
+
+    /**
+     * Update Seller Connected user rank
+    */
+    private function updateConnectedUserRank($seller, $numberOfProduct): void
+    {
+        if ($seller instanceof Seller) {
+            if ($numberOfProduct >= getAffiliateSetting()->seller_user_rank_upgrade_require_product) {
+                $user = User::find($seller->user_id);
+                if ($user->rank->priority == 0) {
+                    updateUserRank($user, 'seller_update');
+                }
+            }
+        }
     }
 
 }
