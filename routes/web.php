@@ -117,6 +117,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
 
     //    user route start here
     Route::get('/users', [Admin\UserController::class, 'index'])->name('all.user');
+    /*User Datatable*/
+    Route::get('/users/datatable', [Admin\UserController::class, 'datatable'])->name('all.user.datatable');
+
     Route::match(['get', 'post'], '/users_by_date', [Admin\UserController::class, 'users_by_date'])->name('users_by_date');
 
     Route::post('/add_share', [Admin\UserController::class, 'add_share'])->name('user.add_share');

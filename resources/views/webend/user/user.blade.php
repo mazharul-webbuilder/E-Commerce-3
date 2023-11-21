@@ -5,6 +5,13 @@
         .input-field_border {
             border: 2px solid #000;
         }
+         #dataTable tbody > tr {
+             height: 60px;
+         }
+        #dataTable tbody > tr > td{
+             color: black;
+            text-align: center;
+         }
 
         .date-range {
             width: 240px;
@@ -70,7 +77,7 @@
                     <button class="p-2 rounded border-2">Total Users: {{getNumberOfEndUsers()}}</button>
                 </div>
                 <div class="py-2 px-1 mt-3" style="overflow-x: auto;">
-                    <table class="text-sm text-left text-white border-l border-r" id="dataTableAuthor"
+                    <table class="text-sm text-left text-white border-l border-r" id="dataTable"
                            style=" width: 100%;">
                         <thead class="text-xs text-white uppercase bg-amber-600">
                         <tr>
@@ -87,11 +94,6 @@
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
                                 <div class="text-center">
                                     Current Rank
-                                </div>
-                            </th>
-                            <th scope="col" class="px-2 whitespace-nowrap py-3">
-                                <div class="text-center">
-                                    Member of Club
                                 </div>
                             </th>
                             <th scope="col" class="px-2 whitespace-nowrap py-3">
@@ -119,74 +121,10 @@
                                     Phone
                                 </div>
                             </th>
-                            <th scope="col" class="px-6 whitespace-nowrap py-3">
-                                <div class="text-center">
-                                    Date of Birth
-                                </div>
-                            </th>
-                            <th scope="col" class="px-6 whitespace-nowrap py-3">
-                                <div class="text-center">
-                                    Country
-                                </div>
-                            </th>
-                            <th scope="col" class="px-6 whitespace-nowrap py-3">
-                                <div class="text-center">
-                                    Gender
-                                </div>
-                            </th>
-                            <th scope="col" class="px-6 whitespace-nowrap py-3">
-                                <div class="text-center">
-                                    Free Coin
-                                </div>
-                            </th>
-                            <th scope="col" class="px-6 whitespace-nowrap py-3">
-                                <div class="text-center">
-                                    Gift Coin
-                                </div>
-                            </th>
-                            <th scope="col" class="px-6 whitespace-nowrap py-3">
-                                <div class="text-center">
-                                    Marketing Balance
-                                </div>
-                            </th>
-                            <th scope="col" class="px-6 whitespace-nowrap py-3">
-                                <div class="text-center">
-                                    Recovery Fund
-                                </div>
-                            </th>
-                            <th scope="col" class="px-6 whitespace-nowrap py-3">
-                                <div class="text-center">
-                                    Diamond
-                                </div>
-                            </th>
-                            <th scope="col" class="px-6 whitespace-nowrap py-3">
-                                <div class="text-center">
-                                    Win Balance
-                                </div>
-                            </th>
+
                             <th scope="col" class="px-6 whitespace-nowrap py-3">
                                 <div class="text-center">
                                     Refer Code
-                                </div>
-                            </th>
-                            <th scope="col" class="px-6 whitespace-nowrap py-3">
-                                <div class="text-center">
-                                    Max Win
-                                </div>
-                            </th>
-                            <th scope="col" class="px-6 whitespace-nowrap py-3">
-                                <div class="text-center">
-                                    Max Loss
-                                </div>
-                            </th>
-                            <th scope="col" class="px-2 py-3">
-                                <div class="text-center">
-                                    status
-                                </div>
-                            </th>
-                            <th scope="col" class="px-4 py-3">
-                                <div class="text-center">
-                                    Applied Data
                                 </div>
                             </th>
                             <th scope="col" class="px-4 py-3">
@@ -196,149 +134,6 @@
                             </th>
                         </tr>
                         </thead>
-                        <tbody>
-
-                        @foreach ($users as $user)
-                            <tr
-                                class="bg-white  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $loop->iteration }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $user->avator }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    <span class="p-1">{{ $user->rank->rank_name }}</span>
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                        <span class="p-1">
-                                            {{ $user->club_join->club_name ?? 'Not Member' }}
-                                        </span>
-                                </td>
-
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                        <span class="p-1">
-                                            {{ $user->club->club_name ?? 'Not Owner' }}
-                                        </span>
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $user->name }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $user->playerid }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $user->email }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $user->mobile }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $user->dob }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $user->country }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $user->gender }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $user->free_coin }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $user->paid_coin }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $user->marketing_balance }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $user->recovery_fund }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $user->paid_diamond }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $user->win_balance }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $user->refer_code }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $user->max_win }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r text-center">
-                                    {{ $user->max_loos }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r whitespace-nowrap text-center">
-                                    {{ $user->otp_verified_at != null ? 'Active' : '' }}
-                                </td>
-                                <td class="px-2 py-4 text-black border-r whitespace-nowrap text-center">
-                                    @if ($user->apply_data == 1)
-                                        <a href="{{ route('user.data_applied_list', $user->id) }}"
-                                           class="text-white py-2 bg-blue-700 hover:bg-emerald-500 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 text-center">
-                                            Applied List
-                                        </a>
-                                    @else
-                                        <span>Not Applied</span>
-                                    @endif
-                                </td>
-                                <td
-                                    class="whitespace-nowrap space-x-1 text-center px-2 flex items-center justify-center">
-                                    <a href="{{ route('user.daily_order', $user->id) }}"
-                                       class="text-white py-2 bg-pink-700 hover:bg-pink-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 text-center">
-                                        Daily Order
-                                    </a>
-
-                                    <a href="{{ route('user.friendlist', $user->id) }}"
-                                       class="text-white py-2 bg-emerald-400 hover:bg-emerald-500 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 text-center">
-                                        Friend List
-                                    </a>
-                                    <a href="{{ route('user.token_history', $user->id) }}"
-                                       class="text-white py-2 bg-fuchsia-500 hover:bg-fuchsia-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 text-center">
-                                        Token
-                                    </a>
-                                    <a href="{{ route('user_referral_list.user', $user->id) }}"
-                                       class="text-white bg-sky-400 cursor-pointer hover:bg-sky-500 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center">
-                                        Referral
-                                    </a>
-                                    <a href="{{ route('token_transfer_history.user', $user->id) }}"
-                                       class="text-white py-2 bg-amber-500 hover:bg-amber-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 text-center">
-                                        Token Transfer
-                                    </a>
-                                    <a href="{{ route('user_balance_transfer_history', $user->id) }}"
-                                       class="text-white py-2 bg-fuchsia-500 hover:bg-fuchsia-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 text-center">
-                                        Balance Transfer
-                                    </a>
-                                    <a href="#"
-                                       class="text-white py-2 bg-pink-500 hover:bg-pink-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 text-center">
-                                        Static Report
-                                    </a>
-                                    <a href="{{ route('edit.user', $user->id) }}"
-                                       class="text-white bg-sky-400 cursor-pointer hover:bg-sky-500 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center">
-                                        <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z">
-                                            </path>
-                                            <path fill-rule="evenodd"
-                                                  d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                                                  clip-rule="evenodd"></path>
-                                        </svg>
-                                        Edit
-                                    </a>
-                                    {{--                                <a href="#" data-modal-toggle="editAuthor" class="text-white bg-amber-500 hover:bg-amber-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center"> --}}
-                                    {{--                                    <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg> --}}
-                                    {{--                                    Details --}}
-                                    {{--                                </a> --}}
-                                    {{--                                <a href="{{ route('user.destroy',$user->id) }}" type="button" class="text-white bg-red-500 hover:bg-red-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center deleteConfirmAuthor"> --}}
-                                    {{--                                    <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg> --}}
-                                    {{--                                    Delete --}}
-                                    {{--                                </a> --}}
-                                </td>
-
-                            </tr>
-                        @endforeach
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -351,7 +146,6 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script !src="">
         $(function() {
-
             $('input[name="daterange"]').daterangepicker({
                 opens: 'right',
                 maxDate: new Date()
@@ -395,7 +189,6 @@
     <script !src="">
         $(document).ready(function() {
             $('body').on('click', '.share_holder_confirmation', function() {
-
                 swal({
                     title: "Provide Share Holder",
                     text: "Are sure to provide a shareholder to this user?",
@@ -426,4 +219,61 @@
             })
         })
     </script>
+    {{--Datatable--}}
+    <script>
+        /*On Load*/
+        getDatatable();
+        /*Order meta info*/
+        getOrderMetaInfo('all')
+        /*Filter*/
+        $(document).ready(function (){
+            $('.OrderFilterBtn').on('click', function (){
+                const filter = $(this).attr('filter')
+                getDatatable(filter)
+            })
+            /*Filter by Date*/
+            $('body').on('click', '.applyBtn', function (){
+                let startDate = $('#startDate').val()
+                let endDate = $('#endDate').val()
+                getDatatable('all', startDate, endDate)
+            })
+        })
+        /*function to get data*/
+        function getDatatable(filter='all', startDate=null, endDate=null){
+            $('#dataTable').DataTable().destroy()
+            $("#dataTable").DataTable({
+                processing: true,
+                responsive: true,
+                serverSide: true,
+                ordering: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: '{{ route('all.user.datatable') }}',
+                    method: 'GET',
+                    data: {
+                        filter: filter,
+                        startDate: startDate,
+                        endDate: endDate
+                    }
+                },
+                columns: [
+                    { data: 'DT_RowIndex',name:'DT_RowIndex' },
+                    { data: 'avatar',name:'avatar' },
+                    { data: 'userRank',name:'userRank' },
+                    { data: 'club',name:'club' },
+                    { data: 'name',name:'name' },
+                    { data: 'playerid',name:'playerid' },
+                    { data: 'email',name:'email' },
+                    { data: 'mobile',name:'mobile', render: function (data) {return data !== '' ? data : 'no data'} },
+                    { data: 'refer_code',name:'refer_code', render: function (data) {return data !== 0 ? data : 'no data'} },
+                    { data: 'action',name:'action' },
+
+                ],
+                language : {
+                    processing: 'Processing'
+                },
+            });
+        }
+    </script>
+    {{--End Datatable--}}
 @endsection

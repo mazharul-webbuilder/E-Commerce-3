@@ -18,7 +18,9 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use RealRashid\SweetAlert\Facades\Alert;
+use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
 {
@@ -32,6 +34,92 @@ class UserController extends Controller
         $users = User::latest()->get();
 
         return  view('webend.user.user', compact('users'));
+    }
+
+    /**
+     * Get Users Datatable
+    */
+    public function datatable(Request $request)
+    {
+        $filter = ['all', '1', '2', '3', '4']; // 1, 2, 3, 4 are rank priority value
+
+        $request->validate(['filter' => Rule::in($filter)]);
+
+        $users = null;
+
+        if (in_array($request->filter, $filter)) {
+            if ($request->filter == 'all') {
+                $users = User::latest()->get();
+            } else  {
+                $users = User::whereHas('rank', function ($q) use ($request){
+                    return $q->where('priority', $request->filter);
+                })->get();
+            }
+        }
+        if (isset($request->startDate) && isset($request->endDate)) {
+           $users = User::whereDate('created_at', '>=', $request->startDate)
+               ->whereDate('created_at', '<=', $request->endDate)->get();
+        }
+        return DataTables::of($users)
+            ->addIndexColumn()
+            ->addColumn('avatar', function ($user){
+                return '<img src="'.default_image().'" height="50" width="50" />';
+            })
+            ->addColumn('userRank', function (User $user){
+                return $user->rank?->rank_name;
+            })
+            ->addColumn('club', function ($user){
+                return $user->club?->club_name ?? 'No Club';
+            })
+            ->addColumn('action', function ($user){
+                return '
+                         <div class="whitespace-nowrap space-x-1 text-center px-2 flex items-center justify-center">
+                             <a href="'.route('user.daily_order', $user->id) .'"
+                                class="text-white py-2 bg-pink-700 hover:bg-pink-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 text-center">
+                                Daily Order
+                            </a>
+                            <a href="'. route('user.friendlist', $user->id) .'"
+                                class="text-white py-2 bg-emerald-400 hover:bg-emerald-500 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 text-center">
+                                Friend List
+                            </a>
+                            <a href="'. route('user.token_history', $user->id).'"
+                                class="text-white py-2 bg-fuchsia-500 hover:bg-fuchsia-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 text-center">
+                                Token
+                            </a>
+                            <a href="'. route('user_referral_list.user', $user->id) .'"
+                                class="text-white bg-sky-400 cursor-pointer hover:bg-sky-500 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center">
+                                Referral
+                            </a>
+                            <a href="'. route('token_transfer_history.user', $user->id).'"
+                                class="text-white py-2 bg-amber-500 hover:bg-amber-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 text-center">
+                                Token Transfer
+                            </a>
+                            <a href="'. route('user_balance_transfer_history', $user->id) .'"
+                                class="text-white py-2 bg-fuchsia-500 hover:bg-fuchsia-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 text-center">
+                                Balance Transfer
+                            </a>
+                            <a href="#"
+                                class="text-white py-2 bg-pink-500 hover:bg-pink-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 text-center">
+                                Static Report
+                            </a>
+                            <a href="'. route('edit.user', $user->id) .'"
+                                class="text-white bg-sky-400 cursor-pointer hover:bg-sky-500 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-3 py-2 text-center">
+                                <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z">
+                                    </path>
+                                    <path fill-rule="evenodd"
+                                        d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                                Edit
+                            </a>
+                         </div>
+                        ';
+            })
+            ->rawColumns(['avatar', 'userRank', 'club', 'action'])
+            ->make(true);
     }
 
 
