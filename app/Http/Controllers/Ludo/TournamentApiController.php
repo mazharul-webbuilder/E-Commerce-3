@@ -1495,7 +1495,6 @@ class TournamentApiController extends Controller
                             }
                             $withdraw->save();
 
-
                             $current_win_balance = $user->win_balance;
                             $remain_win_balance = $current_win_balance - $request->withdraw_balance;
                             $user->win_balance = $remain_win_balance;
