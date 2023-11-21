@@ -73,8 +73,8 @@
                     <input type="text" name="start_date" value="" class="start_date">
                     <input type="text" name="end_date" value="" class="end_date">
                 </form>
-                <div class="pl-5">
-                    <button class="p-2 rounded border-2">Total Users: {{getNumberOfEndUsers()}}</button>
+                <div class="pl-2">
+                    <button class="p-2 rounded border-2" style="cursor: text">Total Users: {{getNumberOfEndUsers()}}</button>
                 </div>
                 <div class="py-2 px-1 mt-3" style="overflow-x: auto;">
                     <table class="text-sm text-left text-white border-l border-r" id="dataTable"
