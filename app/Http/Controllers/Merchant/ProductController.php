@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\DataTables;
 use Illuminate\Database\QueryException;
@@ -34,11 +35,25 @@ class ProductController extends Controller
     /**
      * Merchant Product Datatable
     */
-    public function datatable(): JsonResponse
+    public function datatable(Request $request): JsonResponse
     {
+        $request->validate(['filter' => ['required', Rule::in(['all', 'published', 'unpublished'])]]);
 
         $auth_user=Auth::guard('merchant')->user();
-        $datas=Product::where('merchant_id',$auth_user->id)->orderBy('id','DESC')->get();
+
+        $datas = null;
+
+        switch ($request->filter) {
+            case 'all':
+                $datas = Product::where('merchant_id', $auth_user->id)->orderBy('id','DESC')->get();
+                break;
+            case 'published':
+                $datas = Product::where('merchant_id', $auth_user->id)->where('status', 1)->orderBy('id', 'DESC')->get();
+                break;
+            case 'unpublished':
+                $datas = Product::where('merchant_id', $auth_user->id)->where('status', 0)->orderBy('id', 'DESC')->get();
+                break;
+        }
 
         return DataTables::of($datas)
             ->addIndexColumn()

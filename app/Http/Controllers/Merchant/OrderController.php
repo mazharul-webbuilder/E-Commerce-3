@@ -7,8 +7,11 @@ use App\Models\Ecommerce\Order;
 use App\Models\Ecommerce\Order_detail;
 use App\Models\Ecommerce\Product;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Yajra\DataTables\DataTables;
 
 class OrderController extends Controller
@@ -17,14 +20,47 @@ class OrderController extends Controller
         $this->middleware('merchant');
     }
 
-    public function datatable(){
+    /**
+     * Merchant Order Page
+    */
+    public function index(): View
+    {
+        $date_range = null;
+
+        return view('merchant.order.index', compact('date_range'));
+    }
+
+    /**
+     * Merchant Order Datatable
+    */
+    public function datatable(Request $request):JsonResponse
+    {
+        $filter = ['all', 'pending', 'processing', 'shipping', 'delivered', 'declined'];
+
+        $request->validate(['filter' => Rule::in($filter)]);
 
         $auth_user=Auth::guard('merchant')->user();
 
-        $orders = Order::whereHas('order_detail', function ($query) use ($auth_user) {
-            $query->where('merchant_id',$auth_user->id);
-        })->get();
+        $orders = null;
 
+        if (in_array($request->filter, $filter)) {
+            if ($request->filter == 'all') {
+                $orders = Order::whereHas('order_detail', function ($query) use ($auth_user) {
+                    $query->where('merchant_id',$auth_user->id);
+                })->get();
+            } else {
+                $orders = Order::whereHas('order_detail', function ($query) use ($auth_user, $request) {
+                    $query->where('merchant_id',$auth_user->id)->where('status', $request->filter);
+                })->get();
+            }
+        }
+        if (isset($request->startDate) & isset($request->endDate)) {
+            $orders = Order::whereHas('merchant_order_detail', function ($query) use ($auth_user){
+                $query->where('merchant_id', $auth_user->id);
+            })
+                ->whereDate('created_at', '>=', $request->startDate)
+                ->whereDate('created_at', '<=', $request->endDate)->get();
+        }
         return DataTables::of($orders)
             ->addIndexColumn()
             ->editColumn('grand_total',function(Order $order) use($auth_user){
@@ -49,10 +85,7 @@ class OrderController extends Controller
             ->rawColumns(['grand_total','order_quantity','action'])
             ->make(true);
     }
-    public function index(){
 
-        return view('merchant.order.index');
-    }
 
     /**
      * Show Order Details Page
@@ -62,5 +95,35 @@ class OrderController extends Controller
         $orderDetails = Order_detail::where('order_id', $id)->where('merchant_id', Auth::guard('merchant')->id())->get();
 
         return view('merchant.order.details', compact('orderDetails'));
+    }
+
+    /**
+     * Get Order Meta Info
+    */
+    public function orderMetaInfo(Request $request): JsonResponse
+    {
+        $auth_user = get_auth_merchant();
+
+        $filter = ['all', 'pending', 'processing', 'shipping', 'delivered', 'declined'];
+
+        if (in_array($request->filter, $filter)) {
+            if ($request->filter == 'all') {
+                $orders = Order::whereHas('order_detail', function ($query) use ($auth_user) {
+                    $query->where('merchant_id',$auth_user->id);
+                })->get();
+            } else {
+                $orders = Order::whereHas('order_detail', function ($query) use ($auth_user, $request) {
+                    $query->where('merchant_id',$auth_user->id)->where('status', $request->filter);
+                })->get();
+            }
+
+            return response()->json([
+                'response' => Response::HTTP_OK,
+               'totalOrder' =>  $orders->count(),
+//               'subTotal' =>  $orders->sum('sub_total'),
+            ]);
+        } else{
+            return response()->json();
+        }
     }
 }

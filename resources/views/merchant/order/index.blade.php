@@ -7,9 +7,18 @@
             height: 60px;
         }
     </style>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <style>
+        .date-range {
+            width: 240px;
+            padding: 4px 20px;
+            border: 2px solid purple;
+            border-radius: 9px;
+            font-weight: 700;
+        }
+    </style>
 @endsection
 @section('content')
-
     <section class="w-full bg-white p-3 mt-5">
         <div class="container px-2 mx-auto xl:px-5">
             <!-- start menu -->
@@ -34,9 +43,39 @@
             <div class="border border-[#8e0789] rounded-md mt-5 mb-8">
                 <div class="bg-[#8e0789] overflow-hidden w-full px-0 flex items-center">
                     <h2 class="text-2xl font-bold py-2 text-white pl-3">Order List</h2>
-
                 </div>
+                <div class="py-2 px-1 mt-3" style="overflow-x: auto;">
+                    <div class="p-2">
+                        <span><a href="javascript:void(0)" filter="all" class="OrderFilterBtn bg-purple-600 p-2 text-white rounded">AllOrder</a></span>
+                        <span><a href="javascript:void(0)" filter="pending" class="OrderFilterBtn bg-purple-600 p-2 text-white rounded">Pending</a></span>
+                        <span><a href="javascript:void(0)" filter="processing" class="OrderFilterBtn bg-purple-600 p-2 text-white rounded">Processing</a></span>
+                        <span><a href="javascript:void(0)" filter="shipping" class="OrderFilterBtn bg-purple-600 p-2 text-white rounded">Shipping</a></span>
+                        <span><a href="javascript:void(0)" filter="delivered" class="OrderFilterBtn bg-purple-600 p-2 text-white rounded">Delivered</a></span>
+                        <span><a href="javascript:void(0)" filter="declined" class="OrderFilterBtn bg-purple-600 p-2 text-white rounded">Declined</a></span>
+                        <span>
+                            <input type="text" name="daterange" value="" class="date-range" />
 
+                        </span>
+                        @if ($date_range != null)
+                            <span class="dark:text-blue-500">Searching Date: {{ $date_range }}</span>
+                        @endif
+                    </div>
+                </div>
+                {{--Date Input--}}
+                <div class="pl-5">
+                   <input type="text" name="startDate" id="startDate" value="" class="start_date">
+                    <input type="text" name="endDate" id="endDate" value="" class="end_date">
+                </div>
+                {{--Date Input--}}
+
+                {{--Meta Report--}}
+                <div class="pl-5">
+                    {{--Total Order--}}
+                    <h2 id="totalOrder" class="pb-2"></h2>
+                    {{--Sub Total--}}
+                    <h2 id="subTotal"></h2>
+                </div>
+                {{--End Meta Report--}}
                 <div class="py-2 px-1 mt-3" style="overflow-x: auto;">
                     <table class="text-sm text-left text-white border-l border-r" id="dataTable" style=" width: 100%;">
                         <thead class="text-xs text-white uppercase bg-amber-600">
@@ -96,30 +135,96 @@
 @include('merchant.product._flash_deal_modal')
 
 @section('extra_js')
-    <script>
-        var table = $("#dataTable").DataTable({
-            processing: true,
-            responsive: true,
-            serverSide: true,
-            ordering: false,
-            pagingType: "full_numbers",
-            ajax: '{{ route('merchant.order.load') }}',
-            columns: [
-                { data: 'DT_RowIndex',name:'DT_RowIndex' },
-                { data: 'order_number',name:'order_number'},
-                { data: 'grand_total',name:'grand_total'},
-                { data: 'order_quantity',name:'order_quantity'},
-                { data: 'status',name:'status'},
-                { data: 'created_at',name:'created_at'},
-                { data: 'action',name:'action' },
-            ],
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script !src="">
+        $(function() {
+            $('input[name="daterange"]').daterangepicker({
+                opens: 'right',
+                maxDate: new Date()
+            }, function(start, end, label) {
 
-            language : {
-                processing: 'Processing'
-            },
+                $('.start_date').val(start.format('YYYY-MM-DD'))
+                $('.end_date').val(end.format('YYYY-MM-DD'))
+                setInterval(() => {
+                    $('#search_order_by_date').submit()
+                }, 1000)
 
-        });
+            });
+        })
     </script>
 
+    {{--Datatable of Merchant Order--}}
+    <script>
+        function getMerchantOrderDatatable(filter='all', startDate=null, endDate=null){
+            $('#dataTable').DataTable().destroy()
+            $("#dataTable").DataTable({
+                processing: true,
+                responsive: true,
+                serverSide: true,
+                ordering: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: '{{ route('merchant.order.load') }}',
+                    method: 'GET',
+                    data: {
+                        filter: filter,
+                        startDate: startDate,
+                        endDate: endDate
+                    }
+                },
+                columns: [
+                    { data: 'DT_RowIndex',name:'DT_RowIndex' },
+                    { data: 'order_number',name:'order_number'},
+                    { data: 'grand_total',name:'grand_total'},
+                    { data: 'order_quantity',name:'order_quantity'},
+                    { data: 'status',name:'status'},
+                    { data: 'created_at',name:'created_at'},
+                    { data: 'action',name:'action' },
+                ],
+                language : {
+                    processing: 'Processing'
+                },
+            });
+        }
+    </script>
+    {{--Filter Datatable--}}
+    <script>
+        /*On Load*/
+        getMerchantOrderDatatable();
+        /*Order meta info*/
+        getOrderMetaInfo('all')
+        /*Filter*/
+        $(document).ready(function (){
+            $('.OrderFilterBtn').on('click', function (){
+                const filter = $(this).attr('filter')
+                getMerchantOrderDatatable(filter)
+                /*Order meta info*/
+                getOrderMetaInfo(filter)
 
+            })
+            /*Filter by Date*/
+            $('body').on('click', '.applyBtn', function (){
+                let startDate = $('#startDate').val()
+                let endDate = $('#endDate').val()
+                getMerchantOrderDatatable('all', startDate, endDate)
+                /*Order meta info*/
+                getOrderMetaInfo('date')
+            })
+        })
+
+        function getOrderMetaInfo(filter) {
+            $.ajax({
+                url: '{{route('merchant.order.meta.info')}}',
+                method: 'GET',
+                data: {
+                    filter: filter
+                },
+                success: function (data) {
+                    $('#totalOrder').text('Total Order ' + data.totalOrder)
+                    // $('#subTotal').text('Sub Total ' + data.subTotal)
+                }
+            })
+        }
+    </script>
 @endsection

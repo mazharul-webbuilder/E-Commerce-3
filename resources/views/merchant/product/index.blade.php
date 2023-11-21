@@ -1,11 +1,9 @@
 @extends('merchant.layout.app')
 @section('extra_css')
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-{{--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>--}}
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 @endsection
 @section('content')
-
     <section class="w-full bg-white p-3 mt-5">
         <div class="container px-2 mx-auto xl:px-5">
             <!-- start menu -->
@@ -38,7 +36,21 @@
             <div class="border border-[#8e0789] rounded-md mt-5 mb-8">
                 <div class="bg-[#8e0789] overflow-hidden w-full px-0 flex items-center">
                     <h2 class="text-2xl font-bold py-2 text-white pl-3">Product List</h2>
+                </div>
+                <div class="py-2 px-1 mt-3 flex" style="overflow-x: auto;">
+                    <div class="p-2">
+                        <span id="published">
+                            <a href="javascript:void(0)" class="bg-blue-700 active:bg-blue-500 p-2 text-white rounded active:red">
+                                Published
+                            </a>
+                        </span>
 
+                        <span class="ml-5" id="unpublished">
+                            <a href="javascript:void(0)" class="bg-cyan-600 active:bg-blue-500 p-2 text-white rounded active:red">
+                                Unpublished
+                            </a>
+                        </span>
+                    </div>
                 </div>
 
                 <div class="py-2 px-1 mt-3" style="overflow-x: auto;">
@@ -123,35 +135,6 @@
 
 @section('extra_js')
     <script>
-        var table = $("#dataTable").DataTable({
-            processing: true,
-            responsive: true,
-            serverSide: true,
-            ordering: false,
-            pagingType: "full_numbers",
-            ajax: '{{ route('merchant.product.load') }}',
-            columns: [
-                { data: 'DT_RowIndex',name:'DT_RowIndex' },
-                { data: 'thumbnail',name:'thumbnail'},
-                { data: 'title',name:'title'},
-                { data: 'current_price',name:'current_price'},
-                { data: 'previous_price',name:'previous_price'},
-                { data: 'current_coin',name:'current_coin'},
-                { data: 'status',name:'status'},
-                { data: 'flash_deal',name:'flash_deal'},
-                { data: 'control_panel',name:'control_panel'},
-                { data: 'stock_manager',name:'stock_manager'},
-                { data: 'gallery',name:'gallery'},
-                { data: 'action',name:'action' },
-            ],
-
-            language : {
-                processing: 'Processing'
-            },
-
-        });
-    </script>
-    <script>
         $(function() {
             // Initialize the datepickers with appropriate date formats
             $("#startDatePicker").datepicker({
@@ -164,6 +147,59 @@
                 dateFormat: "dd-mm-yy" // Date format (day-month-year)
             });
         });
+    </script>
+    <script>
+        $(document).ready(function (){
+            /*Page On Load*/
+            getProductDatatable('all')
+            /*End Page On load*/
+            /*Published*/
+            $('#published').on('click', function (){
+                getProductDatatable('published')
+            })
+            /*Unpublished*/
+            $('#unpublished').on('click', function (){
+                getProductDatatable('unpublished')
+            })
+        })
+
+        /*Datatable GET*/
+        function getProductDatatable(filter = 'all'){
+            $('#dataTable').DataTable().destroy()
+            $("#dataTable").DataTable({
+                processing: true,
+                responsive: true,
+                serverSide: true,
+                ordering: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: '{{route('merchant.product.load')}}',
+                    method: 'get',
+                    data: {
+                        filter: filter
+                    }
+                },
+                columns: [
+                    { data: 'DT_RowIndex',name:'DT_RowIndex' },
+                    { data: 'thumbnail',name:'thumbnail', orderable: false},
+                    { data: 'title',name:'title'},
+                    { data: 'current_price',name:'current_price'},
+                    { data: 'previous_price',name:'previous_price'},
+                    { data: 'current_coin',name:'current_coin'},
+                    { data: 'status',name:'status', orderable: false},
+                    { data: 'flash_deal',name:'flash_deal', orderable: false},
+                    { data: 'control_panel',name:'control_panel', orderable: false},
+                    { data: 'stock_manager',name:'stock_manager', orderable: false},
+                    { data: 'gallery',name:'gallery', orderable: false},
+                    { data: 'action',name:'action', orderable: false},
+                ],
+
+                language : {
+                    processing: 'Processing'
+                },
+
+            });
+        }
     </script>
 
 

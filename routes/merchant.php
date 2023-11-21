@@ -25,19 +25,19 @@ Route::middleware('merchant')->group(function (){
 });
 //manage product
 Route::group(['prefix'=>'product', 'as'=>'merchant.'],function(){
-    Route::post('/find_sub_category', [ProductController::class, 'find_sub_category'])->name('find_sub_category');
-    Route::get('product_load',[ProductController::class,'datatable'])->name('product.load');
     Route::get('/',[ProductController::class,'index'])->name('product.index');
+    Route::get('product_load',[ProductController::class,'datatable'])->name('product.load');
     Route::get('/create',[ProductController::class,'create'])->name('product.create');
     Route::post('/store',[ProductController::class,'store'])->name('product.store');
+    Route::get('/get-product',[ProductController::class,'getProduct'])->name('product');
     Route::get('/view/{slug}',[ProductController::class,'view'])->name('product.view');
     Route::get('/edit/{id}',[ProductController::class,'edit'])->name('product.edit');
     Route::post('/update',[ProductController::class,'update'])->name('product.update');
     Route::post('/status-update',[ProductController::class,'updateStatus'])->name('product.status.change');
     Route::get('/get-product-meta-info',[ProductController::class,'getMetaInfo'])->name('product.flash-deal');
+    Route::post('/find_sub_category', [ProductController::class, 'find_sub_category'])->name('find_sub_category');
     Route::post('/store-flash-deal',[ProductController::class,'storeFlashDeal'])->name('product.flash-deal.store');
     Route::get('/control-panel',[ProductController::class,'controlPanel'])->name('product.control.panel');
-    Route::get('/get-product',[ProductController::class,'getProduct'])->name('product');
     Route::get('/delete',[ProductController::class,'delete'])->name('product.delete');
 });
 
@@ -68,9 +68,10 @@ Route::group(['prefix' => 'gallery', 'as' => 'merchant.'], function () {
 
 // order route
 Route::group(['prefix' => 'order', 'as' => 'merchant.'], function () {
-    Route::get('order_load',[OrderController::class,'datatable'])->name('order.load');
     Route::get('/',[OrderController::class,'index'])->name('order.index');
+    Route::get('order_load',[OrderController::class,'datatable'])->name('order.load');
     Route::get('/details/{id}',[OrderController::class,'details'])->name('order.details');
+    Route::get('/get/meta/info',[OrderController::class,'orderMetaInfo'])->name('order.meta.info');
 });
 
 // Withdraw
