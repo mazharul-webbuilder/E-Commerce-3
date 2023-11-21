@@ -151,7 +151,11 @@ class ManageProductController extends Controller
             }
         } catch (\Exception $exception) {
             DB::rollBack();
-            return \response()->json();
+            return \response()->json([
+                'data'=>'Something went wrong',
+                'type'=>'warning',
+                'status'=>201
+            ]);
         }
     }
 
