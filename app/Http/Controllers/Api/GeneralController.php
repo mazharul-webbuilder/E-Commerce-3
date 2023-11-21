@@ -20,6 +20,116 @@ use Illuminate\Support\Facades\Validator;
 
 class GeneralController extends Controller
 {
+
+
+    public function forget_password(Request $request)
+    {
+        $this->validate($request,[
+            'email'=>'required',
+            'password'=>'required|min:4|confirmed',
+            'verify_code'=>'required'
+        ]);
+        if ($request->isMethod("POST")){
+            try {
+                DB::beginTransaction();
+                $user=User::email($request->email)->first();
+                if (!is_null($user)){
+
+                    $data=VerificationCode::verifycode($request->verify_code)->first();
+                    if (!is_null($data)){
+                        $user=User::email($request->email)->first();
+
+                        if (!is_null($user)){
+                               $user->password=bcrypt($request->password);
+                               $user->save();
+                               $data->delete();
+                               DB::commit();
+                                return response()->json([
+                                'message'=>'Your password has been reset successfully',
+                                'type'=>'success',
+                                'status'=>200],Response::HTTP_OK);
+                        }else{
+                            return response()->json([
+                                'message'=>'No account found',
+                                'type'=>'warning',
+                                'status'=>200],Response::HTTP_OK);
+                        }
+                    }else{
+                         return response()->json([
+                        'message'=>'Invalid verification code',
+                        'type'=>"error",
+                        'status'=>200],Response::HTTP_OK);
+                    }
+
+                }else{
+                    return response()->json([
+                        'message'=>'Account not found',
+                        'type' =>'warning',
+                        'status' =>Response::HTTP_NO_CONTENT
+                    ],Response::HTTP_OK);
+                }
+
+            }catch (QueryException $exception){
+                return response()->json([
+                    'message'       =>$exception->getMessage(),
+                    'type'          =>"error",
+                    'status' =>500
+                ],Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+        }
+    }
+
+
+
+    public function forget_password_code(Request $request){
+        $this->validate($request,[
+            'email'=>'required',
+        ]);
+        if ($request->isMethod("POST")){
+            try {
+                DB::beginTransaction();
+                $user=User::email($request->email)->first();
+                if (!is_null($user)){
+                    $verify_code=rand(10000,99999);
+                    $data  =new VerificationCode();
+                    $data->verify_code=$verify_code;
+                    $data->email_or_phone=$request->email;
+                    $data->type='email';
+
+                    $mail_info=[
+                        'subject'=>"Netel Mart: Forget password code.",
+                        'body'=>"Hey dear, your forget password code is "."<h1>".$verify_code."</h1>".
+                                  " Please use this code to forget password"
+                    ];
+
+                    send_mail($mail_info,$request->email);
+                    //dispatch(new SendMailJob($mail_info,$request->email));
+
+                    $data->save();
+                    DB::commit();
+
+                    return response()->json([
+                        'message'=>'You have been sent a verification code to email.',
+                        'type'=>"success",
+                        'status'=>200],Response::HTTP_OK);
+
+                }else{
+                    return response()->json([
+                        'message'=>'Account not found',
+                        'type' =>'warning',
+                        'status' =>Response::HTTP_NO_CONTENT
+                    ],Response::HTTP_OK);
+                }
+
+            }catch (QueryException $exception){
+                return response()->json([
+                    'message'       =>$exception->getMessage(),
+                    'type'          =>"error",
+                    'status' =>500
+                ],Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+        }
+    }
     public function send_verification_code(Request $request){
 
         if ($request->isMethod("post")){
@@ -45,7 +155,6 @@ class GeneralController extends Controller
 
                         send_mail($mail_info,$request->email_or_phone);
                         //dispatch(new SendMailJob($mail_info,$request->email_or_phone));
-
                         $data->save();
 
                     return response()->json([

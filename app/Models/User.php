@@ -94,5 +94,9 @@ class User extends Authenticatable
         return $this->hasOne(UserDetail::class);
     }
 
+    public function scopeEmail($query,$email){
+        return $query->where('email',$email);
+    }
+
 
 }
