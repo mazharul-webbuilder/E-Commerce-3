@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 /**
@@ -57,6 +58,16 @@ if (!function_exists('get_auth_affiliator')) {
     function get_auth_affiliator()
     {
         return Auth::guard('affiliate')->user();
+    }
+}
+
+/**
+ * Get Total End Users
+*/
+if (!function_exists('getNumberOfEndUsers')) {
+    function getNumberOfEndUsers(): int
+    {
+        return DB::table('users')->count();
     }
 }
 
