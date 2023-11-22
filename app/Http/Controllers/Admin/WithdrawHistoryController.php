@@ -253,19 +253,19 @@ class WithdrawHistoryController extends Controller
             ->addColumn('user_name', function ($withdraw) use (&$userType){
                 if (isset($withdraw->user_id)) {
                     $userType = 'Normal User';
-                    return $withdraw->user->name;
+                    return $withdraw->user?->name;
                 } elseif (isset($withdraw->share_owner_id)) {
                     $userType = 'Share Owner';
-                    return $withdraw?->share_owner->name;
+                    return $withdraw?->share_owner?->name;
                 } elseif (isset($withdraw->seller_id)) {
                     $userType = 'Seller';
-                    return $withdraw?->seller->name;
+                    return $withdraw?->seller?->name;
                 } elseif (isset($withdraw->merchant_id)) {
                     $userType = 'Merchant';
-                    return $withdraw->merchant->name;
+                    return $withdraw->merchant?->name;
                 } elseif (isset($withdraw->affiliator_id)) {
                     $userType = 'Affiliator';
-                    return $withdraw->affiliator->name;
+                    return $withdraw->affiliator?->name;
                 }
                 return null;
             })
