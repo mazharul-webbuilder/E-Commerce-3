@@ -60,19 +60,18 @@
                 </div>
                 <br>
                 <div class="px-2 py-4">
-                    <span>
-                        <a href="{{ route('all.user') }}"
-                           class="bg-purple-600 active:bg-blue-500 p-2 text-white rounded active:red">
+                     <span>
+                        <a href="javascript:void(0)"
+                           class="bg-purple-600 active:bg-blue-500 p-2 text-white rounded active:red filterBtn">
                             All History</a></span>
-                    <span>
+                    <span class="filterBtn">
                         <input type="text" name="daterange" value="" class="date-range" />
                     </span><br><br>
                 </div>
-                <form id="search_order_by_date" action="{{ route('users_by_date') }}" method="POST" style="display: none">
-                    @csrf
-                    <input type="text" name="start_date" value="" class="start_date">
-                    <input type="text" name="end_date" value="" class="end_date">
-                </form>
+                {{--Filter By date--}}
+                <input type="text" name="start_date" id="startDate" value="" class="start_date">
+                <input type="text" name="end_date" id="endDate" class="end_date">
+
                 <div class="pl-2">
                     <button class="p-2 rounded border-2" style="cursor: text">Total Users: {{getNumberOfEndUsers()}}</button>
                 </div>
@@ -223,13 +222,12 @@
     <script>
         /*On Load*/
         getDatatable();
-        /*Order meta info*/
-        getOrderMetaInfo('all')
+
         /*Filter*/
         $(document).ready(function (){
-            $('.OrderFilterBtn').on('click', function (){
-                const filter = $(this).attr('filter')
-                getDatatable(filter)
+            //
+            $('.filterBtn').on('click', function (){
+                getDatatable()
             })
             /*Filter by Date*/
             $('body').on('click', '.applyBtn', function (){
