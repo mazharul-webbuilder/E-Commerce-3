@@ -2,6 +2,16 @@
 @section('extra_css')
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <style>
+        .input-field_border {
+            border: 2px solid #000;
+        }
+        #dataTable tbody > tr {
+            height: 60px;
+        }
+        #dataTable tbody > tr > td{
+            color: black;
+            text-align: center;
+        }
         .date-range {
             width: 240px;
             padding: 4px 20px;
@@ -24,16 +34,16 @@
                             </path>
                         </svg>
                         <a href="{{ route('dashboard') }}"
-                            class="flex items-center font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:scale-105">
+                           class="flex items-center font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:scale-105">
                             Home
                         </a>
                     </li>
                     <li class="flex items-center">
                         <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
+                             xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd"
-                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                clip-rule="evenodd"></path>
+                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                  clip-rule="evenodd"></path>
                         </svg>
                         <a href="{{ route('dashboard') }}" class="flex items-center hover:scale-105">
                             <span class="ml-1 font-medium text-gray-500 md:ml-2 dark:text-gray-400">Dashboard</span>
@@ -47,91 +57,56 @@
                     <h2 class="text-2xl font-bold py-2 text-white pl-3">Coin Earn History</h2>
                 </div>
                 <div class="px-2 py-4">
-                    <span><a href="{{ route('coin_earning_history') }}"
-                            class="bg-purple-600 active:bg-blue-500 p-2 text-white rounded active:red">All
+                    <span><a href="javascript:void(0)"
+                             class="bg-purple-600 active:bg-blue-500 p-2 text-white rounded active:red filterBtn">All
                             History</a></span>
                     <span>
                         <input type="text" name="daterange" value="" class="date-range" />
                     </span><br><br>
                 </div>
-                <form id="search_order_by_date" action="{{ route('coin_earn_history_search_by_date') }}" method="POST"
-                    style="display: none">
-                    @csrf
-                    <input type="text" name="start_date" value="" class="start_date">
-                    <input type="text" name="end_date" value="" class="end_date">
-                </form>
+                {{--Search by date--}}
+                <input type="text" name="start_date" id="startDate" value="" class="start_date">
+                <input type="text" name="end_date" id="endDate" value="" class="end_date">
+
                 <div class="py-2 px-1 mt-3" style="overflow-x: auto;">
-                    <table class="text-sm text-left text-white border-l border-r" id="dataTableAuthor"
-                        style=" width: 100%;">
+                    <table class="text-sm text-left text-white border-l border-r" id="dataTable"
+                           style=" width: 100%;">
                         <thead class="text-xs text-white uppercase bg-amber-600">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 whitespace-nowrap">
-                                    <div class="text-center">
-                                        SI NO.
-                                    </div>
-                                </th>
-                                <th scope="col" class="px-2 whitespace-nowrap py-3">
-                                    <div class="text-center">
-                                        Username
-                                    </div>
-                                </th>
-                                <th scope="col" class="px-2 whitespace-nowrap py-3">
-                                    <div class="text-center">
-                                        User Player ID
-                                    </div>
-                                </th>
+                        <tr>
+                            <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                                <div class="text-center">
+                                    SI NO.
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    Username
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    User Player ID
+                                </div>
+                            </th>
 
-                                <th scope="col" class="px-2 whitespace-nowrap py-3">
-                                    <div class="text-center">
-                                        Total Amount
-                                    </div>
-                                </th>
-                                <th scope="col" class="px-2 whitespace-nowrap py-3">
-                                    <div class="text-center">
-                                        Getting Source
-                                    </div>
-                                </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    Total Amount
+                                </div>
+                            </th>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    Getting Source
+                                </div>
+                            </th>
 
-                                <th scope="col" class="px-2 whitespace-nowrap py-3">
-                                    <div class="text-center">
-                                        Earning date
-                                    </div>
-                                </th>
-                            </tr>
+                            <th scope="col" class="px-2 whitespace-nowrap py-3">
+                                <div class="text-center">
+                                    Earning date
+                                </div>
+                            </th>
+                        </tr>
                         </thead>
-                        <tbody>
-
-                            @foreach ($histories as $history)
-                                <tr
-                                    class="bg-white  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td
-                                        class="px-2 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r text-center">
-                                        {{ $loop->iteration }}
-                                    </td>
-                                    <td class="px-2 py-4 text-black border-r text-center">
-                                        {{ $history->user->name ?? '' }}
-                                    </td>
-                                    <td class="px-2 py-4 text-black border-r text-center">
-                                        {{ $history->user->playerid ?? ''}}
-                                    </td>
-                                    <td class="px-2 py-4 text-black border-r text-center">
-                                        <span class="p-1">{{ $history->earning_coin }}</span>
-                                    </td>
-                                    <td class="px-2 py-4 text-black border-r text-center">
-                                        <span class="p-1">
-                                            {{ string_replace($history->earning_source) }}
-                                        </span>
-                                    </td>
-
-                                    <td class="px-2 py-4 text-black border-r text-center">
-                                        <span class="p-1">
-                                            {{ $history->created_at }}
-                                        </span>
-                                    </td>
-
-                                </tr>
-                            @endforeach
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -144,7 +119,6 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script !src="">
         $(function() {
-
             $('input[name="daterange"]').daterangepicker({
                 opens: 'right',
                 maxDate: new Date()
@@ -184,5 +158,55 @@
                 })
             })
         })
+    </script>
+    {{--Datatable and filter--}}
+    <script>
+        /*On Load*/
+        getDatatable();
+
+        // /*Filter*/
+        $(document).ready(function (){
+            //
+            $('.filterBtn').on('click', function (){
+                getDatatable()
+            })
+            /*Filter by Date*/
+            $('body').on('click', '.applyBtn', function (){
+                let startDate = $('#startDate').val()
+                let endDate = $('#endDate').val()
+                getDatatable('all', startDate, endDate)
+            })
+        })
+        /*function to get data*/
+        function getDatatable(filter='all', startDate=null, endDate=null){
+            $('#dataTable').DataTable().destroy()
+            $("#dataTable").DataTable({
+                processing: true,
+                responsive: true,
+                serverSide: true,
+                ordering: true,
+                pagingType: "full_numbers",
+                ajax: {
+                    url: '{{ route('coin_earning_history_datatable') }}',
+                    method: 'GET',
+                    data: {
+                        filter: filter,
+                        startDate: startDate,
+                        endDate: endDate
+                    }
+                },
+                columns: [
+                    { data: 'DT_RowIndex',name:'DT_RowIndex' },
+                    { data: 'username',name:'username' },
+                    { data: 'userPlayerId',name:'userPlayerId' },
+                    { data: 'earning_coin',name:'earning_coin' },
+                    { data: 'earning_source',name:'earning_source' },
+                    { data: 'earningDate',name:'earningDate' },
+                ],
+                language : {
+                    processing: 'Processing'
+                },
+            });
+        }
     </script>
 @endsection

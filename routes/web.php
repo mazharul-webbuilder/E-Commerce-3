@@ -396,6 +396,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/get_share_transfer_history', [ReportController::class, 'get_share_transfer_history'])->name('get_share_transfer_history');
     Route::match(['get', 'post'], '/share_transfer_history_by_date', [ReportController::class, 'share_transfer_history_by_date'])->name('share_transfer_history_by_date');
     Route::get('/coin_earning_history', [ReportController::class, 'coin_earning_history'])->name('coin_earning_history');
+    Route::get('/get/datatable/coin_earning_history', [ReportController::class, 'coin_earning_history_datatable'])->name('coin_earning_history_datatable');
     Route::match(['get', 'post'], '/coin_earn_history_search_by_date', [ReportController::class, 'coin_earn_history_search_by_date'])->name('coin_earn_history_search_by_date');
     Route::get('/get_data_applied_users', [ReportController::class, 'get_data_applied_users'])->name('get_data_applied_users');
     Route::get('/get_admin_tournament/{game_type}', [ReportController::class, 'get_admin_tournament'])->name('get_admin_tournament');

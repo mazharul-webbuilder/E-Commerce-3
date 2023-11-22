@@ -14,7 +14,11 @@ use App\Models\TokenUseHistory;
 use App\Models\Tournament;
 use App\Models\User;
 use App\Models\WithdrawHistory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Yajra\DataTables\DataTables;
 
 class ReportController extends Controller
 {
@@ -301,10 +305,38 @@ class ReportController extends Controller
         return view('webend.report.get_share_transfer_history', compact('histories'));
     }
 
-    public function coin_earning_history()
+    /**
+     * Display Coin earning history
+    */
+    public function coin_earning_history(): View
+    {
+        return view('webend.report.get_coin_earning_history');
+    }
+
+    /**
+     * Get datatable of coin_earning_history_datatable
+    */
+    public function coin_earning_history_datatable(Request $request): JsonResponse
     {
         $histories = CoinEarningHistory::whereType('user')->orderBy('id', 'DESC')->get();
-        return view('webend.report.get_coin_earning_history', compact('histories'));
+
+        if (isset($request->startDate) && isset($request->endDate)) {
+            $histories = CoinEarningHistory::whereDate('created_at', '>=', $request->startDate)
+                ->whereDate('created_at', '<=', $request->endDate)->get();
+        }
+
+        return DataTables::of($histories)
+            ->addIndexColumn()
+            ->addColumn('username', function (CoinEarningHistory $history){
+                return $history->user?->name;
+            })->addColumn('userPlayerId', function (CoinEarningHistory $history){
+                return $history->user?->playerid;
+            })->addColumn('earning_source', function (CoinEarningHistory $history){
+                return string_replace($history->earning_source);
+            })->addColumn('earningDate', function (CoinEarningHistory $history){
+                return Carbon::parse($history->created_at)->format('d-m-Y');
+            })
+            ->rawColumns(['username', 'userPlayerId', 'earning_source'])->make(true);
     }
 
     public function coin_earn_history_search_by_date(Request $request)
