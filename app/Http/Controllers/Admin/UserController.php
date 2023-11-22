@@ -74,6 +74,10 @@ class UserController extends Controller
             ->addColumn('action', function ($user){
                 return '
                          <div class="whitespace-nowrap space-x-1 text-center px-2 flex items-center justify-center">
+                            <a href="'.route('user.view.detail', $user->id) .'"
+                                class="text-white py-2 bg-blue-700 hover:bg-blue-800 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 text-center">
+                                View
+                            </a>
                              <a href="'.route('user.daily_order', $user->id) .'"
                                 class="text-white py-2 bg-pink-700 hover:bg-pink-600 transition-all ease-in-out font-medium rounded-md text-sm inline-flex items-center px-5 text-center">
                                 Daily Order
@@ -315,5 +319,14 @@ class UserController extends Controller
     {
         $orders = Order::where('user_id', $user_id)->whereDate('created_at', Carbon::today())->get();
         return view('webend.user.daily_order', compact('orders'));
+    }
+    /**
+     * User View Detail
+    */
+    public function userViewDetail($id):View
+    {
+        $user = User::find($id);
+
+        return \view('webend.user.detail', compact('user'));
     }
 }

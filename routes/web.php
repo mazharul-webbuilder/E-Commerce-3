@@ -131,6 +131,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/user_applied_data/{user_id}', [Admin\UserController::class, 'data_applied_list'])->name('user.data_applied_list');
     Route::post('/update_user/', [Admin\UserController::class, 'update_user'])->name('update_user');
     Route::get('/daily_order/{id}', [Admin\UserController::class, 'user_daily_order'])->name('user.daily_order');
+    Route::get('/view/user/detail/{id}', [Admin\UserController::class, 'userViewDetail'])->name('user.view.detail');
 
 
     //  friend list route start
