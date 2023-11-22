@@ -33,6 +33,10 @@
                     <td class="py-3 px-6 text-left">{{ $user->email }}</td>
                 </tr>
                 <tr>
+                    <td class="py-3 px-6 text-left font-medium bg-gray-100">Joining Date</td>
+                    <td class="py-3 px-6 text-left">{{ \Illuminate\Support\Carbon::parse($user->created_at)->format('d-m-Y') }}</td>
+                </tr>
+                <tr>
                     <td class="py-3 px-6 text-left font-medium bg-gray-100">Address</td>
                     <td class="py-3 px-6 text-left">{{ $user->address ?? 'No data'}}</td>
                 </tr>
@@ -119,10 +123,6 @@
                 <tr>
                     <td class="py-3 px-6 text-left font-medium bg-gray-100">Max Lose</td>
                     <td class="py-3 px-6 text-left">{{ $user->max_loos ?? 'No data' }}</td>
-                </tr>
-                <tr>
-                    <td class="py-3 px-6 text-left font-medium bg-gray-100">Joining Date</td>
-                    <td class="py-3 px-6 text-left">{{ $user->created_at ?? 'No data' }}</td>
                 </tr>
                 <tr>
                     <td class="py-3 px-6 text-left font-medium bg-gray-100">Parent</td>
