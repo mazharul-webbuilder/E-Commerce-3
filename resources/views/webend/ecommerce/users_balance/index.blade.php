@@ -31,7 +31,20 @@
             <div class="border border-[#8e0789] rounded-md mt-5 mb-8">
                 <div class="bg-[#8e0789] overflow-hidden w-full px-0 flex items-center">
                     <h2 class="text-2xl font-bold py-2 text-white pl-3">Ecommerce Balance Transfer History</h2>
-
+                </div>
+                <div class="pl-2 pt-2">
+                    <button class="bg-cyan-600 text-white p-2 rounded">
+                        Total Transaction This Month:
+                        {{\Illuminate\Support\Facades\DB::table('ecommerce_balance_transfers')->whereMonth('created_at', \Illuminate\Support\Carbon::now()->month)->sum('amount')}}
+                    </button>
+                    <button class="bg-purple-600 text-white p-2 rounded">
+                         Transaction This Year:
+                        {{\Illuminate\Support\Facades\DB::table('ecommerce_balance_transfers')->whereYear('created_at', \Illuminate\Support\Carbon::now()->year)->sum('amount')}}
+                    </button>
+                    <button class="bg-gray-600 text-white p-2 rounded">
+                        Lifetime Transaction:
+                        {{\Illuminate\Support\Facades\DB::table('ecommerce_balance_transfers')->sum('amount')}}
+                    </button>
                 </div>
                 <div class="py-2 px-1 mt-3" style="overflow-x: auto;">
                     <table class="text-sm text-left text-white border-l border-r" id="dataTable" style=" width: 100%;">
